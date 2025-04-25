@@ -41,7 +41,7 @@ export class FightDetailsComponent {
   async getBets(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {
-      const res: any = await this._api.get('bets', `/${this.fightId}?pageNumber=${page}&pageSize=${this.pageSize}`);
+      const res: any = await this._api.get('admin', `/bets/${this.fightId}?pageNumber=${page}&pageSize=${this.pageSize}`);
       this.betHistory = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
