@@ -13,7 +13,22 @@ import { QueryComsComponent } from './query-coms/query-coms.component';
 import { SummaryDetailsComponent } from './summary-details/summary-details.component';
 import { ListEventsComponent } from './list-events/list-events.component';
 import { FightDetailsComponent } from './fight-details/fight-details.component';
+import { DrawSummaryComponent } from './draw-summary/draw-summary.component';
+import { CashinComponent } from './cashin/cashin.component';
+import { CashoutComponent } from './cashout/cashout.component';
 const routes: Routes = [
+    {
+        path: 'cashin',
+        component: CashinComponent,
+    },
+    {
+        path: 'cashout',
+        component: CashoutComponent,
+    },
+    {
+        path: 'draw-summary',
+        component: DrawSummaryComponent,
+    },
     {
         path: 'fight-details/:fightNumberId',
         component: FightDetailsComponent,

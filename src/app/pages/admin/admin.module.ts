@@ -19,6 +19,9 @@ import { RouterModule } from '@angular/router';
 import { SummaryDetailsComponent } from './summary-details/summary-details.component';
 import { ListEventsComponent } from './list-events/list-events.component';
 import { FightDetailsComponent } from './fight-details/fight-details.component';
+import { DrawSummaryComponent } from './draw-summary/draw-summary.component';
+import { CashinComponent } from './cashin/cashin.component';
+import { CashoutComponent } from './cashout/cashout.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,9 @@ import { FightDetailsComponent } from './fight-details/fight-details.component';
     SummaryDetailsComponent,
     ListEventsComponent,
     FightDetailsComponent,
+    DrawSummaryComponent,
+    CashinComponent,
+    CashoutComponent,
   ],
   imports: [
     CommonModule,
