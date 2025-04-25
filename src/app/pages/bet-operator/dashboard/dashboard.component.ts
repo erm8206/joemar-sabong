@@ -202,7 +202,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async refreshUser() {
     try {
-      await this._api.post('admin', {}, `/refresh-user/${this.eventId}`);
+      await this._api.post('betopsnew', {}, `/refresh/${this.eventId}`);
       alert('Refreshing Success !');
     } catch (e) {
       alert(e ?? 'Something went wrong');

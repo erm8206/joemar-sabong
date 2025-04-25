@@ -78,7 +78,7 @@
                                         <button style="margin-left: 5px" class="btn btn-sm btn-success"
                                             data-bs-toggle="modal" data-bs-target="#duplicateArena"
                                             (click)="currentEvent = item">
-                                            Duplica
+                                            Duplicate
                                         </button>
                                         <button style="margin-left: 5px" class="btn btn-sm btn-warning"
                                             [routerLink]="'/operator/arena/' + item.id">
@@ -307,6 +307,8 @@
     </div>
 </div>
 
+
+
 <div class="modal fade" id="duplicateArena" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -325,17 +327,32 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="meronName" class="col-sm-2 control-label">Meron Name</label>
+                    <label for="meronName" class="col-sm-2 control-label">Left Name</label>
                     <div class="col-sm-12">
-                        <input [(ngModel)]="currentEvent.meronName" type="text" class="form-control" id="meronName"
-                            name="meronName" placeholder="Meron Name" />
+                        <input [(ngModel)]="currentEvent.leftName" type="text" class="form-control" id="leftName"
+                            name="leftName" placeholder="Meron Name" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="walaName" class="col-sm-2 control-label">Wala Name</label>
+                    <label for="meronName" class="col-sm-2 control-label">Left Color</label>
                     <div class="col-sm-12">
-                        <input [(ngModel)]="currentEvent.walaName" type="text" class="form-control" id="walaName"
-                            name="walaName" placeholder="Wala Name" />
+                        <input [(ngModel)]="currentEvent.leftColor" type="text" class="form-control" id="leftColor"
+                            name="leftColor" placeholder="Left Color" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="walaName" class="col-sm-2 control-label">Right Name</label>
+                    <div class="col-sm-12">
+                        <input [(ngModel)]="currentEvent.rightName" type="text" class="form-control" id="rightName"
+                            name="rightName" placeholder="Right Name" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="walaName" class="col-sm-2 control-label">Right Color</label>
+                    <div class="col-sm-12">
+                        <input [(ngModel)]="currentEvent.rightColor" type="text" class="form-control" id="rightColor"
+                            name="rightColor" placeholder="Right Color" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -352,12 +369,21 @@
                             name="videoUrl" placeholder="Video Url" />
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="status" class="col-sm-2 control-label">Status</label>
+                    <div class="col-sm-12">
+                        <select class="form-control" [(ngModel)]="currentEvent.status">
+                            <option value="open">OPEN</option>
+                            <option value="close">CLOSE</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="duplicateEvent()">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="duplicateEvent()">
                     Duplicate Event
                 </button>
             </div>

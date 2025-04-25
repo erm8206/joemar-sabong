@@ -323,7 +323,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async listenMySelfRefresh() {
     this.refreshSub = this.webSocketService.listen(`refresh-${this.eventId}`).subscribe(() => {
-      this.refresh();
+      alert("Refresh ko" + this.eventId)
+      //this.refresh();
     });
   }
 
