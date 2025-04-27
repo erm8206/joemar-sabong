@@ -7,6 +7,8 @@ import { SabongHomeComponent } from './sabong-home/sabong-home.component';
 import { WalletLogComponent } from './wallet-log/wallet-log.component';
 import { DashboardComponent } from './dashboard/dashboard.component'; // ✅ this is required
 import { BetsComponent } from './bets/bets.component';
+import { CashinComponent } from './cashin/cashin.component';
+import { CashoutComponent } from './cashout/cashout.component';
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'home', component: HomeComponent },
@@ -16,6 +18,9 @@ const routes: Routes = [
     { path: 'arena/:eventId', component: DashboardComponent },
     { path: 'wallet-logs', component: WalletLogComponent },
     { path: 'bets-history', component: BetsComponent },
+    { path: 'cashin', component: CashinComponent },
+    { path: 'cashout', component: CashoutComponent },
+
 
 ];
 

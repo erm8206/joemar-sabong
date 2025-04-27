@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router';
+import { lastValueFrom, Observable } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
+import { JwtService } from 'src/app/services/jwt.service';
+import { UserAccount, UserModel } from 'src/app/services/models/user.model';
+import { UserSub } from 'src/app/services/subscriptions/user.sub';
+import { environment } from 'src/environments/environment';
+
 declare var feather: any; // ✅ outside the class
 declare var $: any;
 @Component({
@@ -11,7 +19,12 @@ export class PlayerComponent implements OnInit, AfterViewInit {
   isSidebarVisible = true;
   isMobileSidebarOpen = false;
   feather: any;
-  constructor() { }
+  constructor(
+    private _api: ApiService,
+    private _userSub: UserSub,
+    private _jwt: JwtService,
+    private _router: Router
+  ) { }
 
   ngOnInit(): void {
   }
@@ -70,6 +83,14 @@ export class PlayerComponent implements OnInit, AfterViewInit {
 
   toggleMobileSidebar(): void {
     this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
+  }
+
+
+  logout() {
+    this._jwt.removeToken();
+    this._userSub.setUser({});
+    this._userSub.setAccount({});
+    this._router.navigate(['/play/login']);
   }
 
   toggleFullscreen() {

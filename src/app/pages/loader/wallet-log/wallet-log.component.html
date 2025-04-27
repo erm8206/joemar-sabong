@@ -1,0 +1,198 @@
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>Wallet Logs</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
+                            </svg></a></li>
+                    <li class="breadcrumb-item">Transaction(s)</li>
+                    <li class="breadcrumb-item active">Wallet Logs</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header" style="font-size: 13px">
+                    <i class="fa fa-align-justify"></i>
+                    WALLET TRANSACTION LOGS
+                </div>
+
+                <div class="card-body">
+                    <!-- PAGE SIZE DROPDOWN -->
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 text-end">
+                            <div>
+                                <select class="form-select" id="pageSize" [value]="pageSize"
+                                    (change)="onPageSizeChange($event)">
+                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search transactions...">
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Loading spinner, visible when 'isLoading' is true -->
+                    <div *ngIf="isLoading" class="loading-container">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <!-- TABLE -->
+                    <div class="table-responsive">
+                        <!-- Loading spinner, visible when 'isLoading' is true -->
+                        <div *ngIf="isLoading" class="loading-container">
+                            <div class="spinner"></div>
+                        </div>
+                        <table *ngIf="!isLoading && walletlogs.length > 0" border="1" width="100%" cellpadding="8"
+                            class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Transacted By</th>
+                                    <th>Activity</th>
+                                    <th>Remaining points</th>
+                                    <th>Created At</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of walletlogs; let i = index">
+                                    <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+                                    <td>
+
+
+                                        <span
+                                            *ngIf="user.activity == 'manual cashin' && userLoggendin.username === user.sender.username">
+                                            You have sent <span style="color: red;font-weight: bolder;">-{{
+                                                user?.amount}}</span> to {{
+                                            user?.receiver?.username}}
+
+                                        </span>
+
+                                        <span
+                                            *ngIf="user.activity == 'manual cashin' && userLoggendin.username === user.receiver.username">
+                                            You have received <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span> from
+                                            {{user?.sender?.username}}
+                                        </span>
+
+
+                                        <span
+                                            *ngIf="user.activity == 'manual cashout' && userLoggendin.username === user.receiver.username">
+                                            You have just withdrawn <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span>
+                                            from
+                                            {{user?.sender?.username}}
+                                        </span>
+
+
+
+                                        <span
+                                            *ngIf="user.activity == 'manual cashout' && userLoggendin.username === user.sender.username">
+                                            You have been deducted worth <span
+                                                style="color: red;font-weight: bolder;">-{{ user?.amount}}</span>
+                                            by
+                                            {{user?.receiver?.username}}
+
+                                        </span>
+
+
+
+                                        <span *ngIf="user.activity == 'convert commission'">
+                                            Converted <span style="color: red;font-weight: bolder;">-{{
+                                                user?.amount}}</span> worth of
+                                            commission to points
+
+                                        </span>
+                                    </td>
+
+
+
+
+
+                                    <td>{{user?.transactedBy?.username}}</td>
+                                    <td>{{ user?.activity}}</td>
+                                    <td>{{ user?.remainingPoints}}</td>
+                                    <td>{{ user?.createdAt | date: 'medium' }}</td>
+                                    <td>{{ user?.detail}}</td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <!-- NO RECORDS -->
+                    <div *ngIf="!isLoading && walletlogs.length === 0">
+                        No record(s) found.
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="pagination-footer">
+                        <!-- ENTRIES INFO -->
+                        <div *ngIf="!isLoading && walletlogs.length > 0">
+                            Showing
+                            {{ (pageNumber - 1) * pageSize + 1 }}
+                            to
+                            {{ getShowingRangeEnd() }}
+                            of
+                            {{ totalItems }}
+                            entries
+                        </div>
+
+                        <!-- PAGINATION CONTROLS -->
+                        <div *ngIf="totalPages > 1">
+                            <div class="pagination-controls"
+                                style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber - 1)"
+                                    [disabled]="pageNumber === 1">
+                                    Previous
+                                </button>
+
+                                <select class="form-select form-select-sm" style="width: auto;" [ngModel]="pageNumber"
+                                    (ngModelChange)="goToPage($event)">
+                                    <option *ngFor="let i of [].constructor(totalPages); let page = index"
+                                        [value]="page + 1">
+                                        Page {{ page + 1 }}
+                                    </option>
+                                </select>
+
+                                <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber + 1)"
+                                    [disabled]="pageNumber === totalPages">
+                                    Next
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-secondary" (click)="goToPage(totalPages)"
+                                    [disabled]="pageNumber === totalPages">
+                                    Last
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,203 @@
+<div class="tap-top"><i data-feather="chevrons-up"></i></div>
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Page Header Start-->
+    <div class="page-header">
+        <div class="header-wrapper row m-0">
+            <div class="header-logo-wrapper col-auto p-0">
+                <div class="logo-wrapper"><a routerLink="/player/home"><img class="img-fluid for-light"
+                            src="assets/images/logo/logo.png" alt=""><img class="img-fluid for-dark"
+                            src="assets/images/logo/logo_dark.png" alt=""></a></div>
+                <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle"
+                        data-feather="align-center"></i></div>
+            </div>
+            <div class="left-header col-xxl-5 col-xl-6 col-lg-5 col-md-4 col-sm-3 p-0">
+
+            </div>
+
+            <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
+                <ul class="nav-menus">
+                    <li class="fullscreen-body"> <span>
+                            <svg id="maximize-screen">
+                                <use href="assets/svg/icon-sprite.svg#full-screen"></use>
+                            </svg></span>
+                    </li>
+                    <li>
+                        <div class="mode">
+                            <svg>
+                                <use href="assets/svg/icon-sprite.svg#moon"></use>
+                            </svg>
+                        </div>
+                    </li>
+
+
+                    <li class="profile-nav onhover-dropdown pe-0 py-0">
+                        <div class="d-flex profile-media"><img class="b-r-10" src="assets/images/alex.png"
+                                style="width: 35px; height: 35px;" alt="profile">
+                            <div class="flex-grow-1"><span>{{ (getUserInfo() | async)?.username}}</span>
+                                <p class="mb-0">{{ (getUserInfo() | async)?.type}} <i
+                                        class="middle fa-solid fa-angle-down"></i></p>
+                            </div>
+                        </div>
+                        <ul class="profile-dropdown onhover-show-div">
+                            <li><a (click)="logout()"><i data-feather="log-in"> </i><span>Log out</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper horizontal-menu">
+        <!-- Page Sidebar Start-->
+        <div class="sidebar-wrapper" data-sidebar-layout="stroke-svg">
+
+            <div>
+                <div class="logo-wrapper"><a routerLink="/player/home"><img class="img-fluid for-light"
+                            src="assets/images/logo/logo.png" alt=""><img class="img-fluid for-dark"
+                            src="assets/images/logo/logo_dark.png" alt=""></a>
+                    <div class="back-btn"><i class="fa-solid fa-angle-left"></i></div>
+                    <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"> </i>
+                    </div>
+                </div>
+                <div class="logo-icon-wrapper"><a routerLink="/player/home"><img class="img-fluid"
+                            src="assets/images/logo/logo-icon.png" alt=""></a></div>
+                <nav class="sidebar-main">
+                    <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+                    <div id="sidebar-menu">
+                        <ul class="sidebar-links" id="simple-bar">
+                            <li class="back-btn">
+                                <div class="mobile-back text-end"><span>Back</span><i
+                                        class="fa-solid fa-angle-right ps-2" aria-hidden="true"></i></div>
+                            </li>
+
+
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#stroke-reports"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-reports"></use>
+                                    </svg><span>Transaction(s)</span></a>
+                                <ul class="sidebar-submenu">
+                                    <li><a routerLink="/loader/wallet-station" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Wallet Station</span></a>
+                                    </li>
+                                    <li><a routerLink="/loader/wallet-log" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Wallet Logs</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+
+
+
+
+
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" data-bs-toggle="modal"
+                                    data-bs-target="#changePass">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#front-arrow"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-price"></use>
+                                    </svg><span>Change Password</span>
+                                </a>
+                            </li>
+
+
+
+
+
+
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" (click)="logout()"
+                                    style="cursor: pointer">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#back-arrow"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-task"></use>
+                                    </svg><span>Logout</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+                </nav>
+            </div>
+        </div>
+        <!-- Page Sidebar Ends-->
+        <div class="page-body">
+            <router-outlet></router-outlet>
+
+        </div>
+        <!-- footer start-->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 footer-copyright text-center">
+                        <p class="mb-0">Copyright <span class="year-update"> </span> © Anteiku </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+<div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="cancel()"><span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert" *ngIf="messageErrorTrue">
+                    <div *ngFor="let item of message">
+                        {{item}}
+                    </div>
+                </div>
+
+                <div class="alert alert-success" role="alert" *ngIf="!messageErrorTrue && message.length > 0">
+
+                    <div *ngFor="let item of message">
+                        {{item}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input-2">Old Password</label>
+                    <input [(ngModel)]="model.currentPassword" type="password" class="form-control"
+                        style="color: #d2d2d2;" id="input-1" placeholder="Enter old password" required>
+                </div>
+                <div class="form-group">
+                    <label for="input-2">New Password</label>
+                    <input [(ngModel)]="model.newPassword" type="password" class="form-control" style="color: #d2d2d2;"
+                        id="input-2" placeholder="Enter new password" required>
+                </div>
+                <div class="form-group">
+                    <label for="input-2">Confirm New Password</label>
+                    <input [(ngModel)]="model.confirmPassword" type="password" class="form-control"
+                        style="color: #d2d2d2;" id="input-3" placeholder="Confirm New Password" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">
+                    Close
+                </button>
+                <button type="button" class="btn btn-success" (click)="changePassword()">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

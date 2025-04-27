@@ -14,6 +14,7 @@ import {
   BetOperatorGuardService,
   IsBetOperator1GuardService,
   IsBetOperator2GuardService,
+  LoaderGuardService,
   PlayerGuardService,
 } from './services/auth-guard.service';
 import { HeaderInterceptor } from './services/header.interceptor';
@@ -38,6 +39,7 @@ import { UserSub } from './services/subscriptions/user.sub';
     BetOperatorGuardService,
     IsBetOperator1GuardService,
     IsBetOperator2GuardService,
+    LoaderGuardService,
     JwtService,
     UserSub,
     HeaderInterceptor,

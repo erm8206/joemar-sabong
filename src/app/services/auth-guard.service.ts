@@ -7,10 +7,12 @@ enum UserType {
   admin = 'admin',
   user = 'user',
   player = 'player',
+  loader = 'loader',
+  staff = 'staff',
 }
 @Injectable()
-export class AdminGuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class AdminGuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }
@@ -34,8 +36,8 @@ export class AdminGuardService  {
   }
 }
 @Injectable()
-export class PlayerGuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class PlayerGuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }
@@ -60,8 +62,8 @@ export class PlayerGuardService  {
 }
 
 @Injectable()
-export class AgentGuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class AgentGuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }
@@ -78,7 +80,46 @@ export class AgentGuardService  {
           res.type != 'player' &&
           res.type != 'admin' &&
           res.type != 'staff' &&
-          res.type != 'staff2'
+          res.type != 'staff2' &&
+          res.type != 'loader'
+        ) {
+          return true;
+        }
+        this._router.navigate(['/play/login']);
+
+        return false;
+      })
+    );
+  }
+}
+
+
+
+@Injectable()
+export class LoaderGuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
+  canActivate(): Observable<boolean> {
+    return this.checkDecodedToken();
+  }
+
+  checkDecodedToken(): Observable<boolean> {
+    return this._jwt.getDecodedToken().pipe(
+      map((res) => {
+        console.log(res);
+        if (!res) {
+          this._router.navigate(['/play/login']);
+          return false;
+        }
+        if (
+          res.type != 'player' &&
+          res.type != 'admin' &&
+          res.type != 'staff' &&
+          res.type != 'staff2' &&
+          res.type != 'agent1' &&
+          res.type != 'agent2' &&
+          res.type != 'agent3' &&
+          res.type != 'agent4' &&
+          res.type != 'agent5'
         ) {
           return true;
         }
@@ -91,8 +132,8 @@ export class AgentGuardService  {
 }
 
 @Injectable()
-export class SuperGuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class SuperGuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }
@@ -117,8 +158,8 @@ export class SuperGuardService  {
 }
 
 @Injectable()
-export class AccountingGuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class AccountingGuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }
@@ -143,8 +184,8 @@ export class AccountingGuardService  {
 }
 
 @Injectable()
-export class BetOperatorGuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class BetOperatorGuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }
@@ -169,8 +210,8 @@ export class BetOperatorGuardService  {
 }
 
 @Injectable()
-export class IsBetOperator1GuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class IsBetOperator1GuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }
@@ -195,8 +236,8 @@ export class IsBetOperator1GuardService  {
 }
 
 @Injectable()
-export class IsBetOperator2GuardService  {
-  constructor(private _jwt: JwtService, private _router: Router) {}
+export class IsBetOperator2GuardService {
+  constructor(private _jwt: JwtService, private _router: Router) { }
   canActivate(): Observable<boolean> {
     return this.checkDecodedToken();
   }

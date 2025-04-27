@@ -5,10 +5,12 @@ import { AgentComponent } from './pages/agent/agent.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { BetOperatorComponent } from './pages/bet-operator/bet-operator.component';
 import { PlayerComponent } from './pages/player/player.component';
+import { LoaderComponent } from './pages/loader/loader.component';
 import {
   AdminGuardService,
   AgentGuardService,
   BetOperatorGuardService,
+  LoaderGuardService,
   PlayerGuardService,
 } from './services/auth-guard.service';
 
@@ -55,8 +57,20 @@ const routes: Routes = [
   },
   {
     path: '',
+    component: LoaderComponent,
+    canActivate: [LoaderGuardService],
+    children: [
+      {
+        path: 'loader',
+        loadChildren: () =>
+          import('src/app/pages/loader/loader.module').then((m) => m.LoaderModule),
+      },
+    ],
+  },
+  {
+    path: '',
     component: PlayerComponent,
-
+    canActivate: [PlayerGuardService],
     children: [
       {
         path: 'player',

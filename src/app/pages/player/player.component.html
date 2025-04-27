@@ -102,7 +102,7 @@
                         <ul class="profile-dropdown onhover-show-div">
                             <li><a href="#"><i data-feather="user"></i><span>Account </span></a></li>
                             <li><a href="#"><i data-feather="dollar-sign"></i><span>Add Funds</span></a></li>
-                            <li><a href="#"><i data-feather="log-in"> </i><span>Log out</span></a></li>
+                            <li><a (click)="logout()"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -145,7 +145,8 @@
                             </li>
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/home">
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/home"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                     <svg class="stroke-icon">
                                         <use href="assets/svg/icon-sprite.svg#stroke-home"></use>
                                     </svg>
@@ -156,7 +157,8 @@
                             </li>
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/sabong-home">
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/sabong-home"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                     <svg class="stroke-icon">
                                         <use href="assets/svg/icon-sprite.svg#stroke-widget"></use>
                                     </svg>
@@ -175,37 +177,26 @@
                                         <use href="assets/svg/icon-sprite.svg#fill-reports"></use>
                                     </svg><span>History</span></a>
                                 <ul class="sidebar-submenu">
-                                    <li><a routerLink="/player/wallet-logs"><span>Wallet History</span></a></li>
-                                    <li><a routerLink="/player/bets-history"><span>Bet History</span></a></li>
-                                    <li><a href="payout-history.html"><span>Payout History</span></a></li>
+                                    <li><a routerLink="/player/wallet-logs" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Wallet History</span></a>
+                                    </li>
+                                    <li><a routerLink="/player/bets-history" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Bet History</span></a>
+                                    </li>
+                                    <li><a routerLink="/player/cashin" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Cashin History</span></a>
+                                    </li>
+                                    <li><a routerLink="/player/cashout" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Cashout History</span></a>
+                                    </li>
                                 </ul>
                             </li>
-                            <li class="sidebar-list">
-                                <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="bet-logs.html">
-                                    <svg class="stroke-icon">
-                                        <use href="assets/svg/icon-sprite.svg#stroke-form"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="assets/svg/icon-sprite.svg#fill-form"></use>
-                                    </svg><span>Sabong Bet Logs</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-list">
-                                <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="wallet.html">
-                                    <svg class="stroke-icon">
-                                        <use href="assets/svg/icon-sprite.svg#stroke-price"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="assets/svg/icon-sprite.svg#fill-price"></use>
-                                    </svg><span>Wallet</span>
-                                </a>
-                            </li>
+
+
 
                             <li class="sidebar-main-title">
                                 <div>
-                                    <h6>E-Lotto</h6>
+                                    <h6>E-Lotto (Coming Soon)</h6>
                                 </div>
                             </li>
 
@@ -254,6 +245,19 @@
                                     <svg class="fill-icon">
                                         <use href="assets/svg/icon-sprite.svg#fill-task"></use>
                                     </svg><span>Pick3 Lotto</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" (click)="logout()"
+                                    style="cursor: pointer">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#back-arrow"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-task"></use>
+                                    </svg><span>Logout</span>
                                 </a>
                             </li>
 

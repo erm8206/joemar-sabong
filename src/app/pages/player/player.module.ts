@@ -12,6 +12,8 @@ import { DashboardComponent } from './dashboard/dashboard.component'; // ✅ thi
 import { NumberWithCommasPipe } from './numberwithcommas.pipe';
 import { WalletLogComponent } from './wallet-log/wallet-log.component';
 import { BetsComponent } from './bets/bets.component';
+import { CashinComponent } from './cashin/cashin.component';
+import { CashoutComponent } from './cashout/cashout.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { BetsComponent } from './bets/bets.component';
     DashboardComponent,
     NumberWithCommasPipe,
     WalletLogComponent,
-    BetsComponent
+    BetsComponent,
+    CashinComponent,
+    CashoutComponent
   ],
   imports: [
     CommonModule,

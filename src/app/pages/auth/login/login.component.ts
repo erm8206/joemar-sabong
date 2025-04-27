@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this._router.navigate(['/player/home']);
         } else {
           if (result.type == 'loader') {
-            this._router.navigate(['/agent/wallet-station']);
+            this._router.navigate(['/loader/wallet-station']);
           } else {
             this._router.navigate(['/agent/dashboard']);
           }
