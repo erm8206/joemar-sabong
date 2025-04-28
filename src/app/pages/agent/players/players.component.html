@@ -93,7 +93,7 @@
 
 
                                         <button [disabled]="isLoading" class="btn btn-success btn-sm"
-                                            [routerLink]="'/agent/player-bet-history/' + item._id"
+                                            [routerLink]="'/agent/player-bet-history/' + item.id"
                                             [queryParams]="{ name: item.username,type:'sabong'  }">
                                             <i class="fa fa-user-secret"></i>
                                             View Sabong Bet History

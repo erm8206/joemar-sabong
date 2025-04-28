@@ -77,7 +77,6 @@ export class PlayerComponent implements OnInit, AfterViewInit {
   }
 
   toggleSidebar(): void {
-    alert("aw")
     this.isSidebarVisible = !this.isSidebarVisible;
   }
 
