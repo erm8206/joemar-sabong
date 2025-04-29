@@ -88,6 +88,13 @@
                                             <i class="fa fa-money"></i>
                                             Set Sabong Comms
                                         </button>
+                                        <button style="width: 100%;font-size: 11px; margin-top: 5px" type="button"
+                                            class="btn btn-success btn-sm"
+                                            [routerLink]="'/agent/view-ctw-logs/' + item.id"
+                                            [queryParams]="{ name: item.username }">View CTW Logs</button>
+
+
+
 
                                         <!-- <div><button style="width: 100%;font-size: 11px;; margin-top: 5px"
                                                 [disabled]="isLoading" (click)="setComs(item._id,'ez2')"
