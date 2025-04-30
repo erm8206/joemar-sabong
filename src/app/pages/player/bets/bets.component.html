@@ -93,6 +93,8 @@
                                             }}</span>
                                         <span class="badge badge-secondary" *ngIf="user?.status == 'cancelled'"> {{
                                             user?.status }}</span>
+                                        <span class="badge badge-info" *ngIf="user?.status == 'draw'"> {{
+                                            user?.status }}</span>
 
                                     </td>
                                     <td>{{ user?.fightNumber?.status }}</td>

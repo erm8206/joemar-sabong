@@ -30,6 +30,7 @@ export class CashoutComponent implements OnInit {
 
 
     this.getForApprovals();
+    this._sub.getUserDetail();
   }
 
   async getForApprovals(page: number = 1): Promise<void> {

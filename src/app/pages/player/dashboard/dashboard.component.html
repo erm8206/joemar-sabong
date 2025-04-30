@@ -71,6 +71,18 @@
                         </div>
                     </marquee>
                 </div>
+
+                <div class="card-header" style="
+                background-color: rgb(220, 45, 236);
+                color: #111111;
+                padding: 5px;
+              " *ngIf="fightSummary.fightNumber?.status == 'disbursing'">
+                    <marquee behavior="scroll" direction="left">
+                        <div class="title" id="lblArenaName" style="color: #ffffff; font-size: 16px; font-weight: bold">
+                            Disbursing...
+                        </div>
+                    </marquee>
+                </div>
                 <div class="card-body p-3">
                     <div class="col-md-12">
                         <h3 style="text-align: center;">
@@ -88,8 +100,8 @@
                         </h3>
                     </div>
                     <div class="centered-cards mt-3" style="padding: 0px!important;">
-                        <div class="fight-container" style="top:20px!important">
-                            <img src="../assets/images/fight.png" alt="Fight Image" style="width: 100px!important;">
+                        <div class="fight-container" style="top:35px!important">
+                            <img src="../assets/images/fight.png" alt="Fight Image">
                             <div class="fight-number">{{
                                 fightSummary.fightNumber?.number || "N/A" }}</div>
                         </div>
@@ -12955,3 +12967,7 @@
 
     </div>
 </div>
+
+
+<app-confirmation-modal></app-confirmation-modal>
+<app-alert-modal></app-alert-modal>

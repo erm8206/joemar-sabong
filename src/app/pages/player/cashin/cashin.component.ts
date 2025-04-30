@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 
+
 @Component({
   selector: 'app-cashin',
   templateUrl: './cashin.component.html',
@@ -23,13 +24,15 @@ export class CashinComponent implements OnInit {
   constructor(
     private _sub: UserSub,
     private _api: ApiService,
-    private _router: Router
+    private _router: Router,
+
   ) { }
 
   ngOnInit(): void {
 
 
     this.getForApprovals();
+    this._sub.getUserDetail();
   }
 
   async getForApprovals(page: number = 1): Promise<void> {

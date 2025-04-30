@@ -38,6 +38,7 @@ export class BetsComponent implements OnInit {
     this.getBetSummary();
 
     this.getAnnouncement();
+    this._userSub.getUserDetail();
   }
   async getAnnouncement() {
     try {

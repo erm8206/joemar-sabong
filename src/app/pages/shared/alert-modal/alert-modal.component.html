@@ -1,0 +1,20 @@
+<div *ngIf="isVisible" class="modal-overlay" [ngStyle]="{'z-index': modalZIndex}">
+    <div class="modal-container">
+        <div class="modal-header" [ngClass]="getHeaderClass()">
+            <h3 style="color: white!important;">{{ type === 'success' ? 'Success' : 'Error' }}</h3>
+        </div>
+        <div class="modal-body">
+            <span *ngIf="type === 'success'"
+                style="text-align: center;font-size: 45px;font-weight: bold;color: #20ec97;"><i
+                    class="fa-solid fa-thumbs-up"></i></span>
+
+            <span *ngIf="type === 'error'"
+                style="text-align: center;font-size: 45px;font-weight: bold;color: #fd4e6e;"><i
+                    class="fa-solid fa-triangle-exclamation"></i></span>
+            <h3 style="color: white!important;">{{ message }}</h3>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">OK</button>
+        </div>
+    </div>
+</div>

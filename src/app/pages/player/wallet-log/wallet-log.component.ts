@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserAccount, UserModel } from 'src/app/services/models/user.model';
+import { UserSub } from 'src/app/services/subscriptions/user.sub';
 @Component({
   selector: 'app-wallet-log',
   templateUrl: './wallet-log.component.html',
@@ -25,7 +26,7 @@ export class WalletLogComponent implements OnInit {
   isLoading: boolean = false;
   walletlogs: any = [];
   constructor(private _api: ApiService, private http: HttpClient,
-    private _jwt: JwtService,
+    private _jwt: JwtService, private _userSub: UserSub,
   ) {
     this._jwt.getDecodedToken().subscribe((data) => {
       this.userLoggendin.username = data?.username;
@@ -35,6 +36,7 @@ export class WalletLogComponent implements OnInit {
 
   ngOnInit(): void {
     this.getWalletLogs(1);
+    this._userSub.getUserDetail();
 
 
   }

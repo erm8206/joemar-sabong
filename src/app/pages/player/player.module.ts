@@ -14,7 +14,7 @@ import { WalletLogComponent } from './wallet-log/wallet-log.component';
 import { BetsComponent } from './bets/bets.component';
 import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
-
+import { SharedModule } from '../shared/shared.module';  // Import the SharedModule
 @NgModule({
   declarations: [
     HomeComponent,
@@ -33,7 +33,8 @@ import { CashoutComponent } from './cashout/cashout.component';
     CommonModule,
     PlayerRoutingModule,
     RouterModule, // ✅ this makes <router-outlet> work,
-    FormsModule
+    FormsModule,
+    SharedModule
   ]
 })
 export class PlayerModule { }

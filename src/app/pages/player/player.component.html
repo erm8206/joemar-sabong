@@ -11,7 +11,7 @@
                         data-feather="align-center"></i></div>
             </div>
             <div class="left-header col-xxl-5 col-xl-6 col-lg-5 col-md-4 col-sm-3 p-0">
-                <div class="notification-slider">
+                <!-- <div class="notification-slider">
                     <div class="d-flex h-100">
                         <img src="assets/images/giftools.gif" alt="gif">
                         <h6 class="mb-0 f-w-400">
@@ -35,11 +35,33 @@
                         </h6>
                         <a class="ms-1" href="/baccarat" target="_blank">Play Baccarat</a>
                     </div>
+                </div> -->
+
+                <div class="tether-box">
+                    <span class="tether-amount">₱{{ (getAccount() | async)?.points | number : "1.2" }}</span>
+                    <div class="tether-label">
+                        <!-- <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=029" alt="Tether"
+                            class="tether-icon"> -->
+                        <i class="fa-solid fa-wallet" style="font-size: 18px;"></i>
+
+                    </div>
                 </div>
             </div>
 
             <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
+
                 <ul class="nav-menus">
+                    <li>
+                        <div class="tether-box wallet-mobile">
+                            <span class="tether-amount">₱{{ (getAccount() | async)?.points | number : "1.2" }}</span>
+                            <div class="tether-label">
+                                <!-- <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=029" alt="Tether"
+                                    class="tether-icon"> -->
+                                <i class="fa-solid fa-wallet" style="font-size: 18px;"></i>
+
+                            </div>
+                        </div>
+                    </li>
                     <li class="fullscreen-body"> <span (click)="toggleFullscreen()">
                             <svg id="maximize-screen">
                                 <use href="assets/svg/icon-sprite.svg#full-screen"></use>
@@ -52,45 +74,7 @@
                             </svg>
                         </div>
                     </li>
-                    <li class="cart-nav onhover-dropdown">
-                        <div class="cart-box">
-                            <svg>
-                                <use href="assets/svg/icon-sprite.svg#stroke-ecommerce"></use>
-                            </svg><span class="badge rounded-pill badge-danger">2</span>
-                        </div>
-                        <div class="cart-dropdown onhover-show-div">
-                            <h6 class="f-18 mb-0 dropdown-title">E-Lotto</h6>
-                            <ul>
-                                <li>
-                                    <div class="d-flex"><img class="img-fluid b-r-5 me-3 img-60"
-                                            src="assets/images/2dlotto.png" alt="">
-                                        <div class="flex-grow-1"><span>2D Lotto | ₱50</span>
-                                            <h6 class="font-primary">13, 12</h6>
-                                        </div>
-                                        <div class="close-circle"><a class="bg-danger" href="#"><i
-                                                    data-feather="x"></i></a></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex"><img class="img-fluid b-r-5 me-3 img-60"
-                                            src="assets/images/3dlotto.png" alt="">
-                                        <div class="flex-grow-1"><span>3D Lotto | ₱10</span>
-                                            <h6 class="font-primary">9, 2, 5</h6>
-                                        </div>
-                                        <div class="close-circle"><a class="bg-danger" href="#"><i
-                                                    data-feather="x"></i></a></div>
-                                    </div>
-                                </li>
-                                <li class="total">
-                                    <h6 class="mb-0">Total : <span class="f-right">₱60.00</span></h6>
-                                </li>
-                                <li class="text-center"><a class="d-block view-cart f-w-700 btn btn-danger w-100"
-                                        href="#">Cancel</a><a
-                                        class="btn btn-primary view-checkout btn btn-primary w-100 f-w-700"
-                                        href="#">Submit</a></li>
-                            </ul>
-                        </div>
-                    </li>
+
 
                     <li class="profile-nav onhover-dropdown pe-0 py-0">
                         <div class="d-flex profile-media"><img class="b-r-10" src="assets/images/alex.png"

@@ -6,31 +6,19 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-  Inject,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, share, Subscription, timer } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
-import { SocketEvents } from 'src/app/services/enums/socket-events.enum';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserAccount, UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { WebSocketService } from 'src/app/services/web-socket-service';
-import { Input, OnChanges, SimpleChanges } from '@angular/core';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-  keyframes,
-} from '@angular/animations';
 import { AnimationBuilder } from '@angular/animations';
-import { DecimalPipe } from '@angular/common';
 import { Location } from '@angular/common';
-import { Renderer2 } from '@angular/core';
-
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
+import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.component';  // Import the alert modal component
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -39,6 +27,8 @@ import { Renderer2 } from '@angular/core';
   ],
 })
 export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(ConfirmationModalComponent) modalComponent!: ConfirmationModalComponent; // Reference to modal component
+  @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;  // Reference to the modal component
   @ViewChild('tblBaccaratResultWinStreak') table!: ElementRef;
 
   currentRow!: number;
@@ -444,12 +434,28 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   async placeBet(name: string) {
     this.disableProceed = true;
     let fName = name.toLowerCase();
-    try {
-      const state = confirm(`Add ${this.myBetModel.amount} to ${name} ?`);
-      if (!state) {
-        this.disableProceed = false;
-        return;
+
+    // Wait for the confirmation modal result (Yes/No)
+    const confirmationResult = await new Promise<boolean>((resolve) => {
+      if (this.modalComponent) {
+        this.modalComponent.openModal(
+          `Betting Confirm:`,
+          `Add ${this.myBetModel.amount} to ${name} ?`
+        );
+
+        // Wait for the confirmation result
+        this.modalComponent.result.subscribe((result) => {
+          resolve(result);
+        });
       }
+    });
+
+    if (!confirmationResult) {
+      this.disableProceed = false;
+      return;
+    }
+    try {
+
       const response: any = await this._api.post(
         'playernew',
         { amount: this.myBetModel.amount, choice: fName },
@@ -465,10 +471,11 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       this.myBets.myTotalWalaBets = response.myTotalWalaBets;
 
 
-      alert(`Success ! Added Bet on ${name}`);
+
+      this.alertModal.openModal(`Success! Added Bet on ${name}`, 'success');
       this.disableProceed = false;
     } catch (e: any) {
-      alert(e ?? 'Something went wrong');
+      this.alertModal.openModal(e ?? 'Something went wrong', 'error');
       this.disableProceed = false;
     }
   }
@@ -537,11 +544,28 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   async addDrawBet() {
     this.disableProceed = true;
-    const state = confirm(`Add ${this.myBetModel.amount} to DRAW ?`);
-    if (!state) {
+
+
+    // Wait for the confirmation modal result (Yes/No)
+    const confirmationResult = await new Promise<boolean>((resolve) => {
+      if (this.modalComponent) {
+        this.modalComponent.openModal(
+          `Betting Confirm:`,
+          `Add ${this.myBetModel.amount} to Draw ?`
+        );
+
+        // Wait for the confirmation result
+        this.modalComponent.result.subscribe((result) => {
+          resolve(result);
+        });
+      }
+    });
+
+    if (!confirmationResult) {
       this.disableProceed = false;
       return;
     }
+
     try {
       const response: any = await this._api.post(
         'playernew',
@@ -554,9 +578,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       this.myBets.myTotalMeronBets = response.myTotalMeronBets;
       this.myBets.myTotalWalaBets = response.myTotalWalaBets;
       this.drawCloseBtn?.nativeElement?.click();
+      this.alertModal.openModal('Success! Added Bet on DRAW', 'success');
       this.disableProceed = false;
     } catch (e: any) {
-      alert(e ?? 'Something went wrong');
+      this.alertModal.openModal(e ?? 'Something went wrong', 'error');
       this.disableProceed = false;
     }
   }

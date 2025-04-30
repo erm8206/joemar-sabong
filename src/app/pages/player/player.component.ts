@@ -76,6 +76,10 @@ export class PlayerComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
+  public getAccount(): Observable<UserAccount> {
+    return this._userSub.getUserAccount();
+  }
+
   toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
   }
