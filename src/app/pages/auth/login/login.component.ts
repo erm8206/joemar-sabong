@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { JwtService } from 'src/app/services/jwt.service';
+import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.component';  // Import the alert modal component
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,7 @@ import { JwtService } from 'src/app/services/jwt.service';
   styleUrls: ['./login.component.scss', '../../../../assets/css/style_creds.css'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;  // Reference to the modal component
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key == 'Enter' && !this.isLoading) {
@@ -38,24 +40,24 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       this.loginBtnKLabel = "Login";
       if (result.type == 'admin') {
-        this._router.navigate(['/admin/dashboard']);
+        window.location.href = '/admin/dashboard';
       } else if (result.type == 'staff' || result.type == 'staff2') {
-        this._router.navigate(['/operator/arena']);
+        window.location.href = '/operator/arena';
       } else {
         if (result.type == 'player') {
-          this._router.navigate(['/player/home']);
+          window.location.href = '/player/home';
         } else {
           if (result.type == 'loader') {
-            this._router.navigate(['/loader/wallet-station']);
+            window.location.href = '/loader/wallet-station';
           } else {
-            this._router.navigate(['/agent/dashboard']);
+            window.location.href = '/agent/dashboard';
           }
         }
       }
     } catch (e: any) {
       console.log(e);
       if (e.message) {
-        alert(e.message ?? 'Something went wrong');
+        this.alertModal.openModal(e ?? 'Something went wrong', 'error');
       }
       this.isLoading = false;
       this.loginBtnKLabel = "Login";
