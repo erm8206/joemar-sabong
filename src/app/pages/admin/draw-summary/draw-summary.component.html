@@ -35,13 +35,16 @@
                             <div>
                                 <select class="form-select" id="pageSize" [value]="pageSize"
                                     (change)="onPageSizeChange($event)">
-                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search transactions...">
+                                <input type="text" class="form-control" placeholder="Fight event or Player..."
+                                    [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+
+
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
@@ -75,7 +78,7 @@
                                     <th>Winning Status</th>
                                     <th>Status</th>
                                     <th>Won Amount</th>
-                                    <th>Remaining Balance</th>
+                                    <!-- <th>Remaining Balance</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,7 +102,7 @@
                                     </td>
                                     <td>{{ user?.fightNumber?.status }}</td>
                                     <td>{{ user?.wonAmount }}</td>
-                                    <td>{{ user?.remainingPoints}}</td>
+                                    <!-- <td>{{ user?.remainingPoints}}</td> -->
 
 
                                 </tr>
@@ -108,8 +111,11 @@
                     </div>
 
                     <!-- NO USERS -->
-                    <div *ngIf="!isLoading && drawHistory.length === 0">
-                        No users found.
+                    <div *ngIf="!isLoading && drawHistory.length === 0" style="text-align: center;padding: 20px;">
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                        </div>
+                        <span>No Data found.</span>
                     </div>
 
                 </div>

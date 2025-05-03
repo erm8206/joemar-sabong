@@ -35,13 +35,14 @@
                             <div>
                                 <select class="form-select" id="pageSize" [value]="pageSize"
                                     (change)="onPageSizeChange($event)">
-                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search transactions...">
+                                <input type="text" class="form-control" [(ngModel)]="search"
+                                    (input)="onSearchInputChange()" placeholder="Search transactions..." />
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
@@ -108,8 +109,11 @@
                     </div>
 
                     <!-- NO USERS -->
-                    <div *ngIf="!isLoading && history.length === 0">
-                        No Data found.
+                    <div *ngIf="!isLoading && history.length === 0" style="text-align: center;padding: 20px;">
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                        </div>
+                        <span>No bet(s) found.</span>
                     </div>
 
                 </div>

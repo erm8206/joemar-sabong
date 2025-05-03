@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 import { UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
@@ -8,19 +9,24 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
 @Component({
   selector: 'app-draw-summary',
   templateUrl: './draw-summary.component.html',
-  styleUrl: './draw-summary.component.scss'
+  styleUrls: ['./draw-summary.component.scss']
 })
-export class DrawSummaryComponent implements OnInit {
-
-  // Pagination data from response
-  totalCount: number = 0;
-  pageNumber: number = 1;
-  pageSize: number = 5;
-  totalPages: number = 0;
-  totalItems: number = 0;
+export class DrawSummaryComponent implements OnInit, OnDestroy {
 
   drawHistory: any = [];
   isLoading: boolean = false;
+
+  // Pagination
+  totalCount: number = 0;
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  totalPages: number = 0;
+  totalItems: number = 0;
+
+  // Search
+  searchTerm: string = '';
+  searchChanged: Subject<string> = new Subject<string>();
+
   constructor(
     private _sub: UserSub,
     private _api: ApiService,
@@ -28,21 +34,34 @@ export class DrawSummaryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.searchChanged.pipe(debounceTime(400)).subscribe((term) => {
+      this.searchTerm = term;
+      this.pageNumber = 1;
+      this.getDrawHistory();
+    });
 
     this.getDrawHistory();
   }
 
-  async getDrawHistory(page: number = 1): Promise<void> {
+  ngOnDestroy(): void {
+    this.searchChanged.unsubscribe();
+  }
+
+  onSearchChange(value: string): void {
+    this.searchChanged.next(value);
+  }
+
+  async getDrawHistory(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const res: any = await this._api.get('admin', `/draw-history?pageNumber=${page}&pageSize=${this.pageSize}`);
+      const query = `/draw-history?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
+      const res: any = await this._api.get('admin', query);
       this.drawHistory = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
       this.pageSize = res.pageSize;
       this.totalPages = res.totalPages;
-      this.totalItems = res.totalCount
+      this.totalItems = res.totalCount;
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -66,45 +85,7 @@ export class DrawSummaryComponent implements OnInit {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
 
-
-  async approveUser(userId: string) {
-    this.isLoading = true;
-    const state = confirm(`Approved this account?`);
-    if (!state) {
-      this.isLoading = false;
-      return;
-    }
-    try {
-
-      const response: any = await this._api.post(
-        'user',
-        { userId },
-        '/approve'
-      );
-      await this.getDrawHistory();
-      alert('Success ! User Approved.');
-      this.isLoading = false;
-    } catch (e) {
-      this.isLoading = false;
-      alert(e ?? 'Server Error');
-    }
-  }
-
-  async rejectUser(userId: string) {
-    try {
-      this.isLoading = true;
-      const response: any = await this._api.post('user', { userId }, '/reject');
-      await this.getDrawHistory();
-      this.isLoading = false;
-      alert('Success ! User Rejected');
-    } catch (e) {
-      this.isLoading = false;
-      alert(e ?? 'Server Error');
-    }
-  }
-
   public getUser(): Observable<UserModel> {
     return this._sub.getUser();
   }
-
 }

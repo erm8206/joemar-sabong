@@ -1,48 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 import { UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
-
-
-import { ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-downlines',
   templateUrl: './downlines.component.html',
   styleUrls: ['./downlines.component.scss'],
 })
-export class DownlinesComponent implements OnInit {
+export class DownlinesComponent implements OnInit, OnDestroy {
+  users: any = [];
+  isLoading: boolean = false;
 
+  // Pagination
   totalCount: number = 0;
   pageNumber: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
 
-  users: any = [];
-  isLoading: boolean = false;
-  dtTrigger: Subject<any> = new Subject();
+  // Search
+  searchTerm: string = '';
+  searchChanged: Subject<string> = new Subject<string>();
+
   constructor(private _api: ApiService, private _sub: UserSub) { }
 
   ngOnInit(): void {
-
+    this.searchChanged.pipe(debounceTime(400)).subscribe((term) => {
+      this.searchTerm = term;
+      this.pageNumber = 1;
+      this.getDownlines();
+    });
 
     this.getDownlines();
   }
 
-  async getDownlines(page: number = 1): Promise<void> {
+  ngOnDestroy(): void {
+    this.searchChanged.unsubscribe();
+  }
+
+  onSearchChange(value: string): void {
+    this.searchChanged.next(value);
+  }
+
+  async getDownlines(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const response: any = await this._api.get('user', `/agent/downlines?pageNumber=${page}&pageSize=${this.pageSize}`);
+      const query = `/agent/downlines?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
+      const response: any = await this._api.get('user', query);
       this.users = response.records || [];
       this.totalCount = response.totalCount;
       this.pageNumber = response.pageNumber;
       this.pageSize = response.pageSize;
       this.totalPages = response.totalPages;
-      this.totalItems = response.totalCount
-
+      this.totalItems = response.totalCount;
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -68,14 +81,12 @@ export class DownlinesComponent implements OnInit {
 
   async deactivateUser(userId: string) {
     try {
-      const response: any = await this._api.post(
-        'user',
-        { userId },
-        '/deactivate'
-      );
-      await this.getDownlines();
-      alert('Success ! Player has been Deactivated');
-    } catch (e) { }
+      await this._api.post('user', { userId }, '/deactivate');
+      await this.getDownlines(this.pageNumber);
+      alert('Success! Player has been Deactivated');
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
+    }
   }
 
   public getUser(): Observable<UserModel> {
@@ -83,93 +94,38 @@ export class DownlinesComponent implements OnInit {
   }
 
   async setComs(userId: string, typeCommission: string) {
+    const percentage = prompt('Please input percentage.');
+    if (!percentage) return;
 
-    if (typeCommission == 'sabong') {
-      try {
-        const percentage = prompt('Please input percentage.');
-        if (percentage) {
-          const response: any = await this._api.post(
-            'user',
-            { userId, percentage },
-            '/set-coms'
-          );
-          await this.getDownlines();
-          alert('Success');
-        }
-      } catch (e) {
-        alert(e ?? 'Something went wrong');
-      }
-    }
-    else if (typeCommission == 'ez2') {
-      try {
-        const percentage = prompt('Please input percentage.');
-        if (percentage) {
-          const response: any = await this._api.post(
-            'user',
-            { userId, percentage },
-            '/set-coms-pick2'
-          );
-          await this.getDownlines();
-          alert('Success');
-        }
-      } catch (e) {
-        alert(e ?? 'Something went wrong');
-      }
+    let endpoint = '';
+
+    switch (typeCommission) {
+      case 'sabong':
+        endpoint = '/set-coms';
+        break;
+      case 'ez2':
+        endpoint = '/set-coms-pick2';
+        break;
+      case 'pick3':
+        endpoint = '/set-coms-pick3';
+        break;
+      case 'gameending':
+        endpoint = '/set-coms-game-ending';
+        break;
+      case 'suertres':
+        endpoint = '/set-coms-suertres';
+        break;
+      default:
+        alert('Invalid commission type.');
+        return;
     }
 
-    else if (typeCommission == 'pick3') {
-      try {
-        const percentage = prompt('Please input percentage.');
-        if (percentage) {
-          const response: any = await this._api.post(
-            'user',
-            { userId, percentage },
-            '/set-coms-pick3'
-          );
-          await this.getDownlines();
-          alert('Success');
-        }
-      } catch (e) {
-        alert(e ?? 'Something went wrong');
-      }
-    }
-    else if (typeCommission == 'gameending') {
-      try {
-        const percentage = prompt('Please input percentage.');
-        if (percentage) {
-          const response: any = await this._api.post(
-            'user',
-            { userId, percentage },
-            '/set-coms-game-ending'
-          );
-          await this.getDownlines();
-          alert('Success');
-        }
-      } catch (e) {
-        alert(e ?? 'Something went wrong');
-      }
-    }
-    else if (typeCommission == 'suertres') {
-      try {
-        const percentage = prompt('Please input percentage.');
-        if (percentage) {
-          const response: any = await this._api.post(
-            'user',
-            { userId, percentage },
-            '/set-coms-suertres'
-          );
-          await this.getDownlines();
-          alert('Success');
-        }
-      } catch (e) {
-        alert(e ?? 'Something went wrong');
-      }
+    try {
+      await this._api.post('user', { userId, percentage }, endpoint);
+      await this.getDownlines(this.pageNumber);
+      alert('Success');
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
     }
   }
-
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
 }

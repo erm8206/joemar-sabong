@@ -65,31 +65,21 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Username</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
-                                    <th>Created At</th>
-                                    <th>Action</th>
+                                    <th>Date Log</th>
+                                    <th>Fight Event</th>
+                                    <th>Fight #</th>
+                                    <th>Bet Amount</th>
+                                    <th>Received Comms</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let user of history; let i = index">
                                     <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-                                    <td>{{ user.username }}</td>
-                                    <td>{{ user.type }}</td>
-                                    <td>
-                                        <span class="badge bg-warning">
-                                            {{ user.status }}
-                                        </span>
-                                    </td>
                                     <td>{{ user.createdAt | date: 'medium' }}</td>
-                                    <td>
-                                        <button (click)="approveUser(user.id)" [disabled]="isLoading"
-                                            class="btn btn-success btn-sm">
-                                            <i class="fa fa-check"></i>
-                                            Approve
-                                        </button>
-                                    </td>
+                                    <td>{{user?.fightEvent}}</td>
+                                    <td>{{user?.fightnumber}}</td>
+                                    <td>{{user?.betAmount}}</td>
+                                    <td>{{user?.amount}}</td>
                                 </tr>
                             </tbody>
                         </table>

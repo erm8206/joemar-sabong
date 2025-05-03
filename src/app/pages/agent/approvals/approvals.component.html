@@ -17,53 +17,39 @@
         </div>
     </div>
 </div>
-<!-- Container-fluid starts-->
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header" style="font-size: 13px">
                     <i class="fa fa-align-justify"></i>
-                    LIST OF
-                    <strong>{{ (getUser() | async)?.username?.toUpperCase() }}</strong>
-                    INCORPORATOR AGENTS WAITING FOR APPROVAL
+                    LIST OF <strong>{{ (getUser() | async)?.username?.toUpperCase() }}</strong> INCORPORATOR AGENTS
+                    WAITING FOR APPROVAL
                 </div>
 
                 <div class="card-body">
-                    <!-- PAGE SIZE DROPDOWN -->
-
                     <div class="row mb-3">
                         <div class="col-md-6 text-end">
-                            <div>
-                                <select class="form-select" id="pageSize" [value]="pageSize"
-                                    (change)="onPageSizeChange($event)">
-                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
-                                </select>
-                            </div>
+                            <select class="form-select" [value]="pageSize" (change)="onPageSizeChange($event)">
+                                <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search transactions...">
+                                <input type="text" class="form-control" placeholder="Search user..."
+                                    [(ngModel)]="search" (ngModelChange)="onSearchInputChange()" />
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
-
                     </div>
 
-
-                    <!-- Loading spinner, visible when 'isLoading' is true -->
                     <div *ngIf="isLoading" class="loading-container">
                         <div class="spinner"></div>
                     </div>
 
-                    <!-- TABLE -->
                     <div class="table-responsive">
-                        <!-- Loading spinner, visible when 'isLoading' is true -->
-                        <div *ngIf="isLoading" class="loading-container">
-                            <div class="spinner"></div>
-                        </div>
-                        <table *ngIf="!isLoading && users.length > 0" border="1" width="100%" cellpadding="8"
-                            class="table table-bordered table-hover">
+                        <table *ngIf="!isLoading && users.length > 0" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -79,17 +65,12 @@
                                     <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
                                     <td>{{ user.username }}</td>
                                     <td>{{ user.type }}</td>
-                                    <td>
-                                        <span class="badge bg-warning">
-                                            {{ user.status }}
-                                        </span>
-                                    </td>
+                                    <td><span class="badge bg-warning">{{ user.status }}</span></td>
                                     <td>{{ user.createdAt | date: 'medium' }}</td>
                                     <td>
                                         <button (click)="approveUser(user.id)" [disabled]="isLoading"
                                             class="btn btn-success btn-sm">
-                                            <i class="fa fa-check"></i>
-                                            Approve
+                                            <i class="fa fa-check"></i> Approve
                                         </button>
                                     </td>
                                 </tr>
@@ -97,64 +78,39 @@
                         </table>
                     </div>
 
-                    <!-- NO USERS -->
-                    <div *ngIf="!isLoading && users.length === 0">
-                        No users found.
+                    <div *ngIf="!isLoading && users.length === 0" style="text-align: center;padding: 20px;">
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                        </div>
+                        <span>No users found.</span>
                     </div>
-
                 </div>
 
                 <div class="card-footer">
                     <div class="pagination-footer">
-
-
-                        <!-- ENTRIES INFO -->
                         <div *ngIf="!isLoading && users.length > 0">
-                            Showing
-                            {{ (pageNumber - 1) * pageSize + 1 }}
-                            to
-                            {{ getShowingRangeEnd() }}
-                            of
-                            {{ totalItems }}
-                            entries
+                            Showing {{ (pageNumber - 1) * pageSize + 1 }} to {{ getShowingRangeEnd() }} of {{ totalItems
+                            }} entries
                         </div>
 
-                        <!-- PAGINATION CONTROLS -->
-                        <div *ngIf="totalPages > 1">
-                            <div class="pagination-controls"
-                                style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                                <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber - 1)"
-                                    [disabled]="pageNumber === 1">
-                                    Previous
-                                </button>
+                        <div *ngIf="totalPages > 1" class="pagination-controls"
+                            style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber - 1)"
+                                [disabled]="pageNumber === 1">Previous</button>
 
-                                <select class="form-select form-select-sm" style="width: auto;" [ngModel]="pageNumber"
-                                    (ngModelChange)="goToPage($event)">
-                                    <option *ngFor="let i of [].constructor(totalPages); let page = index"
-                                        [value]="page + 1">
-                                        Page {{ page + 1 }}
-                                    </option>
-                                </select>
+                            <select class="form-select form-select-sm" style="width: auto;" [ngModel]="pageNumber"
+                                (ngModelChange)="goToPage($event)">
+                                <option *ngFor="let i of [].constructor(totalPages); let page = index"
+                                    [value]="page + 1">Page {{ page + 1 }}</option>
+                            </select>
 
-                                <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber + 1)"
-                                    [disabled]="pageNumber === totalPages">
-                                    Next
-                                </button>
-
-                                <button class="btn btn-sm btn-outline-secondary" (click)="goToPage(totalPages)"
-                                    [disabled]="pageNumber === totalPages">
-                                    Last
-                                </button>
-                            </div>
-
+                            <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber + 1)"
+                                [disabled]="pageNumber === totalPages">Next</button>
+                            <button class="btn btn-sm btn-outline-secondary" (click)="goToPage(totalPages)"
+                                [disabled]="pageNumber === totalPages">Last</button>
                         </div>
-
-
-
                     </div>
-
                 </div>
-
 
             </div>
         </div>

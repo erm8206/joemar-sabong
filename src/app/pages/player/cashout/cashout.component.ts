@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
@@ -11,15 +11,18 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
   styleUrls: ['./cashout.component.scss'],
 })
 export class CashoutComponent implements OnInit {
-  // Pagination data from response
   totalCount: number = 0;
   pageNumber: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
 
+  search: string = '';
+  private searchSubject: Subject<string> = new Subject<string>();
+
   cashouts: any = [];
   isLoading: boolean = false;
+
   constructor(
     private _sub: UserSub,
     private _api: ApiService,
@@ -27,22 +30,33 @@ export class CashoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-
-    this.getForApprovals();
+    this.getCashouts(this.pageNumber);
     this._sub.getUserDetail();
+
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(() => {
+        this.getCashouts(this.pageNumber);
+      });
   }
 
-  async getForApprovals(page: number = 1): Promise<void> {
+  onSearchInputChange(): void {
+    this.searchSubject.next(this.search);
+  }
+
+  async getCashouts(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {
-      const res: any = await this._api.get('user', `/cashouts?pageNumber=${page}&pageSize=${this.pageSize}`);
+      const res: any = await this._api.get(
+        'user',
+        `/cashouts?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.search)}`
+      );
       this.cashouts = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
       this.pageSize = res.pageSize;
       this.totalPages = res.totalPages;
-      this.totalItems = res.totalCount
+      this.totalItems = res.totalCount;
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -52,20 +66,18 @@ export class CashoutComponent implements OnInit {
 
   onPageSizeChange(event: any): void {
     this.pageSize = +event.target.value;
-    this.pageNumber = 1;
-    this.getForApprovals();
+    this.getCashouts(this.pageNumber);
   }
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.getForApprovals(page);
+      this.getCashouts(page);
     }
   }
 
   getShowingRangeEnd(): number {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
-
 
   async approveUser(userId: string) {
     this.isLoading = true;
@@ -75,31 +87,30 @@ export class CashoutComponent implements OnInit {
       return;
     }
     try {
-
       const response: any = await this._api.post(
         'user',
         { userId },
         '/approve'
       );
-      await this.getForApprovals();
+      await this.getCashouts(this.pageNumber);
       alert('Success ! User Approved.');
-      this.isLoading = false;
     } catch (e) {
-      this.isLoading = false;
       alert(e ?? 'Server Error');
+    } finally {
+      this.isLoading = false;
     }
   }
 
   async rejectUser(userId: string) {
+    this.isLoading = true;
     try {
-      this.isLoading = true;
       const response: any = await this._api.post('user', { userId }, '/reject');
-      await this.getForApprovals();
-      this.isLoading = false;
+      await this.getCashouts(this.pageNumber);
       alert('Success ! User Rejected');
     } catch (e) {
-      this.isLoading = false;
       alert(e ?? 'Server Error');
+    } finally {
+      this.isLoading = false;
     }
   }
 

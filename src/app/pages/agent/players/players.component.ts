@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { debounceTime, Subject, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserModel } from 'src/app/services/models/user.model';
@@ -12,7 +12,6 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
   styleUrls: ['./players.component.scss'],
 })
 export class PlayersComponent implements OnInit {
-  // Pagination data from response
   totalCount: number = 0;
   pageNumber: number = 1;
   pageSize: number = 10;
@@ -22,14 +21,15 @@ export class PlayersComponent implements OnInit {
   users: any = [];
   isLoading: boolean = false;
   user: UserModel = {};
-  keyword: string = ""
+  search: string = '';
+  searchSubject: Subject<string> = new Subject<string>();
 
   constructor(
     private _api: ApiService,
     private _sub: UserSub,
     private _jwt: JwtService,
     private _router: Router,
-    private _userSub: UserSub,
+    private _userSub: UserSub
   ) {
     this._jwt.getDecodedToken().subscribe((data) => {
       this.user.type = data?.type;
@@ -37,21 +37,28 @@ export class PlayersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
+      this.pageNumber = 1;
+      this.getDownlines();
+    });
 
     this.getDownlines();
   }
 
-  async getDownlines(page: number = 1): Promise<void> {
+  async getDownlines(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const res: any = await this._api.get('user', `/player/downlines?pageNumber=${page}&pageSize=${this.pageSize}`);
+      const encodedSearch = encodeURIComponent(this.search.trim());
+      const res: any = await this._api.get(
+        'user',
+        `/player/downlines?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodedSearch}`
+      );
       this.users = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
       this.pageSize = res.pageSize;
       this.totalPages = res.totalPages;
-      this.totalItems = res.totalCount
+      this.totalItems = res.totalCount;
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -67,12 +74,17 @@ export class PlayersComponent implements OnInit {
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.getDownlines(page);
+      this.pageNumber = page;
+      this.getDownlines();
     }
   }
 
   getShowingRangeEnd(): number {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
+  }
+
+  onSearchInputChange(): void {
+    this.searchSubject.next(this.search);
   }
 
   async deactivateUser(userId: string) {
@@ -83,48 +95,35 @@ export class PlayersComponent implements OnInit {
       return;
     }
     try {
-      const response: any = await this._api.post(
-        'user',
-        { userId },
-        '/deactivate'
-      );
-      await this.getDownlines();
+      await this._api.post('user', { userId }, '/deactivate');
+      await this.getDownlines(this.pageNumber);
       alert('Success ! Player has been Deactivated');
-      this.isLoading = false;
     } catch (e) {
       alert(e ?? 'Server Error');
+    } finally {
       this.isLoading = false;
     }
   }
 
   async load(user: string) {
     this.isLoading = true;
-
     const amount = prompt('Please input amount.');
 
     if (amount) {
       try {
-        const response: any = await this._api.post(
-          'points',
-          { 'amount': amount, 'user': user },
-          '/deposit'
-        );
+        await this._api.post('points', { amount, user }, '/deposit');
         alert('Success ! Points has been loaded');
-        this.isLoading = false;
         this._userSub.getUserDetail();
-        this.getDownlines();
+        await this.getDownlines(this.pageNumber);
       } catch (e) {
         alert(e ?? 'Server Error');
+      } finally {
         this.isLoading = false;
       }
-    }
-    else {
+    } else {
       this.isLoading = false;
     }
-
-
   }
-
 
   async withdraw(user: string) {
     this.isLoading = true;
@@ -132,49 +131,34 @@ export class PlayersComponent implements OnInit {
 
     if (amount) {
       try {
-        const response: any = await this._api.post(
-          'points',
-          { 'amount': amount, 'user': user },
-          '/withdraw'
-        );
+        await this._api.post('points', { amount, user }, '/withdraw');
         alert('Success ! Points has been withdrawn');
-        this.isLoading = false;
         this._userSub.getUserDetail();
-        this.getDownlines();
+        await this.getDownlines(this.pageNumber);
       } catch (e) {
         alert(e ?? 'Server Error');
+      } finally {
         this.isLoading = false;
       }
-    }
-    else {
+    } else {
       this.isLoading = false;
     }
-
-  }
-
-
-  public getUser(): Observable<UserModel> {
-    return this._sub.getUser();
   }
 
   async setAsAgent(userId: string) {
-
     const state = confirm(`Convert player to ${this.getType()} ?`);
     if (!state) {
       return;
     }
     try {
-      const response: any = await this._api.post(
-        'user',
-        { userId },
-        '/set-as-agent'
-      );
-      await this.getDownlines();
+      await this._api.post('user', { userId }, '/set-as-agent');
+      await this.getDownlines(this.pageNumber);
       alert(`Success ! Player has been promoted to ${this.getType()}.`);
     } catch (e) {
       alert(e ?? 'Server Error. Please Contact Support');
     }
   }
+
   getType(): string {
     switch (this.user.type) {
       case 'agent1':
@@ -188,5 +172,9 @@ export class PlayersComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  public getUser(): Observable<UserModel> {
+    return this._sub.getUser();
   }
 }

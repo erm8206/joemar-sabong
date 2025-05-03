@@ -35,13 +35,14 @@
                             <div>
                                 <select class="form-select" id="pageSize" [value]="pageSize"
                                     (change)="onPageSizeChange($event)">
-                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search transactions...">
+                                <input type="text" class="form-control" placeholder="Transacted by or activity..."
+                                    [(ngModel)]="search" (ngModelChange)="onSearchInputChange()" />
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
@@ -173,8 +174,11 @@
                     </div>
 
                     <!-- NO RECORDS -->
-                    <div *ngIf="!isLoading && walletlogs.length === 0">
-                        No record(s) found.
+                    <div *ngIf="!isLoading && walletlogs.length === 0" style="text-align: center;padding: 20px;">
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                        </div>
+                        <span>No record(s) found.</span>
                     </div>
                 </div>
                 <div class="card-footer">
