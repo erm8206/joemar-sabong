@@ -65,7 +65,7 @@
                                             <div>
                                                 <select class="form-select" id="pageSize" [value]="pageSize"
                                                     (change)="onPageSizeChange($event)">
-                                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{
+                                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{
                                                         size }}</option>
                                                 </select>
                                             </div>
@@ -73,7 +73,8 @@
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <input type="text" class="form-control"
-                                                    placeholder="Search transactions...">
+                                                    placeholder="Search transactions..." [(ngModel)]="search"
+                                                    (ngModelChange)="onSearchInputChange()" />
                                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                                             </div>
                                         </div>
@@ -100,6 +101,7 @@
                                                     <th>Created At</th>
                                                     <th>Fight Event</th>
                                                     <th>Fight Number</th>
+                                                    <th>Username</th>
                                                     <th>Choice</th>
                                                     <th>Amount</th>
                                                     <th>Result</th>
@@ -115,6 +117,7 @@
                                                     <td>{{ user.createdAt | date: 'medium' }}</td>
                                                     <td>{{ user?.fightEvent?.name }}</td>
                                                     <td>{{ user?.fightNumber?.number }}</td>
+                                                    <td>{{ user?.userId?.username }}</td>
                                                     <td>{{ user?.choice }}</td>
                                                     <td>{{ user?.amount}}
                                                     <td>{{ user?.result }}</td>
@@ -141,8 +144,12 @@
                                     </div>
 
                                     <!-- NO USERS -->
-                                    <div *ngIf="!isLoading && betHistory.length === 0">
-                                        No Bets found.
+                                    <div *ngIf="!isLoading && betHistory.length === 0"
+                                        style="text-align: center;padding: 20px;">
+                                        <div>
+                                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                                        </div>
+                                        <span>No data found.</span>
                                     </div>
 
                                 </div>
@@ -195,10 +202,7 @@
 
                                         </div>
 
-
-
                                     </div>
-
                                 </div>
 
 

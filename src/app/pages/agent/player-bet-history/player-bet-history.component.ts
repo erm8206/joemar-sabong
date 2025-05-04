@@ -1,15 +1,14 @@
-
-
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { fixDecimalPlaces } from 'src/app/services/helper';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+
 @Component({
   selector: 'app-player-bet-history',
   templateUrl: './player-bet-history.component.html',
@@ -20,17 +19,18 @@ export class PlayerBetHistoryComponent implements OnInit {
   playerName: string = '';
   gameType: string = '';
 
-
-  isLoading: boolean = false
-  // Pagination data from response
+  isLoading: boolean = false;
   totalCount: number = 0;
   pageNumber: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
+  search: string = '';
+  private searchSubject: Subject<string> = new Subject<string>();
 
   history: any = [];
   announcement: string = '';
+
   constructor(
     private _api: ApiService,
     private _userSub: UserSub,
@@ -42,20 +42,30 @@ export class PlayerBetHistoryComponent implements OnInit {
     this.playerId = this._route.snapshot.paramMap.get('playerId') || '';
     this.playerName = this._route.snapshot.queryParamMap.get('name') || '';
     this.gameType = this._route.snapshot.queryParamMap.get('type') || '';
-
   }
 
   ngOnInit(): void {
     this.getBetSummary();
-
     this.getAnnouncement();
+
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(() => {
+        this.getBetSummary(this.pageNumber);
+      });
   }
+
+  onSearchInputChange(): void {
+    this.searchSubject.next(this.search);
+  }
+
   async getAnnouncement() {
     try {
       const response: any = await this._api.get('user', '/announcement');
       this.announcement = response?.value || '';
     } catch (e) { }
   }
+
   getFloorValue(value: number) {
     return Math.floor(value);
   }
@@ -65,16 +75,14 @@ export class PlayerBetHistoryComponent implements OnInit {
     try {
       const res: any = await this._api.get(
         'user',
-        `/sabong-bet-history/${this.playerId}?pageNumber=${page}&pageSize=${this.pageSize}`
+        `/sabong-bet-history/${this.playerId}?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.search)}`
       );
-      console.log(res.records)
       this.history = res.records;
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
       this.pageSize = res.pageSize;
       this.totalPages = res.totalPages;
       this.totalItems = res.totalCount;
-      this.isLoading = false;
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -84,8 +92,7 @@ export class PlayerBetHistoryComponent implements OnInit {
 
   onPageSizeChange(event: any): void {
     this.pageSize = +event.target.value;
-    this.pageNumber = 1;
-    this.getBetSummary();
+    this.getBetSummary(this.pageNumber);
   }
 
   goToPage(page: number): void {
@@ -97,12 +104,6 @@ export class PlayerBetHistoryComponent implements OnInit {
   getShowingRangeEnd(): number {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
-
-
-
-
-
-
 
   logout() {
     this._jwt.removeToken();

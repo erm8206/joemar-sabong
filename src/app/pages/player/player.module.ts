@@ -14,7 +14,8 @@ import { WalletLogComponent } from './wallet-log/wallet-log.component';
 import { BetsComponent } from './bets/bets.component';
 import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
-import { SharedModule } from '../shared/shared.module';  // Import the SharedModule
+import { SharedModule } from '../shared/shared.module';
+import { CasinoGamesComponent } from './casino-games/casino-games.component';  // Import the SharedModule
 @NgModule({
   declarations: [
     HomeComponent,
@@ -27,7 +28,8 @@ import { SharedModule } from '../shared/shared.module';  // Import the SharedMod
     WalletLogComponent,
     BetsComponent,
     CashinComponent,
-    CashoutComponent
+    CashoutComponent,
+    CasinoGamesComponent
   ],
   imports: [
     CommonModule,

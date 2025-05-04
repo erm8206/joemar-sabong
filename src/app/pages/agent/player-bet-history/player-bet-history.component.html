@@ -35,15 +35,19 @@
                             <div>
                                 <select class="form-select" id="pageSize" [value]="pageSize"
                                     (change)="onPageSizeChange($event)">
-                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search transactions...">
-                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search transactions..."
+                                    [(ngModel)]="search" (input)="onSearchInputChange()" />
+                                <span class="input-group-text">
+                                    <i class="fa fa-search"></i>
+                                </span>
                             </div>
+
                         </div>
 
                     </div>
@@ -87,11 +91,13 @@
                                     <td>{{ user?.amount}}
                                     <td>{{ user?.result }}</td>
                                     <td>
-                                        <span class="badge badge-success" *ngIf="user?.status == 'win'"> {{ user?.status
+                                        <span class="badge badge-info" *ngIf="user?.status == 'win'"> {{ user?.status
                                             }}</span>
                                         <span class="badge badge-danger" *ngIf="user?.status == 'lose'"> {{ user?.status
                                             }}</span>
                                         <span class="badge badge-secondary" *ngIf="user?.status == 'cancelled'"> {{
+                                            user?.status }}</span>
+                                        <span class="badge badge-success" *ngIf="user?.status == 'draw'"> {{
                                             user?.status }}</span>
 
                                     </td>
@@ -106,8 +112,11 @@
                     </div>
 
                     <!-- NO USERS -->
-                    <div *ngIf="!isLoading && history.length === 0">
-                        No Data found.
+                    <div *ngIf="!isLoading && history.length === 0" style="text-align: center;padding: 20px;">
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                        </div>
+                        <span>No users found.</span>
                     </div>
 
                 </div>

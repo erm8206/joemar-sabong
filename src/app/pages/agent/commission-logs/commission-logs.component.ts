@@ -3,23 +3,26 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
-import { environment } from 'src/environments/environment';
-import { DatePipe } from '@angular/common';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
 @Component({
   selector: 'app-commission-logs',
   templateUrl: './commission-logs.component.html',
   styleUrls: ['./commission-logs.component.scss'],
 })
 export class CommissionLogsComponent implements OnInit {
-  // Pagination data from response
   totalCount: number = 0;
   pageNumber: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
 
   isLoading: boolean = false;
-  history: any = [];
+  history: any[] = [];
+  search: string = '';
+  searchSubject: Subject<string> = new Subject<string>();
+
   constructor(
     private _api: ApiService,
     private _sub: UserSub,
@@ -30,28 +33,38 @@ export class CommissionLogsComponent implements OnInit {
   ngOnInit(): void {
     this.getCommissions();
 
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(() => {
+        this.pageNumber = 1;
+        this.getCommissions();
+      });
+  }
 
-
+  onSearchInputChange(): void {
+    this.searchSubject.next(this.search);
   }
 
   async getCommissions(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {
-      const res: any = await this._api.get('points', `/commission?pageNumber=${page}&pageSize=${this.pageSize}`);
+      const res: any = await this._api.get(
+        'points',
+        `/commission?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.search)}`
+      );
       this.history = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
       this.pageSize = res.pageSize;
       this.totalPages = res.totalPages;
       this.totalItems = res.totalCount;
-      this.isLoading = false;
     } catch (err) {
       console.error('Error fetching data:', err);
-      this.isLoading = false;
     } finally {
       this.isLoading = false;
     }
   }
+
   onPageSizeChange(event: any): void {
     this.pageSize = +event.target.value;
     this.pageNumber = 1;

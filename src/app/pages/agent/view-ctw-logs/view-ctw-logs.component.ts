@@ -12,7 +12,7 @@ export class ViewCtwLogsComponent implements OnInit {
   // Pagination data from response
   totalCount: number = 0;
   pageNumber: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
 

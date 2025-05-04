@@ -41,9 +41,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search transactions...">
+                                <input type="text" class="form-control" placeholder="Search transactions..."
+                                    [(ngModel)]="search" (ngModelChange)="onSearchInputChange()" />
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
+
                         </div>
 
                     </div>
@@ -67,6 +69,7 @@
                                     <th>#</th>
                                     <th>Date Log</th>
                                     <th>Fight Event</th>
+                                    <th>Player</th>
                                     <th>Fight #</th>
                                     <th>Bet Amount</th>
                                     <th>Received Comms</th>
@@ -76,8 +79,10 @@
                                 <tr *ngFor="let user of history; let i = index">
                                     <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
                                     <td>{{ user.createdAt | date: 'medium' }}</td>
-                                    <td>{{user?.fightEvent}}</td>
-                                    <td>{{user?.fightnumber}}</td>
+                                    <td>{{user?.fightEvent?.name}}</td>
+                                    <td>{{user?.playerId?.username}}</td>
+                                    <td>{{user?.fightnumber?.number}}</td>
+
                                     <td>{{user?.betAmount}}</td>
                                     <td>{{user?.amount}}</td>
                                 </tr>

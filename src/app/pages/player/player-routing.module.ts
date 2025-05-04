@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component'; // ✅ thi
 import { BetsComponent } from './bets/bets.component';
 import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
+import { CasinoGamesComponent } from './casino-games/casino-games.component';  // Import the SharedModule
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'home', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
     { path: 'bets-history', component: BetsComponent },
     { path: 'cashin', component: CashinComponent },
     { path: 'cashout', component: CashoutComponent },
+    { path: 'casino-games', component: CasinoGamesComponent },
 
 
 ];
