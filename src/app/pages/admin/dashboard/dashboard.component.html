@@ -77,6 +77,83 @@
 
                         <div class="col-6">
                             <div class="card small-widget">
+                                <div class="card-body primary">
+                                    <span class="f-light">Current 2D Commission ({{
+                                        (getUser() | async)?.pick2Percentage
+                                        }}
+                                        %)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>₱{{
+                                            (getAccount() | async)?.pick2Commission | number : "1.2"
+                                            }}</h4>
+                                        <button class="btn btn-sm text-danger"
+                                            (click)="updatePlasada('pick2')">Update</button>
+                                        <button class="btn btn-sm text-success"
+                                            (click)="withdrawComs('sabong')">Withdraw</button>
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <div class="card small-widget">
+                                <div class="card-body primary">
+                                    <span class="f-light">Current Pick3 Commission ({{
+                                        (getUser() | async)?.pick3Percentage
+                                        }}
+                                        %)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>₱{{
+                                            (getAccount() | async)?.pick3Commission | number : "1.2"
+                                            }}</h4>
+                                        <button class="btn btn-sm text-danger"
+                                            (click)="updatePlasada('pick3')">Update</button>
+                                        <button class="btn btn-sm text-success"
+                                            (click)="withdrawComs('sabong')">Withdraw</button>
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <div class="card small-widget">
+                                <div class="card-body primary">
+                                    <span class="f-light">Current 3D Commission ({{
+                                        (getUser() | async)?.suertresPercentage
+                                        }}
+                                        %)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>₱{{
+                                            (getAccount() | async)?.suertresCommission | number : "1.2"
+                                            }}</h4>
+                                        <button class="btn btn-sm text-danger"
+                                            (click)="updatePlasada('suertres')">Update</button>
+                                        <button class="btn btn-sm text-success"
+                                            (click)="withdrawComs('sabong')">Withdraw</button>
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="card small-widget">
                                 <div class="card-body success">
                                     <span class="f-light">Decimal Value</span>
                                     <div class="d-flex align-items-end gap-1">

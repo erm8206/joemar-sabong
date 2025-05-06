@@ -1,1 +1,446 @@
-<p>pick3 works!</p>
+<div class="container-fluid">
+    <div class="page-title" style="margin-bottom: 0px!important;">
+        <div class="row">
+            <div class="col-sm-6">
+                <div style="display: flex;justify-content: flex-start;">
+                    <h3 style="margin-right: 10px;">Pick3 Events</h3>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addArena">
+                        <i class="fa fa-plus"></i> Create Event
+                    </button>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
+                            </svg></a></li>
+                    <li class="breadcrumb-item">Pick3 Lotto</li>
+                    <li class="breadcrumb-item active">Pick3 Events</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="page-title" style="    background-color: rgb(45 49 62);;">
+
+        <div style="display: flex;justify-content: flex-start;flex-wrap: wrap;" class="mt-2">
+            <div class="form-group" style="margin-right: 10px;">
+                <input name="from" style="color: aliceblue;" type="date" class="form-control" [(ngModel)]="from" />
+            </div>
+            <div class="form-group" style="margin-right: 10px;">
+                <input type="date" style="color: aliceblue;" [(ngModel)]="to" class="form-control" />
+            </div>
+            <button class="btn btn-success btn-sm btn-block" (click)="getLottoEvents()">
+                Submit
+            </button>
+        </div>
+
+
+    </div>
+</div>
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header pb-0 card-no-border">
+                    <h5>Pick3 Draws</h5>
+                </div>
+
+                <div class="card-body">
+                    <!-- PAGE SIZE DROPDOWN -->
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 text-end">
+                            <div>
+                                <select class="form-select" id="pageSize" [value]="pageSize"
+                                    (change)="onPageSizeChange($event)">
+                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search users..."
+                                    [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Loading spinner, visible when 'isLoading' is true -->
+                    <div *ngIf="isLoading" class="loading-container">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <!-- TABLE -->
+                    <div class="table-responsive">
+                        <!-- Loading spinner, visible when 'isLoading' is true -->
+                        <div *ngIf="isLoading" class="loading-container">
+                            <div class="spinner"></div>
+                        </div>
+                        <table *ngIf="!isLoading && eventsLotto.length > 0" border="1" width="100%" cellpadding="8"
+                            class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Draw date and Time</th>
+                                    <th>Draw Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let event of eventsLotto; let i = index">
+                                    <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+                                    <td>{{ event.drawDate | date: 'medium' }}</td>
+                                    <td>{{ event.drawName }}</td>
+                                    <td>{{ event.status }}</td>
+                                    <td>
+                                        <button class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#editArena" (click)="editModelData(event)">
+                                            <i class="fa fa-plus"></i> Edit Event
+                                        </button>
+                                        <a class="btn btn-danger btn-sm" routerLink="/operator/pick3"
+                                            routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- NO USERS -->
+                    <div *ngIf="!isLoading && eventsLotto.length === 0" style="text-align: center;padding: 20px;">
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                        </div>
+                        <span>No users found.</span>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <div class="pagination-footer">
+
+
+                        <!-- ENTRIES INFO -->
+                        <div *ngIf="!isLoading && eventsLotto.length > 0">
+                            Showing
+                            {{ (pageNumber - 1) * pageSize + 1 }}
+                            to
+                            {{ getShowingRangeEnd() }}
+                            of
+                            {{ totalItems }}
+                            entries
+                        </div>
+
+                        <!-- PAGINATION CONTROLS -->
+                        <div *ngIf="totalPages > 1">
+                            <div class="pagination-controls"
+                                style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber - 1)"
+                                    [disabled]="pageNumber === 1">
+                                    Previous
+                                </button>
+
+                                <select class="form-select form-select-sm" style="width: auto;" [ngModel]="pageNumber"
+                                    (ngModelChange)="goToPage($event)">
+                                    <option *ngFor="let i of [].constructor(totalPages); let page = index"
+                                        [value]="page + 1">
+                                        Page {{ page + 1 }}
+                                    </option>
+                                </select>
+
+                                <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber + 1)"
+                                    [disabled]="pageNumber === totalPages">
+                                    Next
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-secondary" (click)="goToPage(totalPages)"
+                                    [disabled]="pageNumber === totalPages">
+                                    Last
+                                </button>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addArena" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add 2D event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Draw Date From</label>
+                                    <input class="form-control" type="date" [(ngModel)]="model.drawDateFrom"
+                                        (ngModelChange)="onDrawDateChange($event, 'from')" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Draw Date To</label>
+                                    <input class="form-control" type="date" [(ngModel)]="model.drawDateTo"
+                                        (ngModelChange)="onDrawDateChange($event, 'to')" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control" type="text" name="name" [(ngModel)]="model.drawName" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Draw Time</label>
+                                    <input class="form-control" type="time" [(ngModel)]="model.drawTime"
+                                        (ngModelChange)="onDrawTimeChange($event)" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Min no. of choices</label>
+                                    <input class="form-control" type="number" name="ballNumberMin"
+                                        [(ngModel)]="model.minChoice" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max no. of choices</label>
+                                    <input class="form-control" type="number" name="ballNumberMax"
+                                        [(ngModel)]="model.maxChoice" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Min Bet</label>
+                                    <input class="form-control" type="number" name="ballNumberMin"
+                                        [(ngModel)]="model.minBet" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max Bet</label>
+                                    <input class="form-control" type="number" name="ballNumberMax"
+                                        [(ngModel)]="model.maxBet" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Video Url</label>
+                                    <input class="form-control" type="text" name="videoUrl"
+                                        [(ngModel)]="model.videoUrl" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Result Url</label>
+                                    <input class="form-control" type="text" name="resultUrl"
+                                        [(ngModel)]="model.resultUrl" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" (click)="addEvent()">
+                    Add Event
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="editArena" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit 2D event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Draw Date From</label>
+                                    <input class="form-control" type="datetime-local"
+                                        [(ngModel)]="editModel.drawDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control" type="text" name="name"
+                                        [(ngModel)]="editModel.drawName" />
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Min no. of choices</label>
+                                    <input class="form-control" type="number" name="ballNumberMin"
+                                        [(ngModel)]="editModel.minChoice" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max no. of choices</label>
+                                    <input class="form-control" type="number" name="ballNumberMax"
+                                        [(ngModel)]="editModel.maxChoice" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Min Bet</label>
+                                    <input class="form-control" type="number" name="ballNumberMin"
+                                        [(ngModel)]="editModel.minBet" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max Bet</label>
+                                    <input class="form-control" type="number" name="ballNumberMax"
+                                        [(ngModel)]="editModel.maxBet" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Video Url</label>
+                                    <input class="form-control" type="text" name="videoUrl"
+                                        [(ngModel)]="editModel.videoUrl" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Result Url</label>
+                                    <input class="form-control" type="text" name="resultUrl"
+                                        [(ngModel)]="editModel.resultUrl" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" (click)="editEvent()">
+                    Edit Event
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

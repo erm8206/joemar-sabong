@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Lotto3dComponent } from './lotto3d.component';
+import { Dashboard2dComponent } from './dashboard2d.component';
 
-describe('Lotto3dComponent', () => {
-  let component: Lotto3dComponent;
-  let fixture: ComponentFixture<Lotto3dComponent>;
+describe('Dashboard2dComponent', () => {
+  let component: Dashboard2dComponent;
+  let fixture: ComponentFixture<Dashboard2dComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ Lotto3dComponent ]
+      declarations: [Dashboard2dComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(Lotto3dComponent);
+    
+    fixture = TestBed.createComponent(Dashboard2dComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

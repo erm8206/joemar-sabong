@@ -93,27 +93,34 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     return this._sub.getUser();
   }
 
-  async setComs(userId: string, typeCommission: string) {
+  async setComs(userId: string,) {
+    const percentage = prompt('Please input percentage.');
+    if (!percentage) return;
+
+    try {
+      await this._api.post('user', { userId, percentage }, `/set-coms`);
+      await this.getDownlines(this.pageNumber);
+      alert('Success');
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
+    }
+  }
+  async setComsLotto(userId: string, type: string) {
     const percentage = prompt('Please input percentage.');
     if (!percentage) return;
 
     let endpoint = '';
 
-    switch (typeCommission) {
-      case 'sabong':
-        endpoint = '/set-coms';
-        break;
-      case 'ez2':
-        endpoint = '/set-coms-pick2';
+    switch (type) {
+      case 'pick2':
+        endpoint = '/set-coms-lotto';
         break;
       case 'pick3':
-        endpoint = '/set-coms-pick3';
+        endpoint = '/set-coms-lotto';
         break;
-      case 'gameending':
-        endpoint = '/set-coms-game-ending';
-        break;
+
       case 'suertres':
-        endpoint = '/set-coms-suertres';
+        endpoint = '/set-coms-lotto';
         break;
       default:
         alert('Invalid commission type.');
@@ -121,7 +128,7 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await this._api.post('user', { userId, percentage }, endpoint);
+      await this._api.post('user', { userId, percentage, type }, endpoint);
       await this.getDownlines(this.pageNumber);
       alert('Success');
     } catch (e) {

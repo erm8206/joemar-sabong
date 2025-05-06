@@ -1,0 +1,227 @@
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>{{event?.drawName}}-{{ event?.drawDate | date:'short' }}</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb">
+
+
+                    <li class="breadcrumb-item active">
+                        <span *ngIf="event?.status == 'open'" class="badge badge-info"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                        <span *ngIf="event?.status == 'close'" class="badge badge-danger"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                        <span *ngIf="event?.status == 'disbursing'" class="badge badge-primary"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                        <span *ngIf="event?.status == 'settled'" class="badge badge-success"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid starts-->
+<div class="container-fluid default-dashboard">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div
+                        style="position: relative; width: 100%; padding-top: 56.25%; border-radius: 15px; overflow: hidden;">
+                        <iframe src="https://www.youtube.com/embed/_Sv-KR2PU6g"
+                            title="WATCH: PCSO 9 PM Lotto Draw, September 18, 2024" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+
+            <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card widget-1">
+                            <div class="card-body">
+                                <div class="widget-content">
+                                    <div class="widget-round warning">
+                                        <div class="bg-round">
+                                            <svg>
+                                                <use href="../assets/svg/icon-sprite.svg#c-profit"> </use>
+                                            </svg>
+                                            <svg class="half-circle svg-fill">
+                                                <use href="../assets/svg/icon-sprite.svg#halfcircle"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4><span class="counter" data-target="45195">0</span></h4><span
+                                            class="f-light">TOTAL BETS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card widget-1">
+                            <div class="card-body">
+                                <div class="widget-content">
+                                    <div class="widget-round warning">
+                                        <div class="bg-round">
+                                            <svg>
+                                                <use href="../assets/svg/icon-sprite.svg#c-profit"> </use>
+                                            </svg>
+                                            <svg class="half-circle svg-fill">
+                                                <use href="../assets/svg/icon-sprite.svg#halfcircle"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4> <span class="counter" data-target="845">0</span></h4><span
+                                            class="f-light">TOTAL WIN</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card widget-1">
+                            <div class="card-body">
+                                <div class="widget-content">
+                                    <div class="widget-round warning">
+                                        <div class="bg-round">
+                                            <svg>
+                                                <use href="../assets/svg/icon-sprite.svg#c-profit"> </use>
+                                            </svg>
+                                            <svg class="half-circle svg-fill">
+                                                <use href="../assets/svg/icon-sprite.svg#halfcircle"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4> <span class="counter" data-target="80">0</span></h4><span
+                                            class="f-light">NO OF
+                                            TICKETS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CLOSE THE DRAW EVENT-->
+                    <div class="col-md-12" *ngIf="event?.status == 'open'">
+                        <button type="button" class="btn btn-danger" style="width: 100%;">Close Draw</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- sELECT NUMBERS AND (UDPATE OR CANCEL)-->
+            <div class="col-md-12"
+                *ngIf="event?.status == 'close' && event?.forResult && !event?.result && !event?.disbursed">
+                <div class="card">
+                    <div class="card-body pt-0">
+                        <div class="pick-number-container">
+                            <h4 class="text-center mb-4">Pick Number</h4>
+
+                            <div class="selected-numbers mb-3">
+                                <h6>Selected Numbers:</h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span *ngFor="let n of result; let i = index"
+                                        class="badge bg-info position-relative" style="font-size: 16px;">
+                                        {{ n }}
+                                        <button type="button"
+                                            class="btn-close btn-sm position-absolute top-0 end-0 me-1 mt-1"
+                                            aria-label="Remove" (click)="removeNumber(i)"></button>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="number-grid">
+                                <div class="number-row" *ngFor="let row of getRows(numberRange, itemsPerRow)">
+                                    <button *ngFor="let num of row" class="rounded-circle"
+                                        [ngClass]="result.includes(num) ? 'btn-purple selected' : 'btn-purple'"
+                                        [attr.data-number]="num" (click)="onNumberClick(num)">
+                                        {{ num }}
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <button type="button" class="btn btn-primary mb-2" style="width: 100%;">Update Result</button>
+                        <button type="button" class="btn btn-danger mb-2" style="width: 100%;"
+                            (click)="clearResult()">Clear</button>
+                        <button type="button" class="btn btn-secondary" style="width: 100%;">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- REVERT OR DISBURSE-->
+            <div class="col-md-12"
+                *ngIf="event?.status == 'close' && event?.forResult && event?.result && !event?.disbursed">
+                <div class="card">
+                    <div class="card-body pt-0">
+                        <div class="pick-number-container">
+                            <h4 class="text-center mb-4">Selected Numbers</h4>
+
+                            <div class="selected-numbers mb-3">
+                                <h6>Selected Numbers:</h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span *ngFor="let n of result; let i = index"
+                                        class="badge bg-info position-relative" style="font-size: 16px;">
+                                        {{ n }}
+
+                                    </span>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                        <button type="button" class="btn btn-info mb-2" style="width: 100%;">Revert</button>
+                        <button type="button" class="btn btn-success" style="width: 100%;">Disburse</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- sTILL DISBURSING-->
+            <div class="col-md-12" *ngIf="event?.status == 'disbursing'">
+                <div class="card">
+                    <div class="card-body ">
+                        <h3 style="text-align: center;">Still disbursing please wait...</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTLED-->
+            <div class="col-md-12" *ngIf="event?.status == 'settled' && event?.disbursed">
+                <div class="card">
+                    <div class="card-body ">
+                        <h3 style="text-align: center;" class="mb-5">Result</h3>
+                        <div style="display: flex;justify-content: center;flex-wrap: wrap;">
+                            <button class="btn btn-purple rounded-circle resultLabel">1</button>
+                            <button class="btn btn-purple rounded-circle resultLabel">2</button>
+                            <button class="btn btn-purple rounded-circle resultLabel">1</button>
+                            <button class="btn btn-purple rounded-circle resultLabel">2</button>
+                            <button class="btn btn-purple rounded-circle resultLabel">1</button>
+                            <button class="btn btn-purple rounded-circle resultLabel">2</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

@@ -76,6 +76,10 @@ export class PlayerComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
+
+  public getUserInfo(): Observable<UserModel> {
+    return this._userSub.getUser();
+  }
   public getAccount(): Observable<UserAccount> {
     return this._userSub.getUserAccount();
   }

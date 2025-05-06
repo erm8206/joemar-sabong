@@ -30,6 +30,7 @@ export class ApiService {
     suertres: 'suertres',
     suertresbet: 'player-suertres',
     bets: 'bets',
+    eventslotto: 'events-lotto'
 
   };
 

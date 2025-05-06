@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Pick2Component } from './pick2.component';
+import { List2dComponent } from './list2d.component';
 
-describe('Pick2Component', () => {
-  let component: Pick2Component;
-  let fixture: ComponentFixture<Pick2Component>;
+describe('List2dComponent', () => {
+  let component: List2dComponent;
+  let fixture: ComponentFixture<List2dComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ Pick2Component ]
+      declarations: [List2dComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(Pick2Component);
+    
+    fixture = TestBed.createComponent(List2dComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

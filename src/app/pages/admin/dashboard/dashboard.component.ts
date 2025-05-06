@@ -36,14 +36,13 @@ export class DashboardComponent implements OnInit {
             },
             '/commission-config'
           );
-          await this.getCommissionConfig(commissionType);
           await this.getUserDetail();
           alert('Success !');
         }
       } catch (e) {
         alert(e ?? 'Server Error');
       }
-    } else if (commissionType == 'ez2') {
+    } else if (commissionType == 'pick2') {
       try {
         const result = prompt('Please input percentage.');
 
@@ -52,10 +51,10 @@ export class DashboardComponent implements OnInit {
             'admin',
             {
               percentage: result,
+              type: commissionType
             },
-            '/commission-config-pick2'
+            '/commission-config-lotto'
           );
-          await this.getCommissionConfig(commissionType);
           await this.getUserDetail();
           alert('Success !');
         }
@@ -71,27 +70,9 @@ export class DashboardComponent implements OnInit {
             'admin',
             {
               percentage: result,
+              type: commissionType
             },
-            '/commission-config-pick3'
-          );
-          await this.getCommissionConfig(commissionType);
-          await this.getUserDetail();
-          alert('Success !');
-        }
-      } catch (e) {
-        alert(e ?? 'Server Error');
-      }
-    } else if (commissionType == 'gameending') {
-      try {
-        const result = prompt('Please input percentage.');
-
-        if (result) {
-          const response: any = await this._api.post(
-            'admin',
-            {
-              percentage: result,
-            },
-            '/commission-config-game-ending'
+            '/commission-config-lotto'
           );
           await this.getCommissionConfig(commissionType);
           await this.getUserDetail();
@@ -110,8 +91,9 @@ export class DashboardComponent implements OnInit {
             'admin',
             {
               percentage: result,
+              type: commissionType
             },
-            '/commission-config-suertres'
+            '/commission-config-lotto'
           );
           await this.getCommissionConfig(commissionType);
           await this.getUserDetail();

@@ -15,7 +15,16 @@ import { BetsComponent } from './bets/bets.component';
 import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
 import { SharedModule } from '../shared/shared.module';
-import { CasinoGamesComponent } from './casino-games/casino-games.component';  // Import the SharedModule
+import { CasinoGamesComponent } from './casino-games/casino-games.component';
+import { List2dComponent } from './list2d/list2d.component';
+import { List3dComponent } from './list3d/list3d.component';
+import { Listpick3Component } from './listpick3/listpick3.component';
+import { Listlast2Component } from './listlast2/listlast2.component';
+import { List4dComponent } from './list4d/list4d.component';
+import { ListlottoComponent } from './listlotto/listlotto.component';
+import { Dashboard2dComponent } from './dashboard2d/dashboard2d.component';
+import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
+import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.component';  // Import the SharedModule
 @NgModule({
   declarations: [
     HomeComponent,
@@ -29,7 +38,16 @@ import { CasinoGamesComponent } from './casino-games/casino-games.component';  /
     BetsComponent,
     CashinComponent,
     CashoutComponent,
-    CasinoGamesComponent
+    CasinoGamesComponent,
+    List2dComponent,
+    List3dComponent,
+    Listpick3Component,
+    Listlast2Component,
+    List4dComponent,
+    ListlottoComponent,
+    Dashboard2dComponent,
+    Dashboard3dComponent,
+    Dashboardpick3Component
   ],
   imports: [
     CommonModule,

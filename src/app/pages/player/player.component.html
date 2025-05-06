@@ -79,13 +79,12 @@
                     <li class="profile-nav onhover-dropdown pe-0 py-0">
                         <div class="d-flex profile-media"><img class="b-r-10" src="assets/images/alex.png"
                                 style="width: 35px; height: 35px;" alt="profile">
-                            <div class="flex-grow-1"><span>Alex</span>
-                                <p class="mb-0">Developer <i class="middle fa-solid fa-angle-down"></i></p>
+                            <div class="flex-grow-1"><span>{{ (getUserInfo() | async)?.username}}</span>
+                                <p class="mb-0">{{ (getUserInfo() | async)?.type}} <i
+                                        class="middle fa-solid fa-angle-down"></i></p>
                             </div>
                         </div>
                         <ul class="profile-dropdown onhover-show-div">
-                            <!-- <li><a href="#"><i data-feather="user"></i><span>Account </span></a></li>
-                            <li><a href="#"><i data-feather="dollar-sign"></i><span>Add Funds</span></a></li> -->
                             <li><a (click)="logout()"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                         </ul>
                     </li>
@@ -176,6 +175,25 @@
                                 </ul>
                             </li>
 
+                            <li class="sidebar-main-title">
+                                <div>
+                                    <h6>Casino (Coming Soon)</h6>
+                                </div>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/casino-games"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#stroke-widget"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-widget"></use>
+                                    </svg><span>Casino</span>
+                                </a>
+                            </li>
+
 
 
                             <li class="sidebar-main-title">
@@ -184,9 +202,12 @@
                                 </div>
                             </li>
 
+
+
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="lotto/lotto.html">
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-lotto"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                     <svg class="stroke-icon">
                                         <use href="assets/svg/icon-sprite.svg#stroke-widget"></use>
                                     </svg>
@@ -198,7 +219,8 @@
 
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="2dlotto.html">
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-2d"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                     <svg class="stroke-icon">
                                         <use href="assets/svg/icon-sprite.svg#stroke-task"></use>
                                     </svg>
@@ -210,7 +232,8 @@
 
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="3dlotto.html">
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-3d"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                     <svg class="stroke-icon">
                                         <use href="assets/svg/icon-sprite.svg#stroke-task"></use>
                                     </svg>
@@ -222,7 +245,8 @@
 
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="pick3.html">
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-pick3"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                     <svg class="stroke-icon">
                                         <use href="assets/svg/icon-sprite.svg#stroke-task"></use>
                                     </svg>
