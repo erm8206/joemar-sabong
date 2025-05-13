@@ -87,4 +87,186 @@
     width: 60px;
     height: 60px;
 
+
+
+}
+
+
+/* Wrapper styling for layout */
+.dataTables_wrapper {
+    color: #eee;
+    font-size: 14px;
+}
+
+/* Align top controls: length + search */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: left;
+    margin-right: auto;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    margin-left: auto;
+}
+
+/* Input and select elements */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    background-color: #1e1e1e;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-left: 0.5rem;
+    font-size: 13px;
+}
+
+/* Pagination container */
+.dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+/* Pagination buttons */
+.dataTables_wrapper .paginate_button {
+    background-color: #2c2c2c !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    margin: 0 3px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: background-color 0.2s ease;
+
+    &.current {
+        background-color: #6c5ce7 !important;
+        font-weight: bold;
+    }
+
+    &:hover {
+        background-color: #555 !important;
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+/* Entries info */
+.dataTables_wrapper .dataTables_info {
+    color: #aaa;
+    margin-top: 0.8rem;
+    font-size: 13px;
+}
+
+/* Table styling (optional) */
+table.dataTable {
+    background-color: #1b1b1b;
+    color: #eee;
+
+    thead {
+        background-color: #2b2b2b;
+
+        th {
+            color: #fff;
+            border-bottom: 1px solid #444;
+        }
+    }
+
+    tbody tr:hover {
+        background-color: #2f2f2f;
+    }
+
+    td {
+        border-top: 1px solid #333;
+    }
+}
+
+
+/* Align the bottom info + pagination */
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    align-items: center;
+}
+
+.dataTables_wrapper .dataTables_info {
+    float: left;
+    color: #bbb;
+    padding: 0.5rem 0;
+    font-size: 14px;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    padding: 0.5rem 0;
+}
+
+/* Optional: spacing between info and pagination on small screens */
+@media (max-width: 768px) {
+
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 0.5rem;
+    }
+}
+
+
+/* Make sorting arrows visible and styled */
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc {
+    position: relative;
+    padding-right: 24px !important;
+    cursor: pointer;
+    color: #fff;
+    /* Header text */
+}
+
+/* Base arrow icon (inactive) */
+table.dataTable thead .sorting::after {
+    content: '⇅';
+    position: absolute;
+    right: 8px;
+    color: #777;
+    font-size: 12px;
+}
+
+/* Ascending arrow */
+table.dataTable thead .sorting_asc::after {
+    content: '↑';
+    position: absolute;
+    right: 8px;
+    color: #6c5ce7;
+    /* Purple highlight */
+    font-size: 14px;
+}
+
+/* Descending arrow */
+table.dataTable thead .sorting_desc::after {
+    content: '↓';
+    position: absolute;
+    right: 8px;
+    color: #6c5ce7;
+    font-size: 14px;
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .page-body .card:not(.email-body) .dataTables_wrapper .dataTables_paginate {
+    border: none !important;
+    padding: 0px;
 }

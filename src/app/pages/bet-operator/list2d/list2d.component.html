@@ -104,13 +104,14 @@
                                     <td>{{ event.drawName }}</td>
                                     <td>{{ event.status }}</td>
                                     <td>
-                                        <button class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#editArena" (click)="editModelData(event)">
+                                        <button class="btn btn-success btn-sm" style="margin-right: 10px;"
+                                            data-bs-toggle="modal" data-bs-target="#editArena"
+                                            (click)="editModelData(event)">
                                             <i class="fa fa-plus"></i> Edit Event
                                         </button>
-                                        <a class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             routerLink="/operator/dashboard-2d/{{event.id}}" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+                                            [routerLinkActiveOptions]="{ exact: true }">Dashboard</button>
                                     </td>
                                 </tr>
                             </tbody>

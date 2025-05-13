@@ -108,8 +108,8 @@
                                             data-bs-target="#editArena" (click)="editModelData(event)">
                                             <i class="fa fa-plus"></i> Edit Event
                                         </button>
-                                        <a class="btn btn-danger btn-sm" routerLink="/operator/dashboard-3d"
-                                            routerLinkActive="active"
+                                        <a class="btn btn-danger btn-sm"
+                                            routerLink="/operator/dashboard-3d/{{event?.id}}" routerLinkActive="active"
                                             [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
                                     </td>
                                 </tr>

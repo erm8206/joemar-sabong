@@ -1,3 +1,5 @@
+
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
@@ -7,12 +9,12 @@ import { UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 
 @Component({
-  selector: 'app-approvals',
-  templateUrl: './approvals.component.html',
-  styleUrls: ['./approvals.component.scss'],
+  selector: 'app-lotto-all-bets',
+  templateUrl: './lotto-all-bets.component.html',
+  styleUrl: './lotto-all-bets.component.scss'
 })
-export class ApprovalsComponent implements OnInit {
-  users: any[] = [];
+export class LottoAllBetsComponent implements OnInit {
+  allBets: any[] = [];
   isLoading: boolean = false;
 
   // Pagination
@@ -36,22 +38,22 @@ export class ApprovalsComponent implements OnInit {
     this.searchChanged.pipe(debounceTime(400)).subscribe((term) => {
       this.searchTerm = term;
       this.pageNumber = 1;
-      this.getForApprovals();
+      this.getAllBets();
     });
 
-    this.getForApprovals();
+    this.getAllBets();
   }
 
   onSearchChange(value: string): void {
     this.searchChanged.next(value);
   }
 
-  async getForApprovals(page: number = this.pageNumber): Promise<void> {
+  async getAllBets(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/for-approval?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/lotto-all-bets?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
       const res: any = await this._api.get('user', query);
-      this.users = res.records || [];
+      this.allBets = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
       this.pageSize = res.pageSize;
@@ -67,12 +69,12 @@ export class ApprovalsComponent implements OnInit {
   onPageSizeChange(event: any): void {
     this.pageSize = +event.target.value;
     this.pageNumber = 1;
-    this.getForApprovals();
+    this.getAllBets();
   }
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.getForApprovals(page);
+      this.getAllBets(page);
     }
   }
 
@@ -90,7 +92,7 @@ export class ApprovalsComponent implements OnInit {
 
     try {
       await this._api.post('user', { userId }, '/approve');
-      await this.getForApprovals(this.pageNumber);
+      await this.getAllBets(this.pageNumber);
       alert('Success! User Approved.');
     } catch (e) {
       alert(e ?? 'Server Error');
@@ -103,7 +105,7 @@ export class ApprovalsComponent implements OnInit {
     try {
       this.isLoading = true;
       await this._api.post('user', { userId }, '/reject');
-      await this.getForApprovals(this.pageNumber);
+      await this.getAllBets(this.pageNumber);
       alert('Success! User Rejected.');
     } catch (e) {
       alert(e ?? 'Server Error');
@@ -116,3 +118,4 @@ export class ApprovalsComponent implements OnInit {
     return this._sub.getUser();
   }
 }
+

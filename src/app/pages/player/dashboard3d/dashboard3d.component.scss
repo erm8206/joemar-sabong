@@ -1,0 +1,46 @@
+.badge {
+    position: relative;
+    padding-right: 1.5rem;
+    /* Space for the close button */
+}
+
+.btn-close {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.bet-type-selector {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.bet-type-option {
+    position: relative;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #a9a9a9;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.bet-type-option input[type="radio"] {
+    display: none;
+}
+
+.bet-type-option input[type="radio"]:checked+span {
+    color: #fff;
+    background-color: #6f42c1;
+    border-radius: 20px;
+    padding: 6px 16px;
+}
+
+.bet-type-option span {
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+}

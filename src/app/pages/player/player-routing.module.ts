@@ -20,6 +20,9 @@ import { ListlottoComponent } from './listlotto/listlotto.component';  // Import
 import { Dashboard2dComponent } from './dashboard2d/dashboard2d.component';
 import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
 import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.component';  // Import the SharedModule
+
+import { LottoReceiptsComponent } from './lotto-receipts/lotto-receipts.component';
+import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component';
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'home', component: HomeComponent },
@@ -45,9 +48,15 @@ const routes: Routes = [
 
     //e-lotto dashboard 
 
-    { path: 'dashboard-2d', component: Dashboard2dComponent },
-    { path: 'dashboard-3d', component: Dashboard3dComponent },
-    { path: 'dashboard-pick3', component: Dashboardpick3Component },
+    { path: 'dashboard-2d/:eventId', component: Dashboard2dComponent },
+    { path: 'dashboard-3d/:eventId', component: Dashboard3dComponent },
+    { path: 'dashboard-pick3/:eventId', component: Dashboardpick3Component },
+
+
+    //receipts and all bets LOTTO
+
+    { path: 'lotto-receipts', component: LottoReceiptsComponent },
+    { path: 'lotto-allbets', component: LottoAllBetsComponent },
 
 
 

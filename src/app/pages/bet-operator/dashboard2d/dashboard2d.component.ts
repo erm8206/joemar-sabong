@@ -17,10 +17,14 @@ export class Dashboard2dComponent {
   result: number[] = [];
   event: any = [];
 
+  isLoading: boolean = false;
+
   model: any = {
     minChoice: 0,
     maxChoice: 9
   };
+
+  betSummary: any = {};
 
   eventId: string = "";
   numberRange: number[] = [];
@@ -45,9 +49,106 @@ export class Dashboard2dComponent {
 
 
     this.getDrawDetails();
+    this.lottoBetSummary();
 
 
 
+  }
+
+  async updateEventResult() {
+    this.isLoading = true;
+
+    if (this.result.length < 2) {
+      alert("Please select 2 numbers!");
+      return;
+    }
+    try {
+      const state = confirm(`Update Result?`);
+      if (!state) {
+        return;
+      }
+      const response: any = await this._api.post(
+        'betopsnew',
+        { result: this.result },
+        `/lotto-event/update-result/${this.eventId}`
+      );
+      alert(response?.message);
+      this.getDrawDetails();
+      this.lottoBetSummary();
+
+      this.isLoading = false;
+    } catch (e: any) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+
+  async updateEventRevert() {
+    this.isLoading = true;
+    try {
+      const state = confirm(`Revert Event?`);
+      if (!state) {
+        return;
+      }
+      const response: any = await this._api.put(
+        'betopsnew',
+        {},
+        `/lotto-event/revert/${this.eventId}`
+      );
+      alert(response?.message);
+      this.getDrawDetails();
+      this.lottoBetSummary();
+
+      this.isLoading = false;
+    } catch (e: any) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+  async updateEventCancelled() {
+    this.isLoading = true;
+    try {
+      const state = confirm(`Cancel Event?`);
+      if (!state) {
+        return;
+      }
+      const response: any = await this._api.put(
+        'betopsnew',
+        {},
+        `/lotto-event/cancel/${this.eventId}`
+      );
+      alert(response?.message);
+      this.getDrawDetails();
+      this.lottoBetSummary();
+
+      this.isLoading = false;
+    } catch (e: any) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+
+  async updateEventClose() {
+    this.isLoading = true;
+    try {
+      const state = confirm(`Update Event CLOSE ?`);
+      if (!state) {
+        return;
+      }
+      const response: any = await this._api.put(
+        'betopsnew',
+        {},
+        `/lotto-event/close/${this.eventId}`
+      );
+      alert(response?.message);
+      this.getDrawDetails();
+      this.lottoBetSummary();
+
+      this.isLoading = false;
+    } catch (e: any) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
   }
 
   async getDrawDetails() {
@@ -73,6 +174,23 @@ export class Dashboard2dComponent {
       if (this.event.videoUrl) {
         this.getIframe(this.event.videoUrl);
       }
+
+    } catch (e) {
+      alert(e ?? 'Something went wrong!');
+    }
+  }
+
+
+  async lottoBetSummary() {
+
+    try {
+      const response: any = await this._api.get(
+        'betopsnew',
+        `/lotto-bets-summary/${this.eventId}`
+      );
+
+      this.betSummary = response;
+
 
     } catch (e) {
       alert(e ?? 'Something went wrong!');

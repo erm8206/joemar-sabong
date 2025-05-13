@@ -10,19 +10,18 @@ import { ApiService } from 'src/app/services/api.service';
 import { debounceTime } from 'rxjs/operators';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 
-
 @Component({
-  selector: 'app-list2d',
-  templateUrl: './list2d.component.html',
-  styleUrl: './list2d.component.scss'
+  selector: 'app-lotto-receipts',
+  templateUrl: './lotto-receipts.component.html',
+  styleUrl: './lotto-receipts.component.scss'
 })
-export class List2dComponent implements OnInit {
+export class LottoReceiptsComponent {
 
   from: string = '';
   to: string = '';
 
   isLoading: boolean = false;
-  eventsLotto: any = [];
+  receipts: any = [];
 
   constructor(
     private _api: ApiService,
@@ -35,7 +34,7 @@ export class List2dComponent implements OnInit {
     this.from = this.getToday();
     this.to = this.getToday();
 
-    this.getLottoEvents();
+    this.getLottoReceipts();
     this._userSub.getUserDetail();
 
 
@@ -52,13 +51,13 @@ export class List2dComponent implements OnInit {
   }
 
 
-  async getLottoEvents() {
+  async getLottoReceipts() {
     this.isLoading = true;
     try {
-      const query = `/events-lotto/pick2?startDate=${this.from}&endDate=${this.to}`;
-      const res: any = await this._api.get('playernew', query);
-      this.eventsLotto = res || [];
-      console.log(this.eventsLotto)
+      const query = `/lotto-bets/receipt?startDate=${this.from}&endDate=${this.to}`;
+      const res: any = await this._api.get('user', query);
+      this.receipts = res || [];
+      console.log(this.receipts)
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -70,6 +69,9 @@ export class List2dComponent implements OnInit {
     return today.toISOString().substring(0, 10); // returns format 'yyyy-MM-dd'
   }
 
+  getTotalWonAmount(bets: any[]): number {
+    return bets.reduce((sum, bet) => sum + (bet.wonAmount || 0), 0);
+  }
 
 
 }

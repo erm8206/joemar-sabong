@@ -25,6 +25,9 @@ import { ListlottoComponent } from './listlotto/listlotto.component';
 import { Dashboard2dComponent } from './dashboard2d/dashboard2d.component';
 import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
 import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.component';  // Import the SharedModule
+import { DataTablesModule } from 'angular-datatables';
+import { LottoReceiptsComponent } from './lotto-receipts/lotto-receipts.component';
+import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -47,14 +50,17 @@ import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.compone
     ListlottoComponent,
     Dashboard2dComponent,
     Dashboard3dComponent,
-    Dashboardpick3Component
+    Dashboardpick3Component,
+    LottoReceiptsComponent,
+    LottoAllBetsComponent
   ],
   imports: [
     CommonModule,
     PlayerRoutingModule,
     RouterModule, // ✅ this makes <router-outlet> work,
     FormsModule,
-    SharedModule
+    SharedModule,
+    DataTablesModule
   ]
 })
 export class PlayerModule { }

@@ -202,59 +202,82 @@
                                 </div>
                             </li>
 
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#stroke-reports"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-reports"></use>
+                                    </svg><span>E-Lotto Games</span></a>
+                                <ul class="sidebar-submenu">
+                                    <li><a><span>Lotto</span></a>
+                                    </li>
+                                    <li>
+                                        <i></i>
+                                        <a routerLink="/player/list-2d" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">
+                                            <span>2D Lotto</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <i></i>
+                                        <a routerLink="/player/list-3d" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">
+                                            <span>3D Lotto</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <i></i>
+                                        <a routerLink="/player/list-pick3" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">
+                                            <span>Pick3 Lotto</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
 
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-lotto"
-                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a class="sidebar-link sidebar-title">
                                     <svg class="stroke-icon">
-                                        <use href="assets/svg/icon-sprite.svg#stroke-widget"></use>
+                                        <use href="assets/svg/icon-sprite.svg#stroke-reports"></use>
                                     </svg>
                                     <svg class="fill-icon">
-                                        <use href="assets/svg/icon-sprite.svg#fill-widget"></use>
-                                    </svg><span>E-Lotto</span>
-                                </a>
+                                        <use href="assets/svg/icon-sprite.svg#fill-reports"></use>
+                                    </svg><span>Bets and Receipts</span></a>
+                                <ul class="sidebar-submenu">
+
+                                    <li>
+                                        <i></i>
+                                        <a routerLink="/player/lotto-receipts" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">
+                                            <span>Receipts</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <i></i>
+                                        <a routerLink="/player/lotto-allbets" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">
+                                            <span>All bets</span>
+                                        </a>
+                                    </li>
+
+
+                                </ul>
                             </li>
 
-                            <li class="sidebar-list">
-                                <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-2d"
-                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                                    <svg class="stroke-icon">
-                                        <use href="assets/svg/icon-sprite.svg#stroke-task"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="assets/svg/icon-sprite.svg#fill-task"></use>
-                                    </svg><span>2D Lotto</span>
-                                </a>
-                            </li>
 
-                            <li class="sidebar-list">
-                                <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-3d"
-                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                                    <svg class="stroke-icon">
-                                        <use href="assets/svg/icon-sprite.svg#stroke-task"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="assets/svg/icon-sprite.svg#fill-task"></use>
-                                    </svg><span>3D Lotto</span>
-                                </a>
-                            </li>
 
-                            <li class="sidebar-list">
-                                <i class="fa-solid fa-thumbtack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/list-pick3"
-                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                                    <svg class="stroke-icon">
-                                        <use href="assets/svg/icon-sprite.svg#stroke-task"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="assets/svg/icon-sprite.svg#fill-task"></use>
-                                    </svg><span>Pick3 Lotto</span>
-                                </a>
-                            </li>
+
+
+
+
 
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>

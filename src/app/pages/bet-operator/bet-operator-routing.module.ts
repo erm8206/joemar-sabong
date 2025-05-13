@@ -30,7 +30,7 @@ import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
 
 const routes: Routes = [
     {
-        path: 'dashboard-3d',
+        path: 'dashboard-3d/:eventId',
         component: Dashboard3dComponent,
         canActivate: [IsBetOperator1GuardService],
     },
@@ -77,7 +77,7 @@ const routes: Routes = [
         ,
     },
     {
-        path: 'pick3/console',
+        path: 'pick3/console/:eventId',
         component: Pick3ConsoleComponent
         ,
     },

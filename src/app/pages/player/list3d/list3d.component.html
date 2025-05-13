@@ -1,8 +1,8 @@
 <div class="container-fluid">
-    <div class="page-title">
+    <div class="page-title" style="margin-bottom: 0px!important;">
         <div class="row">
             <div class="col-sm-6">
-                <h3>E-Lotto</h3>
+                <h3>3D-Lotto</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -10,258 +10,82 @@
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                             </svg></a></li>
-                    <li class="breadcrumb-item">3D Lotto</li>
-                    <li class="breadcrumb-item active">E-Lotto</li>
+                    <li class="breadcrumb-item">E-Lotto</li>
+                    <li class="breadcrumb-item active">3D-Lotto</li>
                 </ol>
             </div>
         </div>
     </div>
 </div>
+<div class="container-fluid">
+    <div class="page-title" style="    background-color: rgb(45 49 62);;">
+
+        <div style="display: flex;justify-content: flex-start;flex-wrap: wrap;" class="mt-2">
+            <div class="form-group" style="margin-right: 10px;">
+                <input name="from" style="color: aliceblue;" type="date" class="form-control" [(ngModel)]="from" />
+            </div>
+            <div class="form-group" style="margin-right: 10px;">
+                <input type="date" style="color: aliceblue;" [(ngModel)]="to" class="form-control" />
+            </div>
+            <button class="btn btn-success btn-sm btn-block" (click)="getLottoEvents()">
+                Submit
+            </button>
+        </div>
+
+
+    </div>
+</div>
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="row">
-
-        <div class="col-12 col-md-4">
+        <div class="col-md-12">
+            <div *ngIf="eventsLotto.length === 0" style="text-align: center;padding: 20px;">
+                <div>
+                    <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                </div>
+                <span>No Events found.</span>
+            </div>
+        </div>
+        <div class="col-12 col-md-4" *ngFor="let event of eventsLotto; let i = index">
             <div class="card common-hover">
                 <div class="card-header border-t-success text-right d-flex justify-content-between">
                     <h5 class="mr-2">Disbursed: YES</h5>
-                    <div class="ribbon ribbon-danger ribbon-clip-right ribbon-right">CLOSE</div>
+                    <div class="ribbon ribbon-success ribbon-clip-right ribbon-right" *ngIf="event?.status == 'open'">
+                        {{event?.status}}</div>
+                    <div class="ribbon ribbon-danger ribbon-clip-right ribbon-right" *ngIf="event?.status == 'close'">
+                        {{event?.status}}</div>
+                    <div class="ribbon ribbon-secondary ribbon-clip-right ribbon-right"
+                        *ngIf="event?.status == 'disbursing'">{{event?.status}}</div>
+                    <div class="ribbon ribbon-info ribbon-clip-right ribbon-right" *ngIf="event?.status == 'settled'">
+                        {{event?.status}}</div>
                 </div>
                 <div class="card-body">
+                    <!-- NO USERS -->
+
                     <div class="d-flex">
                         <div class="avatar"><img class="img-100 b-r-8 mb-2" src="../assets/images/3dlotto.png" alt="#">
                         </div>
                         <div class="ms-3">
-                            <h3>Draw: 2pm</h3>
+                            <h4>Draw: {{ getTimeOnly(event.drawDate) }}</h4>
                             <p class="f-light"><span class="font-success">25</span><span class="ms-2">Tickets</span></p>
-                            <div class="numbers-display text-center mb-3">
-                                <div class="lottery-ball2d">1</div>
-                                <div class="lottery-ball2d">7</div>
-                                <div class="lottery-ball2d">9</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a class="btn bg-light-primary font-primary w-100" href="bet.html">PLAY NOW <i
-                            class="ms-2 icofont icofont-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-4">
-            <div class="card common-hover">
-                <div class="card-header border-t-danger text-right d-flex justify-content-between">
-                    <h5 class="mr-2">Disbursed: NO</h5>
-                    <div class="ribbon ribbon-success ribbon-clip-right ribbon-right">OPEN</div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex">
-                        <div class="avatar"><img class="img-100 b-r-8 mb-2" src="../assets/images/3dlotto.png" alt="#">
-                        </div>
-                        <div class="ms-3">
-                            <h3><span class="counter" data-target="3050010">Draw: 5pm</span></h3>
-                            <p class="f-light"><span class="font-success">0</span><span class="ms-2">Tickets</span></p>
-                            <div class="common-f-start">
-                                <div class="d-flex"><span class="f-light me-3">No Result Yet </span>
+                            <h4 *ngIf="!event?.result">
+                                No result yet
+                            </h4>
+                            <div class="numbers-display text-center mb-3" *ngIf="event?.result">
+                                <div class="lottery-ball2d" *ngFor="let num of event?.result">
+                                    {{ num }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <a class="btn bg-light-primary font-primary w-100" href="bet.html">PLAY NOW <i
+                    <a class="btn bg-light-primary font-primary w-100" routerLink="/player/dashboard-3d/{{event?.id}}"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">PLAY NOW <i
                             class="ms-2 icofont icofont-arrow-right"></i></a>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-md-4">
-            <div class="card common-hover">
-                <div class="card-header border-t-danger text-right d-flex justify-content-between">
-                    <h5 class="mr-2">Disbursed: NO</h5>
-                    <div class="ribbon ribbon-success ribbon-clip-right ribbon-right">OPEN</div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex">
-                        <div class="avatar"><img class="img-100 b-r-8 mb-2" src="../assets/images/3dlotto.png" alt="#">
-                        </div>
-                        <div class="ms-3">
-                            <h3><span class="counter" data-target="3050010">Draw: 9pm</span></h3>
-                            <p class="f-light"><span class="font-success">0</span><span class="ms-2">Tickets</span></p>
-                            <div class="common-f-start">
-                                <div class="d-flex"><span class="f-light me-3">No Result Yet </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a class="btn bg-light-primary font-primary w-100" href="bet.html">PLAY NOW <i
-                            class="ms-2 icofont icofont-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header pb-0 card-no-border">
-                    <h5>Previous Draws</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive custom-scrollbar">
-                        <table class="table table-bordered table-hover" id="basic-1">
-                            <thead>
-                                <tr>
-                                    <th>Draw Date</th>
-                                    <th>Event Name</th>
-                                    <th>Draw Time</th>
-                                    <th>Result</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Apr 12, 2025, 8:00:00 AM</td>
-                                    <td>4/12/2025-3DLOTTO</td>
-                                    <td>2pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">6</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                            <div class="lottery-ballhistory">1</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 12, 2025, 8:00:00 AM</td>
-                                    <td>4/12/2025-3DLOTTO</td>
-                                    <td>5pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">4</div>
-                                            <div class="lottery-ballhistory">5</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 12, 2025, 8:00:00 AM</td>
-                                    <td>4/12/2025-3DLOTTO</td>
-                                    <td>9pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">4</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                            <div class="lottery-ballhistory">1</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 11, 2025, 8:00:00 AM</td>
-                                    <td>4/11/2025-3DLOTTO</td>
-                                    <td>9pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">2</div>
-                                            <div class="lottery-ballhistory">9</div>
-                                            <div class="lottery-ballhistory">1</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 11, 2025, 8:00:00 AM</td>
-                                    <td>4/11/2025-3DLOTTO</td>
-                                    <td>5pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">4</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                            <div class="lottery-ballhistory">2</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 11, 2025, 8:00:00 AM</td>
-                                    <td>4/11/2025-3DLOTTO</td>
-                                    <td>2pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">1</div>
-                                            <div class="lottery-ballhistory">2</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 10, 2025, 8:00:00 AM</td>
-                                    <td>4/10/2025-3DLOTTO</td>
-                                    <td>9pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">3</div>
-                                            <div class="lottery-ballhistory">7</div>
-                                            <div class="lottery-ballhistory">1</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 10, 2025, 8:00:00 AM</td>
-                                    <td>4/10/2025-3DLOTTO</td>
-                                    <td>2pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">8</div>
-                                            <div class="lottery-ballhistory">7</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 10, 2025, 8:00:00 AM</td>
-                                    <td>4/10/2025-3DLOTTO</td>
-                                    <td>5pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">7</div>
-                                            <div class="lottery-ballhistory">9</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Apr 9, 2025, 8:00:00 AM</td>
-                                    <td>4/9/2025-3DLOTTO</td>
-                                    <td>2pm</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="lottery-ballhistory">2</div>
-                                            <div class="lottery-ballhistory">7</div>
-                                            <div class="lottery-ballhistory">3</div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-danger">close</span></td>
-                                    <td><button class="btn btn-danger btn-sm">View History</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 </div>

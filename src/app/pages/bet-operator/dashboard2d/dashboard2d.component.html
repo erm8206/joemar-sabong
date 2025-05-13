@@ -61,8 +61,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h4><span class="counter" data-target="45195">0</span></h4><span
-                                            class="f-light">TOTAL BETS</span>
+                                        <h4><span class="counter" data-target="45195">{{betSummary?.totalBets}}</span>
+                                        </h4><span class="f-light">TOTAL BETS</span>
                                     </div>
                                 </div>
                             </div>
@@ -83,8 +83,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h4> <span class="counter" data-target="845">0</span></h4><span
-                                            class="f-light">TOTAL WIN</span>
+                                        <h4> <span class="counter" data-target="845">{{betSummary?.totalWins}}</span>
+                                        </h4><span class="f-light">TOTAL WIN</span>
                                     </div>
                                 </div>
                             </div>
@@ -105,8 +105,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h4> <span class="counter" data-target="80">0</span></h4><span
-                                            class="f-light">NO OF
+                                        <h4> <span class="counter" data-target="80">{{betSummary?.noOfTickets}}</span>
+                                        </h4><span class="f-light">NO OF
                                             TICKETS</span>
                                     </div>
                                 </div>
@@ -116,7 +116,8 @@
 
                     <!-- CLOSE THE DRAW EVENT-->
                     <div class="col-md-12" *ngIf="event?.status == 'open'">
-                        <button type="button" class="btn btn-danger" style="width: 100%;">Close Draw</button>
+                        <button type="button" class="btn btn-danger" style="width: 100%;"
+                            (click)="updateEventClose()">Close Draw</button>
                     </div>
 
                 </div>
@@ -124,7 +125,7 @@
 
             <!-- sELECT NUMBERS AND (UDPATE OR CANCEL)-->
             <div class="col-md-12"
-                *ngIf="event?.status == 'close' && event?.forResult && !event?.result && !event?.disbursed">
+                *ngIf="event?.status == 'close' && event?.forResult && !event?.result && !event?.disbursed && !event?.isCancelled">
                 <div class="card">
                     <div class="card-body pt-0">
                         <div class="pick-number-container">
@@ -155,10 +156,12 @@
                             </div>
 
                         </div>
-                        <button type="button" class="btn btn-primary mb-2" style="width: 100%;">Update Result</button>
+                        <button type="button" class="btn btn-primary mb-2" style="width: 100%;"
+                            (click)="updateEventResult()">Update Result</button>
                         <button type="button" class="btn btn-danger mb-2" style="width: 100%;"
                             (click)="clearResult()">Clear</button>
-                        <button type="button" class="btn btn-secondary" style="width: 100%;">Cancel</button>
+                        <button type="button" class="btn btn-secondary" style="width: 100%;"
+                            (click)="updateEventCancelled()">Cancel</button>
                     </div>
                 </div>
 
@@ -166,16 +169,16 @@
 
             <!-- REVERT OR DISBURSE-->
             <div class="col-md-12"
-                *ngIf="event?.status == 'close' && event?.forResult && event?.result && !event?.disbursed">
+                *ngIf="event?.status == 'close' && event?.forResult && (event?.result || event?.isCancelled) && !event?.disbursed">
                 <div class="card">
                     <div class="card-body pt-0">
-                        <div class="pick-number-container">
+                        <div class="pick-number-container" *ngIf="!event?.isCancelled && event?.result">
                             <h4 class="text-center mb-4">Selected Numbers</h4>
 
                             <div class="selected-numbers mb-3">
                                 <h6>Selected Numbers:</h6>
                                 <div class="d-flex flex-wrap gap-2">
-                                    <span *ngFor="let n of result; let i = index"
+                                    <span *ngFor="let n of event?.result; let i = index"
                                         class="badge bg-info position-relative" style="font-size: 16px;">
                                         {{ n }}
 
@@ -187,7 +190,11 @@
 
 
                         </div>
-                        <button type="button" class="btn btn-info mb-2" style="width: 100%;">Revert</button>
+                        <div *ngIf="event?.isCancelled && !event?.result" style="padding: 20px;">
+                            <h1 style="text-align: center;font-weight: bold;">Cancel Draw ?</h1>
+                        </div>
+                        <button type="button" class="btn btn-info mb-2" style="width: 100%;"
+                            (click)="updateEventRevert()">Revert</button>
                         <button type="button" class="btn btn-success" style="width: 100%;">Disburse</button>
                     </div>
                 </div>
@@ -204,21 +211,22 @@
             </div>
 
             <!-- SETTLED-->
+
+
             <div class="col-md-12" *ngIf="event?.status == 'settled' && event?.disbursed">
                 <div class="card">
-                    <div class="card-body ">
+                    <div class="card-body">
                         <h3 style="text-align: center;" class="mb-5">Result</h3>
-                        <div style="display: flex;justify-content: center;flex-wrap: wrap;">
-                            <button class="btn btn-purple rounded-circle resultLabel">1</button>
-                            <button class="btn btn-purple rounded-circle resultLabel">2</button>
-                            <button class="btn btn-purple rounded-circle resultLabel">1</button>
-                            <button class="btn btn-purple rounded-circle resultLabel">2</button>
-                            <button class="btn btn-purple rounded-circle resultLabel">1</button>
-                            <button class="btn btn-purple rounded-circle resultLabel">2</button>
+                        <div style="display: flex; justify-content: center; flex-wrap: wrap;">
+                            <button *ngFor="let num of event?.result"
+                                class="btn btn-purple rounded-circle resultLabel m-1">
+                                {{ num }}
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
 
         </div>
 

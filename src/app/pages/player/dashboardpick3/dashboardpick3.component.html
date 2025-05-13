@@ -1,1 +1,624 @@
-<p>dashboardpick3 works!</p>
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>{{event?.drawName}}-{{ event?.drawDate | date:'short' }}</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb">
+
+
+                    <li class="breadcrumb-item active">
+                        <span *ngIf="event?.status == 'open'" class="badge badge-info"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                        <span *ngIf="event?.status == 'close'" class="badge badge-danger"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                        <span *ngIf="event?.status == 'disbursing'" class="badge badge-primary"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                        <span *ngIf="event?.status == 'settled'" class="badge badge-success"
+                            style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid starts-->
+<div class="container-fluid default-dashboard">
+    <div class="row widget-grid">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div
+                        style="position: relative; width: 100%; padding-top: 56.25%; border-radius: 15px; overflow: hidden;">
+                        <iframe src="https://www.youtube.com/embed/_Sv-KR2PU6g"
+                            title="WATCH: PCSO 9 PM Lotto Draw, September 18, 2024" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="card custom-card">
+                <img src="../assets/images/lottobanner.jpg" alt="Card Image" class="card-img-top">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card widget-1">
+                        <div class="card-body">
+                            <div class="widget-content">
+                                <div class="widget-round warning">
+                                    <div class="bg-round">
+                                        <svg>
+                                            <use href="../assets/svg/icon-sprite.svg#c-profit"> </use>
+                                        </svg>
+                                        <svg class="half-circle svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#halfcircle"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4><span class="counter" data-target="45195">{{betSummary?.totalBets}}</span></h4>
+                                    <span class="f-light">TOTAL BETS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card widget-1">
+                        <div class="card-body">
+                            <div class="widget-content">
+                                <div class="widget-round warning">
+                                    <div class="bg-round">
+                                        <svg>
+                                            <use href="../assets/svg/icon-sprite.svg#c-profit"> </use>
+                                        </svg>
+                                        <svg class="half-circle svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#halfcircle"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4> <span class="counter" data-target="845">{{betSummary?.totalWins}}</span></h4>
+                                    <span class="f-light">TOTAL WIN</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card widget-1">
+                        <div class="card-body">
+                            <div class="widget-content">
+                                <div class="widget-round warning">
+                                    <div class="bg-round">
+                                        <svg>
+                                            <use href="../assets/svg/icon-sprite.svg#c-profit"> </use>
+                                        </svg>
+                                        <svg class="half-circle svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#halfcircle"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4> <span class="counter" data-target="80">{{betSummary?.noOfTickets}}</span></h4>
+                                    <span class="f-light">NO OF
+                                        TICKETS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card widget-1">
+                        <div class="card-body">
+                            <div class="widget-content">
+                                <div class="widget-round warning">
+                                    <div class="bg-round">
+                                        <svg class="fill-primary">
+                                            <use href="../assets/svg/icon-sprite.svg#c-profit"> </use>
+                                        </svg>
+                                        <svg class="half-circle svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#halfcircle"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="display: flex;justify-content: flex-start;flex-wrap: wrap;gap: 5px;">
+                                        <button class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#allBetsModal">All Bets</button>
+                                        <button class="btn btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#myBetsModal">My Bets</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- PICK A NUMBER -->
+            <div class="row" *ngIf="event?.status == 'open'">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body pt-0">
+                            <div class="pick-number-container">
+                                <h4 class="text-center mb-4">Pick Number</h4>
+
+                                <div class="selected-numbers mb-3">
+                                    <h6>Selected Numbers:</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span *ngFor="let n of result; let i = index"
+                                            class="badge bg-info position-relative" style="font-size: 16px;">
+                                            {{ n }}
+                                            <button type="button"
+                                                class="btn-close btn-sm position-absolute top-0 end-0 me-1 mt-1"
+                                                aria-label="Remove" (click)="removeNumber(i)"></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="number-grid">
+                                    <div class="number-row" *ngFor="let row of getRows(numberRange, itemsPerRow)">
+                                        <button *ngFor="let num of row" class="rounded-circle"
+                                            [ngClass]="result.includes(num) ? 'btn-purple selected' : 'btn-purple'"
+                                            [attr.data-number]="num" (click)="onNumberClick(num)">
+                                            {{ num }}
+                                        </button>
+                                    </div>
+
+
+                                    <div class="selected-amount mb-3 mt-4">
+                                        <input type="number" class="form-control bg-dark text-white"
+                                            [(ngModel)]="myBetModel.amount">
+                                        <button class="btn btn-dark position-absolute end-0 top-0">RESET</button>
+                                    </div>
+
+                                    <div class="amount-buttons">
+                                        <button class="btn border-dashed-warning" (click)="updateModel(10)">₱10</button>
+                                        <button class="btn border-dashed-warning" (click)="updateModel(20)">₱20</button>
+                                        <button class="btn border-dashed-warning" (click)="updateModel(50)">₱50</button>
+                                        <button class="btn border-dashed-warning"
+                                            (click)="updateModel(100)">₱100</button>
+                                        <button class="btn border-dashed-warning"
+                                            (click)="updateModel(200)">₱200</button>
+                                        <button class="btn border-dashed-warning"
+                                            (click)="updateModel(500)">₱500</button>
+                                    </div>
+
+
+
+                                    <div class="action-buttons">
+                                        <button class="btn btn-info">Lucky Pick</button>
+                                        <button class="btn btn-primary" id="add-bet" (click)="addBetList()">Add
+                                            Bet</button>
+                                    </div>
+
+
+                                    <div class="recent-table table-responsive custom-scrollbar">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="c-light">Lotto</th>
+                                                    <th class="c-light">Bet Number</th>
+                                                    <th class="c-light">Amount</th>
+                                                    <th class="c-light">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let bet of storeListBets; let i = index">
+                                                    <td>
+                                                        <div class="lotto-content">
+                                                            <div class="bet-image">
+                                                                <img src="../assets/images/2dlotto.png"
+                                                                    style="height: 40px; width: 40px;" alt="lotto">
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="f-14 mb-0">
+                                                                    <a href="#">2D - {{ getTimeOnly(event.drawDate)
+                                                                        }}</a>
+                                                                </h6>
+                                                                <span class="f-light f-12">{{ currentDate }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="lotto-ball-container">
+                                                            <div class="lotto-ball" *ngFor="let num of bet.combination">
+                                                                <img src="../assets/images/lottoball.png"
+                                                                    alt="lotto ball">
+                                                                <span>{{ num }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="f-w-500">₱{{ bet.amount.toFixed(2) }}</td>
+
+                                                    <td>
+                                                        <button class="btn btn-danger" type="button"
+                                                            (click)="deleteBet(i)">Delete</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                    <div class="remarks mb-3">
+                                        <input class="form-control input-air-primary" type="text"
+                                            placeholder="Enter Remarks" [(ngModel)]="remarks">
+                                    </div>
+
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#betsSubmitModal" *ngIf="storeListBets.length > 0">Submit
+                                        Bets</button>
+
+                                    <button class="btn btn-primary" type="button" disabled
+                                        *ngIf="storeListBets.length < 1">Submit Bets</button>
+
+                                    <!-- Modal Example for Lotto-->
+                                    <div class="modal fade" id="betsSubmitModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="betsSubmitModal" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Confirm Your Bets</h4>
+                                                    <button #betsSubmit class="btn-close" type="button"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="modal-toggle-wrapper">
+                                                        <div class="text-center mb-4">
+                                                            <h5>Please review your bets before submitting</h5>
+                                                            <p class="text-muted">Once confirmed, these bets cannot be
+                                                                modified
+                                                                or cancelled.</p>
+                                                        </div>
+
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Game Type</th>
+                                                                        <th>Draw Time</th>
+                                                                        <th>Numbers</th>
+                                                                        <th>Amount</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr *ngFor="let bet of storeListBets">
+                                                                        <td>2D Lotto</td>
+                                                                        <td>{{ getTimeOnly(event.drawDate) }} - {{
+                                                                            event.drawName }}</td>
+                                                                        <td>
+                                                                            <div class="lotto-ball-container">
+                                                                                <div class="lotto-ball"
+                                                                                    *ngFor="let num of bet.combination">
+                                                                                    <img src="../assets/images/lottoball.png"
+                                                                                        alt="lotto ball" />
+                                                                                    <span>{{ num }}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>₱{{ bet.amount.toFixed(2) }}</td>
+                                                                    </tr>
+                                                                </tbody>
+
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <td colspan="3" class="text-end fw-bold">Total
+                                                                            Amount:</td>
+                                                                        <td class="fw-bold">₱{{ totalAmount.toFixed(2)
+                                                                            }}</td>
+                                                                    </tr>
+                                                                </tfoot>
+
+                                                            </table>
+                                                        </div>
+
+                                                        <div class="text-center mt-4">
+                                                            <button class="btn btn-secondary me-2" type="button"
+                                                                data-bs-dismiss="modal">Cancel</button>
+                                                            <button class="btn btn-primary" type="button"
+                                                                [disabled]="isLoading" (click)="submitBets()">Confirm
+                                                                Bets</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="code-box-copy">
+                                        <button class="code-box-copy__btn btn-clipboard"
+                                            data-clipboard-target="#centered-modal" title="Copy"><i
+                                                class="icofont icofont-copy-alt"></i></button>
+                                    </div>
+
+                                    <!-- End Modal Example for Lotto-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- WAITING FOR RESULT -->
+
+            <div class="row" *ngIf="event?.status == 'close'">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 style="text-align: center;">Waiting for result....</h1>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- SETTLED-->
+            <div class="col-md-12" *ngIf="event?.status == 'settled' && event?.disbursed">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 style="text-align: center;" class="mb-5">Result</h3>
+                        <div style="display: flex; justify-content: center; flex-wrap: wrap;">
+                            <button *ngFor="let num of event?.result"
+                                class="btn btn-purple rounded-circle resultLabel m-1">
+                                {{ num }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="myBetsModal" tabindex="-1" role="dialog" aria-labelledby="myBetsModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">My Bets</h4>
+                <button #betsSubmit class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date Log</th>
+                                        <th>Choice</th>
+                                        <th>Amount</th>
+                                        <th>Result</th>
+                                        <th>Status</th>
+                                        <th>Won Amount</th>
+                                        <th>Remarks</th>
+                                        <th>Disbursed Statuss</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor=" let item of myBetsHistory">
+                                        <td>{{item?.createdAt | date : "short" }}</td>
+                                        <td>
+                                            <div class="lotto-ball-container">
+                                                <div class="lotto-ball" *ngFor="let num of item.choice">
+                                                    <img src="../assets/images/lottoball.png" alt="lotto ball" />
+                                                    <span>{{ num }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>{{item?.amount }}</td>
+                                        <td *ngIf="item.result">
+                                            <div class="lotto-ball-container">
+                                                <div class="lotto-ball" *ngFor="let num of item.result">
+                                                    <img src="../assets/images/lottoball.png" alt="lotto ball" />
+                                                    <span>{{ num }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td *ngIf="!item.result">No Result yet</td>
+                                        <td *ngIf="item?.status">
+                                            <span class="badge badge-success" *ngIf="item?.status == 'win'"> {{
+                                                item?.status
+                                                }}</span>
+                                            <span class="badge badge-danger" *ngIf="item?.status == 'lose'"> {{
+                                                item?.status
+                                                }}</span>
+                                            <span class="badge badge-secondary" *ngIf="item?.status == 'cancelled'"> {{
+                                                item?.status }}</span>
+
+
+                                        </td>
+                                        <td *ngIf="!item?.status">
+                                            <span class="badge badge-warning">Pending</span>
+                                        </td>
+                                        <td>{{item?.wonAmount }}</td>
+                                        <td>{{item?.remarks }}</td>
+                                        <td>{{item?.disbursementStatus }}</td>
+                                    </tr>
+                                </tbody>
+
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="allBetsModal" tabindex="-1" role="dialog" aria-labelledby="allBetsModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">All Bets</h4>
+                <button #betsSubmit class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- PAGE SIZE DROPDOWN -->
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 text-end">
+                                <div>
+                                    <select class="form-select" id="pageSize" [value]="pageSize"
+                                        (change)="onPageSizeChange($event)">
+                                        <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search Bets..."
+                                        [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+                                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Loading spinner, visible when 'isLoading' is true -->
+                        <div *ngIf="isLoading" class="loading-container">
+                            <div class="spinner"></div>
+                        </div>
+
+                        <!-- TABLE -->
+                        <div class="table-responsive">
+                            <!-- Loading spinner, visible when 'isLoading' is true -->
+                            <div *ngIf="isLoading" class="loading-container">
+                                <div class="spinner"></div>
+                            </div>
+                            <table *ngIf="!isLoading && allbetsHistory.length > 0" border="1" width="100%"
+                                cellpadding="8" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date Log</th>
+                                        <th>Choice</th>
+                                        <th>Amount</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of allbetsHistory">
+                                        <td>{{item?.createdAt | date : "medium" }}</td>
+                                        <td>
+                                            <div class="lotto-ball-container">
+                                                <div class="lotto-ball" *ngFor="let num of item.choice">
+                                                    <img src="../assets/images/lottoball.png" alt="lotto ball" />
+                                                    <span>{{ num }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>{{item?.amount }}</td>
+                                        <td *ngIf="item.result">
+                                            <div class="lotto-ball-container">
+                                                <div class="lotto-ball" *ngFor="let num of item.result">
+                                                    <img src="../assets/images/lottoball.png" alt="lotto ball" />
+                                                    <span>{{ num }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td *ngIf="!item.result">No Result yet</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- NO USERS -->
+                        <div *ngIf="!isLoading && allbetsHistory.length === 0"
+                            style="text-align: center;padding: 20px;">
+                            <div>
+                                <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                            </div>
+                            <span>No Bets found.</span>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="pagination-footer">
+
+
+                            <!-- ENTRIES INFO -->
+                            <div *ngIf="!isLoading && allbetsHistory.length > 0">
+                                Showing
+                                {{ (pageNumber - 1) * pageSize + 1 }}
+                                to
+                                {{ getShowingRangeEnd() }}
+                                of
+                                {{ totalItems }}
+                                entries
+                            </div>
+
+                            <!-- PAGINATION CONTROLS -->
+                            <div *ngIf="totalPages > 1">
+                                <div class="pagination-controls"
+                                    style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                    <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber - 1)"
+                                        [disabled]="pageNumber === 1">
+                                        Previous
+                                    </button>
+
+                                    <select class="form-select form-select-sm" style="width: auto;"
+                                        [ngModel]="pageNumber" (ngModelChange)="goToPage($event)">
+                                        <option *ngFor="let i of [].constructor(totalPages); let page = index"
+                                            [value]="page + 1">
+                                            Page {{ page + 1 }}
+                                        </option>
+                                    </select>
+
+                                    <button class="btn btn-sm btn-outline-primary" (click)="goToPage(pageNumber + 1)"
+                                        [disabled]="pageNumber === totalPages">
+                                        Next
+                                    </button>
+
+                                    <button class="btn btn-sm btn-outline-secondary" (click)="goToPage(totalPages)"
+                                        [disabled]="pageNumber === totalPages">
+                                        Last
+                                    </button>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-confirmation-modal></app-confirmation-modal>
+<app-alert-modal></app-alert-modal>
