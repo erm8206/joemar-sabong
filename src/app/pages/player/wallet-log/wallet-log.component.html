@@ -129,12 +129,49 @@
 
                                         </span>
 
+                                        <span *ngIf="user.activity == 'pick2-bet'">
+                                            bet <span style="color: red;font-weight: bolder;">-{{
+                                                user?.amount}}</span> points
+
+                                        </span>
+
+                                        <span *ngIf="user.activity == 'suertres-bet'">
+                                            bet <span style="color: red;font-weight: bolder;">-{{
+                                                user?.amount}}</span> points
+
+                                        </span>
+
+                                        <span *ngIf="user.activity == 'pick3-bet'">
+                                            bet <span style="color: red;font-weight: bolder;">-{{
+                                                user?.amount}}</span> points
+
+                                        </span>
+
 
                                         <span
                                             *ngIf="user.activity == 'win' && userLoggendin.username === user.receiver.username">
                                             You have just won <span style="color: green;font-weight: bolder;">+{{
                                                 user?.amount}} </span>
                                         </span>
+
+
+
+                                        <span
+                                            *ngIf="user.activity == 'pick2-win' && userLoggendin.username === user.receiver.username">
+                                            You have just won <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span>
+                                        </span>
+                                        <span
+                                            *ngIf="user.activity == 'pick3-win' && userLoggendin.username === user.receiver.username">
+                                            You have just won <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span>
+                                        </span>
+                                        <span
+                                            *ngIf="user.activity == 'suertres-win' && userLoggendin.username === user.receiver.username">
+                                            You have just won <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span>
+                                        </span>
+
 
                                         <span
                                             *ngIf="user.activity == 'revert' && userLoggendin.username === user.receiver.username">
