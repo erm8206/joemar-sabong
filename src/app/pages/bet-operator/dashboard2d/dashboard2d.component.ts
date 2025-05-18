@@ -5,13 +5,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { WebSocketService } from 'src/app/services/web-socket-service';
 import { AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard2d',
   templateUrl: './dashboard2d.component.html',
   styleUrl: './dashboard2d.component.scss'
 })
-export class Dashboard2dComponent {
+export class Dashboard2dComponent implements OnDestroy, OnInit {
+  private disburseSub: Subscription = new Subscription();
+
+  numSelect!: number;
   toggle: boolean = false;
   iframeUrl: SafeResourceUrl = '';
   result: number[] = [];
@@ -50,16 +54,49 @@ export class Dashboard2dComponent {
 
     this.getDrawDetails();
     this.lottoBetSummary();
+    this.ListenDisbursement();
+
 
 
 
   }
 
+  async disbursedDraw() {
+
+    this.isLoading = true;
+
+    try {
+      const response: any = await this._api.post(
+        'betopsnew',
+        {},
+        `/lotto-events/pick2/${this.eventId}`
+      );
+      this.isLoading = false;
+      this.getDrawDetails();
+      this.lottoBetSummary();
+      alert(response?.message);
+    } catch (e) {
+      this.isLoading = false;
+      alert(e ?? 'Something went wrong');
+    }
+
+  }
+
+  async ListenDisbursement() {
+    this.disburseSub = this.webSocketService
+      .listen(`disbursement-lotto-${this.eventId}`)
+      .subscribe(async (data: any) => {
+        alert(data?.message);
+        this.getDrawDetails();
+        this.lottoBetSummary();
+      });
+  }
+
   async updateEventResult() {
     this.isLoading = true;
 
-    if (this.result.length < 2) {
-      alert("Please select 2 numbers!");
+    if (this.result.length < this.numSelect) {
+      alert(`Please select ${this.numSelect} numbers!`);
       return;
     }
     try {
@@ -161,6 +198,10 @@ export class Dashboard2dComponent {
 
       this.event = response;
 
+      //number selection
+
+      this.numSelect = this.event.numSelect;
+
       //set min and choice
       const min = Number(this.event.minChoice);
       const max = Number(this.event.maxChoice);
@@ -197,18 +238,7 @@ export class Dashboard2dComponent {
     }
   }
 
-  async closeDraw() {
 
-
-  }
-
-  async updateResult() {
-
-  }
-
-  async revertResult() {
-
-  }
 
   async getIframe(url: string) {
     if (url) {
@@ -231,10 +261,10 @@ export class Dashboard2dComponent {
 
 
   onNumberClick(num: number): void {
-    if (this.result.length < 2) {
+    if (this.result.length < this.numSelect) {
       this.result.push(num);
     } else {
-      alert('You can only select 2 numbers.');
+      alert(`You can only select ${this.numSelect} numbers.`);
     }
   }
 
@@ -244,6 +274,10 @@ export class Dashboard2dComponent {
 
   removeNumber(index: number): void {
     this.result.splice(index, 1);
+  }
+
+  ngOnDestroy(): void {
+    this.disburseSub?.unsubscribe();
   }
 
 

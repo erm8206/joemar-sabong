@@ -18,8 +18,7 @@
     </div>
 </div>
 <div class="container-fluid">
-    <div class="page-title" style="    background-color: rgb(45 49 62);;">
-
+    <div class="page-title" style="    background-color: rgb(45 49 62);">
         <div style="display: flex;justify-content: flex-start;flex-wrap: wrap;" class="mt-2">
             <div class="form-group" style="margin-right: 10px;">
                 <input name="from" style="color: aliceblue;" type="date" class="form-control" [(ngModel)]="from" />
@@ -33,12 +32,30 @@
         </div>
 
 
+
+
     </div>
 </div>
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search Draw..." [(ngModel)]="searchTerm"
+                    (ngModelChange)="onSearchChange($event)" style="color: white;" />
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+        </div>
+    </div>
+    <!-- Loading spinner, visible when 'isLoading' is true -->
+    <div *ngIf="isLoading" class="loading-container">
+        <div class="spinner"></div>
+    </div>
+    <div class="row">
+
+
         <div class="col-md-12">
+
             <div *ngIf="eventsLotto.length === 0" style="text-align: center;padding: 20px;">
                 <div>
                     <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
@@ -49,7 +66,7 @@
         <div class="col-12 col-md-4" *ngFor="let event of eventsLotto; let i = index">
             <div class="card common-hover">
                 <div class="card-header border-t-success text-right d-flex justify-content-between">
-                    <h5 class="mr-2">Disbursed: YES</h5>
+                    <h5 class="mr-2">{{event?.drawName}}</h5>
                     <div class="ribbon ribbon-success ribbon-clip-right ribbon-right" *ngIf="event?.status == 'open'">
                         {{event?.status}}</div>
                     <div class="ribbon ribbon-danger ribbon-clip-right ribbon-right" *ngIf="event?.status == 'close'">

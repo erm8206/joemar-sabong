@@ -31,13 +31,32 @@
                 Submit
             </button>
         </div>
+        <div class="progress mt-3" *ngIf="isLoading">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%">
+                loading...
+            </div>
+        </div>
 
 
     </div>
+
+
+
+
 </div>
 
 <div class="container-fluid">
+    <!-- NO USERS -->
+    <div *ngIf="!isLoading && receipts.length === 0" style="text-align: center;padding: 20px;">
+        <div>
+            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+        </div>
+        <span>No data found.</span>
+    </div>
+
     <div class="row" *ngIf="receipts.length > 0">
+        <!-- Loading spinner, visible when 'isLoading' is true -->
+
         <div class="col-md-6 col-lg-4 mb-4" *ngFor="let item of receipts">
             <ul class="list-group"
                 style="position: relative;margin-bottom: 15px; box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;background-color: white;">

@@ -13,6 +13,8 @@ import { OnDestroy, AfterViewInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DataTableDirective } from 'angular-datatables';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from 'src/app/services/web-socket-service';
 
 
 @Component({
@@ -21,6 +23,7 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrl: './dashboard3d.component.scss'
 })
 export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
+  private userDetailSub: Subscription = new Subscription();
   @ViewChild(ConfirmationModalComponent) modalComponent!: ConfirmationModalComponent; // Reference to modal component
   @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;  // Reference to the modal component
   @ViewChild('betsSubmit') betsSubmit!: ElementRef;
@@ -83,6 +86,7 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
     private _router: Router,
     private _api: ApiService,
     private _userSub: UserSub,
+    private webSocketService: WebSocketService,
   ) {
     this.eventId = this._route.snapshot.paramMap.get('eventId');
     console.log(this.eventId);
@@ -115,10 +119,24 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getDrawDetails();
     this.getAllBetsHistory();
     this.lottoBetSummary();
+    this.listenMySelf();
 
 
 
 
+  }
+  async listenMySelf() {
+    this.userDetailSub = this.webSocketService
+      .listen("draw-result")
+      .subscribe(async (data) => {
+
+        this._userSub.getUserDetail();
+        this.getDrawDetails();
+        this.lottoBetSummary();
+        this.myBetHistory();
+        this.getAllBetsHistory();
+
+      });
   }
 
   async myBetHistory(): Promise<void> {
@@ -161,8 +179,8 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
 
   addBetList() {
 
-    if (this.result.length < 3) {
-      this.alertModal.openModal("Select 3 numbers!", 'error');
+    if (this.result.length < this.event.numSelect) {
+      this.alertModal.openModal(`Select ${this.event.numSelect} numbers!`, 'error');
       return
     }
 
@@ -340,7 +358,7 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Generate 3 random numbers within min-max range
     const generated: number[] = [];
-    while (generated.length < 3) {
+    while (generated.length < this.event.numSelect) {
       const rand = Math.floor(Math.random() * (max - min + 1)) + min;
       generated.push(rand);
     }
@@ -428,10 +446,10 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   onNumberClick(num: number): void {
-    if (this.result.length < 3) {
+    if (this.result.length < this.event.numSelect) {
       this.result.push(num);
 
-      if (this.result.length == 3) {
+      if (this.result.length == this.event.numSelect) {
 
         this.isAllSame = this.allNumbersAreSame(this.result);
         if (this.isAllSame) {
@@ -441,7 +459,7 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
 
       }
     } else {
-      this.alertModal.openModal('You can only select 3 numbers.', 'error');
+      this.alertModal.openModal(`You can only select ${this.event.numSelect} numbers.`, 'error');
     }
   }
 
@@ -477,6 +495,7 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
+    this.userDetailSub?.unsubscribe();
   }
 
 

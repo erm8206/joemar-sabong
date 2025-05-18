@@ -41,6 +41,8 @@ export class List3dComponent implements OnInit {
 
   ngOnInit(): void {
 
+    //static for 3d/Suertres
+    this.model.numSelect = 3;
 
     this.from = this.getToday();
     this.to = this.getToday();
@@ -52,6 +54,8 @@ export class List3dComponent implements OnInit {
     });
 
     this.getLottoEvents();
+
+
 
 
   }
@@ -79,6 +83,7 @@ export class List3dComponent implements OnInit {
       this.pageSize = res.pageSize;
       this.totalPages = res.totalPages;
       this.totalItems = res.totalCount;
+
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -142,6 +147,7 @@ export class List3dComponent implements OnInit {
     this.model.tags = "suertres";
 
 
+
     const requiredFields = [
       'drawDateFrom',
       'drawDateTo',
@@ -151,6 +157,8 @@ export class List3dComponent implements OnInit {
       'maxChoice',
       'minBet',
       'maxBet',
+      'numSelect',
+      'winMultiplier',
       'videoUrl',
       'resultUrl',
       'tags'
@@ -227,10 +235,14 @@ export class List3dComponent implements OnInit {
       'maxChoice',
       'minBet',
       'maxBet',
+      'numSelect',
+      'winMultiplier',
       'videoUrl',
       'resultUrl',
       'tags'
     ];
+
+    console.log(this.model)
 
     // Basic required field check (excluding minChoice for now)
     for (const field of requiredFields) {

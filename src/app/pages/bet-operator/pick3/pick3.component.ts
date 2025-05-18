@@ -149,6 +149,8 @@ export class Pick3Component implements OnInit {
       'maxChoice',
       'minBet',
       'maxBet',
+      'numSelect',
+      'winMultiplier',
       'videoUrl',
       'resultUrl',
       'tags'
@@ -191,6 +193,8 @@ export class Pick3Component implements OnInit {
       'maxChoice',
       'minBet',
       'maxBet',
+      'numSelect',
+      'winMultiplier',
       'videoUrl',
       'resultUrl',
       'tags'

@@ -15,8 +15,14 @@
                             style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
                         <span *ngIf="event?.status == 'disbursing'" class="badge badge-primary"
                             style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
-                        <span *ngIf="event?.status == 'settled'" class="badge badge-success"
+                        <span *ngIf="event?.status == 'settled' && event?.disbursed && !event?.isCancelled"
+                            class="badge badge-success"
                             style="float: right;text-align: center;font-size: 16px;">{{event?.status}}</span>
+                        <span *ngIf="event?.status == 'settled' && event?.disbursed && event?.isCancelled"
+                            style="float: right;text-align: center;font-size: 16px;" class="badge badge-secondary">
+                            CANCELLED - {{event?.status}}
+
+                        </span>
                     </li>
                 </ol>
             </div>
@@ -380,8 +386,8 @@
                 </div>
 
             </div>
-            <!-- SETTLED-->
-            <div class="col-md-12" *ngIf="event?.status == 'settled' && event?.disbursed">
+            <!-- SETTLED and FIGHT IS NOT CANCELLED-->
+            <div class="col-md-12" *ngIf="event?.status == 'settled' && event?.disbursed && !event?.isCancelled">
                 <div class="card">
                     <div class="card-body">
                         <h3 style="text-align: center;" class="mb-5">Result</h3>
@@ -390,6 +396,16 @@
                                 class="btn btn-purple rounded-circle resultLabel m-1">
                                 {{ num }}
                             </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SETTLED and FIGHT IS CANCELLED-->
+            <div class="row" *ngIf="event?.status == 'settled' && event?.disbursed && event?.isCancelled">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 style="text-align: center;">DRAW IS CANCELLED</h1>
                         </div>
                     </div>
                 </div>

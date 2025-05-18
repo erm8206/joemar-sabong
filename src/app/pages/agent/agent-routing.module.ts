@@ -15,7 +15,12 @@ import { WalletLogComponent } from './wallet-log/wallet-log.component';
 import { WalletstationComponent } from './walletstation/walletstation.component';
 import { AgentQueryComsComponent } from './agent-query-coms/agent-query-coms.component';
 import { EventSummaryComponent } from './event-summary/event-summary.component';
+import { CommissionLogsLottoComponent } from './commission-logs-lotto/commission-logs-lotto.component';
 const routes: Routes = [
+    {
+        path: 'commission-log-lotto',
+        component: CommissionLogsLottoComponent,
+    },
     {
         path: 'event-summary',
         component: EventSummaryComponent,

@@ -8,6 +8,8 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DataTableDirective } from 'angular-datatables';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from 'src/app/services/web-socket-service';
 
 @Component({
   selector: 'app-dashboardpick3',
@@ -15,6 +17,7 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrl: './dashboardpick3.component.scss'
 })
 export class Dashboardpick3Component implements OnInit, OnDestroy, AfterViewInit {
+  private userDetailSub: Subscription = new Subscription();
   @ViewChild(ConfirmationModalComponent) modalComponent!: ConfirmationModalComponent;
   @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;
   @ViewChild('betsSubmit') betsSubmit!: ElementRef;
@@ -58,7 +61,8 @@ export class Dashboardpick3Component implements OnInit, OnDestroy, AfterViewInit
     private _route: ActivatedRoute,
     private _router: Router,
     private _api: ApiService,
-    private _userSub: UserSub
+    private _userSub: UserSub,
+    private webSocketService: WebSocketService,
   ) {
     this.eventId = this._route.snapshot.paramMap.get('eventId') || '';
     if (!this.eventId) {
@@ -89,8 +93,23 @@ export class Dashboardpick3Component implements OnInit, OnDestroy, AfterViewInit
     this.getDrawDetails();
     this.getAllBetsHistory();
     this.lottoBetSummary();
+    this.listenMySelf();
   }
 
+
+  async listenMySelf() {
+    this.userDetailSub = this.webSocketService
+      .listen("draw-result")
+      .subscribe(async (data) => {
+
+        this._userSub.getUserDetail();
+        this.getDrawDetails();
+        this.lottoBetSummary();
+        this.myBetHistory();
+        this.getAllBetsHistory();
+
+      });
+  }
   async myBetHistory(): Promise<void> {
     try {
       const response: any = await this._api.get('user', `/my-bets-lotto/${this.eventId}`);
@@ -206,6 +225,8 @@ export class Dashboardpick3Component implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
+
+
   closeOverviewModal(): void {
     this.betsSubmit.nativeElement.click();
   }
@@ -215,8 +236,8 @@ export class Dashboardpick3Component implements OnInit, OnDestroy, AfterViewInit
   }
 
   addBetList() {
-    if (this.result.length < 3) {
-      this.alertModal.openModal("Select 3 numbers!", 'error');
+    if (this.result.length < this.event.numSelect) {
+      this.alertModal.openModal(`Select ${this.event.numSelect} numbers!`, 'error');
       return;
     }
 
@@ -246,10 +267,10 @@ export class Dashboardpick3Component implements OnInit, OnDestroy, AfterViewInit
 
   onNumberClick(num: number): void {
     if (!this.result.includes(num)) {
-      if (this.result.length < 3) {
+      if (this.result.length < this.event.numSelect) {
         this.result.push(num);
       } else {
-        this.alertModal.openModal('You can only select 3 numbers.', 'error');
+        this.alertModal.openModal(`You can only select ${this.event.numSelect} numbers.`, 'error');
       }
     }
   }
@@ -320,6 +341,30 @@ export class Dashboardpick3Component implements OnInit, OnDestroy, AfterViewInit
 
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
+    this.userDetailSub?.unsubscribe();
+  }
+
+  luckyPick(): void {
+    const min = Number(this.event.minChoice);
+    const max = Number(this.event.maxChoice);
+
+    // Generate 2 random numbers within min-max range
+    const generated: number[] = [];
+    while (generated.length < this.event.numSelect) {
+      const rand = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (!this.result.includes(rand)) {
+        generated.push(rand);
+        this.result = generated;
+
+      }
+
+
+    }
+
+
+
+
+
   }
 
 }

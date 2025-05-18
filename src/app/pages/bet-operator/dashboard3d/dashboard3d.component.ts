@@ -5,13 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { WebSocketService } from 'src/app/services/web-socket-service';
 import { AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard3d',
   templateUrl: './dashboard3d.component.html',
   styleUrl: './dashboard3d.component.scss'
 })
-export class Dashboard3dComponent {
+export class Dashboard3dComponent implements OnInit, OnDestroy {
+  private disburseSub: Subscription = new Subscription();
   toggle: boolean = false;
   iframeUrl: SafeResourceUrl = '';
   result: number[] = [];
@@ -50,16 +52,52 @@ export class Dashboard3dComponent {
 
     this.getDrawDetails();
     this.lottoBetSummary();
+    this.ListenDisbursement();
 
 
 
   }
 
+  async disbursedDraw() {
+
+    this.isLoading = true;
+
+    try {
+      const response: any = await this._api.post(
+        'betopsnew',
+        {},
+        `/lotto-events/suertres/${this.eventId}`
+      );
+      this.isLoading = false;
+      this.getDrawDetails();
+      this.lottoBetSummary();
+      alert(response?.message);
+    } catch (e) {
+      this.isLoading = false;
+      alert(e ?? 'Something went wrong');
+    }
+
+  }
+
+  async ListenDisbursement() {
+    this.disburseSub = this.webSocketService
+      .listen(`disbursement-lotto-${this.eventId}`)
+      .subscribe(async (data: any) => {
+        alert(data?.message);
+        this.getDrawDetails();
+        this.lottoBetSummary();
+      });
+  }
+  ngOnDestroy(): void {
+    this.disburseSub?.unsubscribe();
+  }
+
+
   async updateEventResult() {
     this.isLoading = true;
 
-    if (this.result.length < 2) {
-      alert("Please select 2 numbers!");
+    if (this.result.length < this.event.numSelect) {
+      alert(`Please select ${this.event.numSelect} numbers!`);
       return;
     }
     try {
@@ -161,6 +199,8 @@ export class Dashboard3dComponent {
 
       this.event = response;
 
+
+
       //set min and choice
       const min = Number(this.event.minChoice);
       const max = Number(this.event.maxChoice);
@@ -197,18 +237,7 @@ export class Dashboard3dComponent {
     }
   }
 
-  async closeDraw() {
 
-
-  }
-
-  async updateResult() {
-
-  }
-
-  async revertResult() {
-
-  }
 
   async getIframe(url: string) {
     if (url) {
@@ -231,10 +260,10 @@ export class Dashboard3dComponent {
 
 
   onNumberClick(num: number): void {
-    if (this.result.length < 3) {
+    if (this.result.length < this.event.numSelect) {
       this.result.push(num);
     } else {
-      alert('You can only select 3 numbers.');
+      alert(`You can only select ${this.event.numSelect} numbers.`);
     }
   }
 

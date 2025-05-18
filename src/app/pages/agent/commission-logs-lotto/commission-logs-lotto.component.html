@@ -2,7 +2,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h3>Cashin</h3>
+                <h3>Comm Logs</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -10,8 +10,8 @@
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                             </svg></a></li>
-                    <li class="breadcrumb-item">History</li>
-                    <li class="breadcrumb-item active">Cashin</li>
+                    <li class="breadcrumb-item">Commission</li>
+                    <li class="breadcrumb-item active">Comm Logs</li>
                 </ol>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header" style="font-size: 13px">
                     <i class="fa fa-align-justify"></i>
-                    Cashin Transactions
+                    Lotto Commission Logs
                 </div>
 
                 <div class="card-body">
@@ -35,60 +35,64 @@
                             <div>
                                 <select class="form-select" id="pageSize" [value]="pageSize"
                                     (change)="onPageSizeChange($event)">
-                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" [(ngModel)]="search" (input)="onSearchInputChange()"
-                                    class="form-control" placeholder="Search transactions...">
+                                <input type="text" class="form-control" placeholder="Search transactions..."
+                                    [(ngModel)]="search" (ngModelChange)="onSearchInputChange()" />
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
+
                         </div>
 
                     </div>
 
 
-                    <div class="progress mt-3" *ngIf="isLoading">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                            style="width: 100%">
-                            loading...
-                        </div>
+                    <!-- Loading spinner, visible when 'isLoading' is true -->
+                    <div *ngIf="isLoading" class="loading-container">
+                        <div class="spinner"></div>
                     </div>
 
                     <!-- TABLE -->
                     <div class="table-responsive">
-
-                        <table *ngIf="!isLoading && cashouts.length > 0" border="1" width="100%" cellpadding="8"
+                        <!-- Loading spinner, visible when 'isLoading' is true -->
+                        <div *ngIf="isLoading" class="loading-container">
+                            <div class="spinner"></div>
+                        </div>
+                        <table *ngIf="!isLoading && history.length > 0" border="1" width="100%" cellpadding="8"
                             class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Date Log</th>
-                                    <th>Amount</th>
-                                    <th>Transacted By</th>
-
+                                    <th>Game Type</th>
+                                    <th>Draw Name</th>
+                                    <th>Player</th>
+                                    <th>Bet Amount</th>
+                                    <th>Received Comms</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of cashouts; let i = index">
+                                <tr *ngFor="let user of history; let i = index">
                                     <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-                                    <td>{{ item.createdAt | date : "medium" }}</td>
-                                    <td>{{ item.amount }}</td>
-                                    <td>{{ item.transactedBy?.username }}</td>
+                                    <td>{{ user.createdAt | date: 'medium' }}</td>
+                                    <td>{{user?.type}}</td>
+                                    <td>{{user?.eventId?.drawName}}</td>
+                                    <td>{{user?.playerId?.username}}</td>
 
+                                    <td>{{user?.betAmount}}</td>
+                                    <td>{{user?.amount}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- NO USERS -->
-                    <div *ngIf="!isLoading && cashouts.length === 0" style="text-align: center;padding: 20px;">
-                        <div>
-                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
-                        </div>
-                        <span>No data found.</span>
+                    <div *ngIf="!isLoading && history.length === 0" style="text-align: center;">
+                        No data found.
                     </div>
 
                 </div>
@@ -98,7 +102,7 @@
 
 
                         <!-- ENTRIES INFO -->
-                        <div *ngIf="!isLoading && cashouts.length > 0">
+                        <div *ngIf="!isLoading && history.length > 0">
                             Showing
                             {{ (pageNumber - 1) * pageSize + 1 }}
                             to

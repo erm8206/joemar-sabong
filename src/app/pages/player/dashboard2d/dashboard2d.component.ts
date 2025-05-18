@@ -10,6 +10,8 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { OnDestroy, AfterViewInit } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from 'src/app/services/web-socket-service';
 
 
 @Component({
@@ -18,6 +20,8 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrl: './dashboard2d.component.scss'
 })
 export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
+  private userDetailSub: Subscription = new Subscription();
+  numSelect!: number;
   @ViewChild(ConfirmationModalComponent) modalComponent!: ConfirmationModalComponent; // Reference to modal component
   @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;  // Reference to the modal component
   @ViewChild('betsSubmit') betsSubmit!: ElementRef;
@@ -82,6 +86,7 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
     private _router: Router,
     private _api: ApiService,
     private _userSub: UserSub,
+    private webSocketService: WebSocketService,
   ) {
     this.eventId = this._route.snapshot.paramMap.get('eventId');
     console.log(this.eventId);
@@ -113,9 +118,24 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
     this.lottoBetSummary();
     this.myBetHistory();
     this.getAllBetsHistory();
+    this.listenMySelf();
 
 
 
+  }
+
+  async listenMySelf() {
+    this.userDetailSub = this.webSocketService
+      .listen("draw-result")
+      .subscribe(async (data) => {
+
+        this._userSub.getUserDetail();
+        this.getDrawDetails();
+        this.lottoBetSummary();
+        this.myBetHistory();
+        this.getAllBetsHistory();
+
+      });
   }
 
 
@@ -125,8 +145,8 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
 
   addBetList() {
 
-    if (this.result.length < 2) {
-      this.alertModal.openModal("Select 2 numbers!", 'error');
+    if (this.result.length < this.event.numSelect) {
+      this.alertModal.openModal(`Select ${this.event.numSelect} numbers!`, 'error');
       return
     }
 
@@ -268,6 +288,8 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.event = response;
 
+
+
       //set min and choice
       const min = Number(this.event.minChoice);
       const max = Number(this.event.maxChoice);
@@ -384,10 +406,10 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   onNumberClick(num: number): void {
-    if (this.result.length < 2) {
+    if (this.result.length < this.event.numSelect) {
       this.result.push(num);
     } else {
-      this.alertModal.openModal('You can only select 2 numbers.', 'error');
+      this.alertModal.openModal(`You can only select ${this.event.numSelect} numbers.`, 'error');
     }
   }
 
@@ -416,7 +438,26 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
+    this.userDetailSub?.unsubscribe();
   }
+  luckyPick(): void {
+    const min = Number(this.event.minChoice);
+    const max = Number(this.event.maxChoice);
+
+    // Generate 2 random numbers within min-max range
+    const generated: number[] = [];
+    while (generated.length < this.event.numSelect) {
+      const rand = Math.floor(Math.random() * (max - min + 1)) + min;
+      generated.push(rand);
+    }
+
+    this.result = generated;
+
+
+
+  }
+
+
 
 
 

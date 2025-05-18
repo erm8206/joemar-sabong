@@ -5,13 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { WebSocketService } from 'src/app/services/web-socket-service';
 import { AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pick3-console',
   templateUrl: './pick3-console.component.html',
   styleUrls: ['./pick3-console.component.scss']
 })
-export class Pick3ConsoleComponent implements OnInit {
+export class Pick3ConsoleComponent implements OnInit, OnDestroy {
+  private disburseSub: Subscription = new Subscription();
   toggle: boolean = false;
   iframeUrl: SafeResourceUrl = '';
   result: number[] = [];
@@ -50,8 +52,40 @@ export class Pick3ConsoleComponent implements OnInit {
 
     this.getDrawDetails();
     this.lottoBetSummary();
+    this.ListenDisbursement();
 
 
+
+  }
+
+  async ListenDisbursement() {
+    this.disburseSub = this.webSocketService
+      .listen(`disbursement-lotto-${this.eventId}`)
+      .subscribe(async (data: any) => {
+        alert(data?.message);
+        this.getDrawDetails();
+        this.lottoBetSummary();
+      });
+  }
+
+  async disbursedDraw() {
+
+    this.isLoading = true;
+
+    try {
+      const response: any = await this._api.post(
+        'betopsnew',
+        {},
+        `/lotto-events/pick3/${this.eventId}`
+      );
+      this.isLoading = false;
+      this.getDrawDetails();
+      this.lottoBetSummary();
+      alert(response?.message);
+    } catch (e) {
+      this.isLoading = false;
+      alert(e ?? 'Something went wrong');
+    }
 
   }
 
@@ -161,6 +195,7 @@ export class Pick3ConsoleComponent implements OnInit {
 
       this.event = response;
 
+
       //set min and choice
       const min = Number(this.event.minChoice);
       const max = Number(this.event.maxChoice);
@@ -252,6 +287,10 @@ export class Pick3ConsoleComponent implements OnInit {
 
   removeNumber(index: number): void {
     this.result.splice(index, 1);
+  }
+
+  ngOnDestroy(): void {
+    this.disburseSub?.unsubscribe();
   }
 
 

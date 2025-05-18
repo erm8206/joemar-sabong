@@ -17,6 +17,8 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
   styleUrl: './list2d.component.scss'
 })
 export class List2dComponent implements OnInit {
+  searchChanged: Subject<string> = new Subject<string>();
+  searchTerm: string = "";
 
   from: string = '';
   to: string = '';
@@ -31,6 +33,11 @@ export class List2dComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.searchChanged.pipe(debounceTime(400)).subscribe((term) => {
+      this.searchTerm = term;
+      this.getLottoEvents();
+    });
+
 
     this.from = this.getToday();
     this.to = this.getToday();
@@ -41,6 +48,10 @@ export class List2dComponent implements OnInit {
 
 
 
+  }
+
+  onSearchChange(value: string): void {
+    this.searchChanged.next(value);
   }
 
   getTimeOnly(dateStr: string): string {
@@ -55,7 +66,7 @@ export class List2dComponent implements OnInit {
   async getLottoEvents() {
     this.isLoading = true;
     try {
-      const query = `/events-lotto/pick2?startDate=${this.from}&endDate=${this.to}`;
+      const query = `/events-lotto/pick2?startDate=${this.from}&endDate=${this.to}&search=${this.searchTerm}`;
       const res: any = await this._api.get('playernew', query);
       this.eventsLotto = res || [];
       console.log(this.eventsLotto)

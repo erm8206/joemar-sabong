@@ -48,19 +48,16 @@
                         </div>
 
                     </div>
-
-
-                    <!-- Loading spinner, visible when 'isLoading' is true -->
-                    <div *ngIf="isLoading" class="loading-container">
-                        <div class="spinner"></div>
+                    <div class="progress mt-3" *ngIf="isLoading">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            style="width: 100%">
+                            loading...
+                        </div>
                     </div>
 
                     <!-- TABLE -->
                     <div class="table-responsive">
-                        <!-- Loading spinner, visible when 'isLoading' is true -->
-                        <div *ngIf="isLoading" class="loading-container">
-                            <div class="spinner"></div>
-                        </div>
+
                         <table *ngIf="!isLoading && history.length > 0" border="1" width="100%" cellpadding="8"
                             class="table table-responsive-sm table-striped table-bordered mb-0">
                             <thead>
@@ -75,6 +72,7 @@
                                     <th>Winning Status</th>
                                     <th>Status</th>
                                     <th>Won Amount</th>
+                                    <th>Reverted</th>
                                     <!-- <th>Remaining Balance</th> -->
                                 </tr>
                             </thead>
@@ -100,6 +98,10 @@
                                     </td>
                                     <td>{{ user?.fightNumber?.status }}</td>
                                     <td>{{ user?.wonAmount }}</td>
+                                    <td *ngIf="!user?.reverted "><span style="color: rgb(30, 208, 116);">{{
+                                            user?.reverted }}</span></td>
+                                    <td *ngIf="user?.reverted "><span style="color: rgb(232, 39, 129);">{{
+                                            user?.reverted }}</span></td>
                                     <!-- <td>{{ user?.remainingPoints}}</td> -->
 
 

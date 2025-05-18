@@ -193,9 +193,10 @@
                         <div *ngIf="event?.isCancelled && !event?.result" style="padding: 20px;">
                             <h1 style="text-align: center;font-weight: bold;">Cancel Draw ?</h1>
                         </div>
-                        <button type="button" class="btn btn-info mb-2" style="width: 100%;"
+                        <button type="button" [disabled]="isLoading" class="btn btn-info mb-2" style="width: 100%;"
                             (click)="updateEventRevert()">Revert</button>
-                        <button type="button" class="btn btn-success" style="width: 100%;">Disburse</button>
+                        <button type="button" [disabled]="isLoading" class="btn btn-success" style="width: 100%;"
+                            (click)=disbursedDraw()>Disburse</button>
                     </div>
                 </div>
 

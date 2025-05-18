@@ -20,6 +20,7 @@ import { SummaryComponent } from './summary/summary.component';
 import { PlayerBetHistoryComponent } from './player-bet-history/player-bet-history.component';
 import { AgentQueryComsComponent } from './agent-query-coms/agent-query-coms.component';
 import { EventSummaryComponent } from './event-summary/event-summary.component';
+import { CommissionLogsLottoComponent } from './commission-logs-lotto/commission-logs-lotto.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { EventSummaryComponent } from './event-summary/event-summary.component';
     SummaryComponent,
     PlayerBetHistoryComponent,
     AgentQueryComsComponent,
+    CommissionLogsLottoComponent,
 
   ],
   imports: [

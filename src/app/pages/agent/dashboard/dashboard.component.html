@@ -72,6 +72,74 @@
                             </div>
                         </div>
 
+
+                        <div class="col-6">
+                            <div class="card small-widget">
+                                <div class="card-body primary">
+                                    <span class="f-light">2D Comms ({{
+                                        (getUser() | async)?.pick2Percentage
+                                        }}
+                                        %)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>{{
+                                            (getAccount() | async)?.pick2Commission | number : "1.2"
+                                            }}</h4>
+
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="card small-widget">
+                                <div class="card-body primary">
+                                    <span class="f-light">3D Comms ({{
+                                        (getUser() | async)?.suertresPercentage
+                                        }}
+                                        %)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>{{
+                                            (getAccount() | async)?.suertresCommission | number : "1.2"
+                                            }}</h4>
+
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <div class="card small-widget">
+                                <div class="card-body primary">
+                                    <span class="f-light">Pick3 Comms ({{
+                                        (getUser() | async)?.pick3Percentage
+                                        }}
+                                        %)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>{{
+                                            (getAccount() | async)?.pick3Commission | number : "1.2"
+                                            }}</h4>
+
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-6">
                             <div class="card small-widget">
                                 <div class="card-body primary">

@@ -17,6 +17,9 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
 })
 export class LottoReceiptsComponent {
 
+
+  progress = 0;
+  intervalId: any;
   from: string = '';
   to: string = '';
 
@@ -29,6 +32,8 @@ export class LottoReceiptsComponent {
   ) { }
 
   ngOnInit(): void {
+
+    this.startLoading();
 
 
     this.from = this.getToday();
@@ -48,6 +53,16 @@ export class LottoReceiptsComponent {
       minute: '2-digit',
       hour12: true // use true if you want 12-hour format
     });
+  }
+
+  startLoading() {
+    this.intervalId = setInterval(() => {
+      if (this.progress < 100) {
+        this.progress += 1;
+      } else {
+        this.progress = 0; // Loop back to 0%
+      }
+    }, 10); // Adjust speed as needed
   }
 
 
