@@ -1,0 +1,15 @@
+.game-box {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #11192e;
+    cursor: pointer;
+}
+
+.game-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.game-logo {
+    max-height: 100px;
+    object-fit: contain;
+}

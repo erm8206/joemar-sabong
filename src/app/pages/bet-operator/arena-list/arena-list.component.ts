@@ -4,6 +4,7 @@ import {
   ViewChild,
   OnDestroy,
   AfterViewInit,
+  ElementRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -14,6 +15,8 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./arena-list.component.scss'],
 })
 export class ArenaListComponent implements OnInit {
+
+
 
   colors = ['red', 'blue'];
   routes = ['meron', 'wala'];

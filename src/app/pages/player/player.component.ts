@@ -17,11 +17,15 @@ declare var $: any;
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
+  //  @ViewChild('lotoModal') lotoModal!: ElementRef;
   showAll: boolean = false;
   isLoading: boolean = false;
   messageErrorTrue: boolean = false;
   message: any = [];
   announcement: string = "";
+  modelAnnouncement: any = {
+
+  }
   model: any = {
 
   }
@@ -129,7 +133,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   async showLatestAnnouncement() {
     try {
       const response: any = await this._api.get('player', '/announcement/latest');
-      this.model = response
+      this.modelAnnouncement = response
     } catch (e) { }
   }
 
