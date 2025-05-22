@@ -109,52 +109,61 @@
                                 </div>
                             </div>
                         </div>
+                    </div>                </div>
+            </div>
+        </div>
+        <!-- End of widget section -->
+
+        <!-- Game cards container -->
+        <div class="row games-row">
+            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
+                <div class="games-card-container">
+                    <div class="games-card sabong-card" data-image="../assets/images/sabong.png">
+                        <div class="games-card-content">
+                            <h1 class="mb-1 sedgwick-ave-regular game-title">Sabong</h1>
+                            <p class="f-light game-description">Join thrilling sabong matches and win big today!</p>
+                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
+                                [queryParams]="{ tag: 'sabong' }" routerLinkActive="active">Enter</a>
+                        </div>
+                    </div>
+                </div>
+            </div>            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
+                <div class="games-card-container">
+                    <div class="games-card lotto-card" data-image="../assets/images/lotto.png">
+                        <div class="games-card-content">
+                            <h1 class="mb-1 sedgwick-ave-regular game-title">Lotto</h1>
+                            <p class="f-light game-description">Pick your numbers and win the jackpot today!</p>
+                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
-            <div class="card games-card discover">                <img class="img-fluid" src="../assets/images/sabong.png" alt="sabong">
-                <div class="card-body pt-3">
-                    <h1 class="mb-1 sedgwick-ave-regular">Sabong</h1>
-                    <p class="f-light">Join thrilling sabong matches and win big today!</p>
-                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
-                        [queryParams]="{ tag: 'sabong' }" routerLinkActive="active">Enter</a>
+            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
+                <div class="games-card-container">
+                    <div class="games-card casino-card" data-image="../assets/images/casino.png">
+                        <div class="games-card-content">
+                            <h1 class="mb-1 sedgwick-ave-regular game-title">Scatter Online</h1>
+                            <p class="f-light game-description">Play exciting slots, poker, roulette, and win big!</p>
+                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
-            <div class="card games-card discover">                <img class="img-fluid" src="../assets/images/lotto.png" alt="lotto">
-                <div class="card-body pt-3">
-                    <h1 class="mb-1 sedgwick-ave-regular">Lotto</h1>
-                    <p class="f-light">Pick your numbers and win the jackpot today!</p>
-                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
+            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
+                <div class="games-card-container">
+                    <div class="games-card vivamax-card" data-image="../assets/images/vivamax.png">
+                        <div class="games-card-content">
+                            <h5 class="mb-1 sedgwick-ave-regular game-title">VIVAMAX</h5>
+                            <p class="f-light game-description">Watch hit movies and shows only on VivaMax!</p>
+                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
+                                [queryParams]="{ tag: 'vivamax' }" routerLinkActive="active"
+                                [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
-            <div class="card games-card discover">                <img class="img-fluid" src="../assets/images/casino.png" alt="casino">
-                <div class="card-body pt-3">
-                    <h1 class="mb-1 sedgwick-ave-regular">Scatter Online</h1>
-                    <p class="f-light">Spin, deal, and win big at online casino!</p>
-                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
-            <div class="card games-card discover">                <img class="img-fluid" src="../assets/images/vivamax.png" alt="vivamax">
-                <div class="card-body pt-3">
-                    <h5 class="mb-1 sedgwick-ave-regular">VIVAMAX</h5>
-                    <p class="f-light">Watch hit movies and shows only on VivaMax!</p>
-                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
-                        [queryParams]="{ tag: 'vivamax' }" routerLinkActive="active"
-                        [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
-                </div>
-            </div>
-        </div>
+        </div> <!-- End of games-row -->
     </div>
 </div>

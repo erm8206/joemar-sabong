@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { JwtService } from 'src/app/services/jwt.service';
-import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.component';  // Import the alert modal component
+import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -10,16 +10,19 @@ import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.compon
   styleUrls: ['./login.component.scss', '../../../../assets/css/style_creds.css'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;  // Reference to the modal component
+  @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key == 'Enter' && !this.isLoading) {
       this.login();
     }
   }
+
   model: any = {};
   isLoading: boolean = false;
   loginBtnKLabel: string = "Login";
+  showPassword: boolean = false;
+
   constructor(
     private _jwt: JwtService,
     private _api: ApiService,
@@ -28,6 +31,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() { }
   ngOnDestroy() { }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   async login() {
     this.isLoading = true;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -11,7 +11,7 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   private subscription!: Subscription | undefined;
   timeLeft: any = {};
   timeLeft3D: any = {};
@@ -29,18 +29,73 @@ export class HomeComponent implements OnInit {
     "totalCashin": 0,
     "totalCashout": 0,
     "winstreakRewards": 0
-
   };
-  constructor(
+
+  private cards: NodeListOf<Element> | null = null;  constructor(
     private _api: ApiService,
     private _userSub: UserSub,
     private _jwt: JwtService,
     private _router: Router,
+    private elementRef: ElementRef,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
     this._userSub.getUserDetail();
     this.getPlayerSummaryDetails();
+  }
+
+  ngAfterViewInit(): void {
+    this.initializeCardEffects();
+  }
+
+  initializeCardEffects(): void {
+    this.cards = this.elementRef.nativeElement.querySelectorAll('.games-card');
+
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (this.cards && !isTouchDevice) {
+      this.cards.forEach((card: any) => {
+        this.renderer.listen(card, 'mousemove', (event: MouseEvent) => {
+          const rect = card.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotationIntensity = rect.width < 300 ? 30 : 20;
+          const rotateY = (x - centerX) / rotationIntensity;
+          const rotateX = (centerY - y) / rotationIntensity;
+
+
+          this.renderer.setStyle(card, 'transform',
+            `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(5px)`);
+        });
+
+
+        this.renderer.listen(card, 'mouseleave', () => {
+          this.renderer.setStyle(card, 'transform', 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)');
+          this.renderer.setStyle(card, 'transition', 'all 0.4s ease');
+        });
+
+
+        this.renderer.listen(card, 'mouseenter', () => {
+          this.renderer.setStyle(card, 'transition', 'all 0.1s ease');
+        });
+      });
+    } else if (this.cards && isTouchDevice) {
+
+      this.cards.forEach((card: any) => {
+        this.renderer.listen(card, 'touchstart', () => {
+          this.renderer.setStyle(card, 'transform', 'scale(0.98)');
+        });
+
+        this.renderer.listen(card, 'touchend', () => {
+          this.renderer.setStyle(card, 'transform', 'scale(1)');
+        });
+      });
+    }
   }
 
 

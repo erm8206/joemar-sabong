@@ -1,53 +1,45 @@
-<div class="body-creds ">
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="row border rounded-5 p-3 bg-white shadow box-area">
+<div class="container-fluid p-0">
+    <div class="row m-0">
+        <div class="col-12 p-0">
+            <div class="login-card login-dark">
+                <div>
+                    <div>
+                        <a class="logo" href="javascript:void(0)" [routerLink]="['/']">
+                            <img class="img-fluid for-light" src="assets/images/lunagazer.png" alt="logo">
+                            <img class="img-fluid for-dark" src="assets/images/lunagazer.png" alt="logo">
+                        </a>
+                    </div>
+                    <div class="login-main">
+                        <form class="theme-form" ngNativeValidate (keypress)="handleKeyboardEvent($event)">
+                            <h4>Sign in to account</h4>
+                            <p>Enter your username & password to login</p>
+                            <div class="form-group">
+                                <label class="col-form-label">Username</label>
+                                <input [(ngModel)]="model.username" name="username" class="form-control" type="text" required placeholder="Enter Username">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Password</label>
+                                <div class="form-input position-relative">
+                                    <input [(ngModel)]="model.password" name="password" class="form-control" type="password" required placeholder="*********">
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <div class="form-check">
+                                    <input class="checkbox-primary form-check-input" id="checkbox1" type="checkbox">
+                                    <label class="text-muted form-check-label" for="checkbox1">Remember password</label>
+                                </div>
 
-            <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box"
-                style="background: #103cbe;">
-                <div class="featured-image mb-3">
-                    <img src="../assets/images_creds/1.png" class="img-fluid" style="width: 250px;">
-                </div>
-                <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">
-                    Welcome Sabongero</p>
-                <small class="text-white text-wrap text-center"
-                    style="width: 17rem;font-family: 'Courier New', Courier, monospace;">Join the premier online sabong
-                    platform for real-time matches.</small>
-            </div>
+                                <div class="text-end mt-3">
+                                    <button class="btn btn-primary btn-block w-100 mt-3" type="button" (click)="login()" [disabled]="isLoading">{{loginBtnKLabel}}</button>
+                                </div>
+                            </div>
 
-            <div class="col-md-6 right-box">
-                <div class="row align-items-center">
-                    <div class="header-text mb-4">
-                        <h2>Welcome Back</h2>
-                        <p>Please login to continue</p>
+
+
+                        </form>
                     </div>
-                    <div class="input-group mb-3">
-                        <input [(ngModel)]="model.username" type="text"
-                            class="form-control form-control-lg bg-light fs-6" placeholder="Username">
-                    </div>
-                    <div class="input-group mb-1">
-                        <input [(ngModel)]="model.password" type="password"
-                            class="form-control form-control-lg bg-light fs-6" placeholder="Password">
-                    </div>
-                    <div class="input-group mb-5 d-flex justify-content-between">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="formCheck">
-                            <label for="formCheck" class="form-check-label text-secondary"><small>Remember
-                                    Me</small></label>
-                        </div>
-                        <div class="forgot">
-                            <small><a href="#">Forgot Password?</a></small>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <button class="btn btn-lg btn-primary w-100 fs-6" (click)="login()"
-                            [disabled]="isLoading">{{loginBtnKLabel}}</button>
-                    </div>
-                    <!-- <div class="row">
-                            <small>Don't have an account? <a href="signup.html">Register here</a></small>
-                        </div> -->
                 </div>
             </div>
-
         </div>
     </div>
 </div>

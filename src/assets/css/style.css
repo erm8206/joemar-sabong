@@ -39675,32 +39675,11 @@ select.crypto-select.primary {
 
 .games-card {
   text-align: center;
-  margin-top: 200px;
 }
 
-@media (max-width: 1560px) {
-  .games-card {
-    margin-top: 170px;
-  }
-}
 
-@media (max-width: 1399px) {
-  .games-card {
-    margin-top: 160px;
-  }
-}
 
-@media (max-width: 500px) {
-  .games-card {
-    margin-top: 110px;
-  }
-}
 
-@media (max-width: 420px) {
-  .games-card {
-    margin-top: 90px;
-  }
-}
 
 .games-card img {
   margin-top: -208px;
@@ -79751,7 +79730,7 @@ body.dark-only .balance-card .svg-box svg {
 }
 
 body.dark-only .f-light {
-  color: rgba(255, 255, 255, 0.6);
+  color: #fff;
 }
 
 body.dark-only .apexcharts-tooltip.light .apexcharts-tooltip-title {
