@@ -268,7 +268,7 @@
                             </button>
                         </div>
                         <div class="col-12">
-                            <button style="width: 100%;" *ngIf="
+                            <button style="width: 100%;" [disabled]="isLoading" *ngIf="
                           fightSummary.fightNumber?.status == 'disbursing' ||
                           (fightSummary.fightNumber?.status == 'settled' && fightSummary.fightNumber?.disbursed)
                         " class="btn btn-success btn-block" (click)="updateFightNext()">
