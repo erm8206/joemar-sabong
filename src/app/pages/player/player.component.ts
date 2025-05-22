@@ -28,6 +28,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   model: any = {
 
+    "currentPassword": "",
+    "newPassword": "",
+    "confirmPassword": ""
+
+
   }
   messageDetails: any = {
 
@@ -189,7 +194,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   async cancel() {
-    this.model = {};
+    this.model = {
+
+      "currentPassword": "",
+      "newPassword": "",
+      "confirmPassword": ""
+
+
+    }
     this.isLoading = false;
     this.message = [];
     this.messageErrorTrue = false;
