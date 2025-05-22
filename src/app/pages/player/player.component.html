@@ -306,10 +306,11 @@
         </div>
         <!-- Page Sidebar Ends-->
         <div class="page-body" style="padding: 0px;">
-            <div style="padding: 7px;background-color: rgb(40, 5, 100);margin: 0px;top: 9px;position: relative;">
-                <marquee behavior="scroll" direction="left">{{model?.title}} <span data-bs-toggle="modal"
+            <div *ngIf="model.title"
+                style="padding: 7px;background-color: rgb(40, 5, 100);margin: 0px;top: 9px;position: relative;">
+                <marquee behavior="scroll" direction="left">{{modelAnnouncement?.title}} <span data-bs-toggle="modal"
                         data-bs-target="#showMessageModal" style="color: aqua;"
-                        (click)="showAnnouncementDetails(model?.id)">[read more..]</span>
+                        (click)="showAnnouncementDetails(modelAnnouncement?.id)">[read more..]</span>
                 </marquee>
             </div>
 
@@ -328,7 +329,6 @@
         </footer>
     </div>
 </div>
-
 <div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">

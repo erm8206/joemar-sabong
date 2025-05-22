@@ -309,14 +309,18 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async endEvent() {
+    this.isLoading = true;
     try {
       const state = confirm(`END EVENT ?`);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       await this._api.post('betops', {}, '/end-event');
+      this.isLoading = false;
     } catch (e: any) {
       alert(e ?? 'Something went wrong');
+      this.isLoading = false;
     }
   }
 
@@ -325,6 +329,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const state = confirm(`Update to LAST CALL ?`);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       const response: any = await this._api.put(
@@ -345,6 +350,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const state = confirm(`Update to FIGHT CANCEL ?`);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       const response: any = await this._api.put('betopsnew', {}, `/winner/cancel/${this.eventId}`);
@@ -362,6 +368,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const state = confirm(`Update FIGHT CLOSE ?`);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       const response: any = await this._api.put(
@@ -379,15 +386,19 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async updateFightNext() {
+    this.isLoading = true;
     try {
       const state = confirm(`Next Fight ?`);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       await this._api.put('betopsnew', {}, `/fightNumber/next/${this.eventId}`);
+      this.isLoading = false;
       // this._toastr.success("Success ! Event Ended");
     } catch (e: any) {
       alert(e ?? 'Something went wrong');
+      this.isLoading = false;
     }
   }
 
@@ -396,6 +407,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const state = confirm(`Update FIGHT OPEN ??`);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       const response: any = await this._api.put('betopsnew', {}, `/fightNumber/open/${this.eventId}`);
@@ -409,18 +421,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  async updateMeronWinner(result: string) {
-    try {
-      let resultString = 'Update RESULT to ' + result;
-      const state = confirm(resultString);
-      if (!state) {
-        return;
-      }
-      await this._api.put('betopsnew', {}, `/winner/meron/${this.eventId}`);
-    } catch (e: any) {
-      alert(e ?? 'Something went wrong');
-    }
-  }
+
 
   getTotalBets(name: string) {
     let fName = name?.toLowerCase();
@@ -469,6 +470,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       let resultString = 'Update RESULT to ' + result;
       const state = confirm(resultString);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       const response: any = await this._api.put(
@@ -483,24 +485,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isLoading = false;
     }
   }
-  async updateWalaWinner(result: string) {
-    try {
-      let resultString = 'Update RESULT to ' + result;
-      const state = confirm(resultString);
-      if (!state) {
-        return;
-      }
-      await this._api.put('betopsnew', {}, `/winner/wala/${this.eventId}`);
-    } catch (e: any) {
-      alert(e ?? 'Something went wrong');
-    }
-  }
+
 
   async updateDrawWinner() {
     this.isLoading = true;
     try {
       const state = confirm(`Update RESULT to DRAW ?`);
       if (!state) {
+        this.isLoading = false;
         return;
       }
       const response: any = await this._api.put('betopsnew', {}, `/winner/draw/${this.eventId}`);

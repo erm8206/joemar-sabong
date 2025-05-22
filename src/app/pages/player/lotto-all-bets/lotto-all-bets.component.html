@@ -71,6 +71,7 @@
                                     <th>Ticket #</th>
                                     <th>Choice</th>
                                     <th>Amount</th>
+                                    <th>Won Amount</th>
                                     <th>Type</th>
                                     <th>Remarks</th>
                                     <th>Result</th>
@@ -95,6 +96,7 @@
                                         </div>
                                     </td>
                                     <td>{{ item?.amount}}</td>
+                                    <td>{{ item?.wonAmount}}</td>
                                     <td>{{ item?.type}}</td>
                                     <td>{{ item?.remarks}}</td>
                                     <td *ngIf="!item?.result">No result yet</td>

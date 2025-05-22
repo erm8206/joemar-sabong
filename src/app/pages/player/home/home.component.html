@@ -109,7 +109,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- End of widget section -->
@@ -122,18 +123,21 @@
                         <div class="games-card-content">
                             <h1 class="mb-1 sedgwick-ave-regular game-title">Sabong</h1>
                             <p class="f-light game-description">Join thrilling sabong matches and win big today!</p>
-                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
-                                [queryParams]="{ tag: 'sabong' }" routerLinkActive="active">Enter</a>
+                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500"
+                                routerLink="/player/sabong-home" [queryParams]="{ tag: 'sabong' }"
+                                routerLinkActive="active">Enter</a>
                         </div>
                     </div>
                 </div>
-            </div>            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
                 <div class="games-card-container">
                     <div class="games-card lotto-card" data-image="../assets/images/lotto.png">
                         <div class="games-card-content">
                             <h1 class="mb-1 sedgwick-ave-regular game-title">Lotto</h1>
                             <p class="f-light game-description">Pick your numbers and win the jackpot today!</p>
-                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
+                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500" data-bs-toggle="modal"
+                                data-bs-target="#lottoGames">Play</a>
                         </div>
                     </div>
                 </div>
@@ -157,13 +161,61 @@
                         <div class="games-card-content">
                             <h5 class="mb-1 sedgwick-ave-regular game-title">VIVAMAX</h5>
                             <p class="f-light game-description">Watch hit movies and shows only on VivaMax!</p>
-                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
-                                [queryParams]="{ tag: 'vivamax' }" routerLinkActive="active"
-                                [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
+                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500"
+                                routerLink="/player/sabong-home" [queryParams]="{ tag: 'vivamax' }"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div> <!-- End of games-row -->
+    </div>
+</div>
+<div class="modal fade" id="lottoGames" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="messageModalLabel">
+                    <i class="bi bi-envelope-paper-fill"></i> Lotto Games
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-4">
+                        <div class="game-box shadow rounded-4 p-3" routerLink="/player/list-2d"
+                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <img src="assets/images/2dlotto.png" class="img-fluid game-logo mb-2" alt="3D Lotto">
+                            <h6 class="mt-2">2D Lotto</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="game-box shadow rounded-4 p-3" routerLink="/player/list-3d"
+                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <img src="assets/images/3dlotto.png" class="img-fluid game-logo mb-2" alt="4D Lotto">
+                            <h6 class="mt-2">3D Lotto</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="game-box shadow rounded-4 p-3" routerLink="/player/list-pick3"
+                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <img src="assets/images/pick3.png" class="img-fluid game-logo mb-2" alt="6D Lotto">
+                            <h6 class="mt-2">Pick3</h6>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
     </div>
 </div>
