@@ -4,9 +4,9 @@
 
 export const environment = {
   production: true,
-  baseUrl: 'https://api.allinoneconsole.live/api',
+  baseUrl: 'https://devxxx-test.azurewebsites.net/api',
   refUrl: 'https://allinoneconsole.live/play/signup',
-  webSocketUrl: 'https://api.allinoneconsole.live/talpakanhub',
+  webSocketUrl: 'https://devxxx-test.azurewebsites.net/talpakanhub',
   gameServerUrl: 'https://games.example.com', // Added for casino games
   webSocketConfig: {
     withCredentials: true,
