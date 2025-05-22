@@ -41,9 +41,9 @@ export class List2dComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-    this.from = this.getToday();
-    this.to = this.getToday();
+    const today = new Date();
+    this.from = this.formatDate2(today, 0, 0);
+    this.to = this.formatDate2(today, 23, 59);
 
     this.searchChanged.pipe(debounceTime(400)).subscribe((term) => {
       this.searchTerm = term;
@@ -106,6 +106,19 @@ export class List2dComponent implements OnInit {
   getToday(): string {
     const today = new Date();
     return today.toISOString().substring(0, 10); // returns format 'yyyy-MM-dd'
+  }
+
+  formatDate2(date: Date, hours: number, minutes: number): string {
+    const hourString = hours < 10 ? '0' + hours : hours.toString();
+    const minuteString = minutes < 10 ? '0' + minutes : minutes.toString();
+    return `${this.getDateString(date)}T${hourString}:${minuteString}`;
+  }
+
+  getDateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
 

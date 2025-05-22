@@ -84,38 +84,41 @@
                                             Deactivate
                                         </button>
                                         <button style="width: 100%;font-size: 11px;; margin-top: 5px"
-                                            [disabled]="isLoading" (click)="setComs(item.id,'sabong')"
+                                            [disabled]="isLoading" (click)="setComs(item.id)"
                                             class="btn btn-primary btn-sm">
                                             <i class="fa fa-money"></i>
                                             Set Sabong Comms
                                         </button>
-                                        <button style="width: 100%;font-size: 11px; margin-top: 5px" type="button"
-                                            class="btn btn-success btn-sm"
-                                            [routerLink]="'/agent/view-ctw-logs/' + item.id"
-                                            [queryParams]="{ name: item.username }">View CTW Logs</button>
 
 
 
-
-                                        <!-- <div><button style="width: 100%;font-size: 11px;; margin-top: 5px"
-                                                [disabled]="isLoading" (click)="setComs(item._id,'ez2')"
+                                        <div><button style="width: 100%;font-size: 11px;; margin-top: 5px"
+                                                [disabled]="isLoading" (click)="setComsLotto(item.id,'pick2')"
                                                 class="btn btn-primary btn-sm">
                                                 <i class="fa fa-money"></i>
                                                 Set 2D Comms
                                             </button></div>
                                         <div><button style="width: 100%;font-size: 11px;; margin-top: 5px"
-                                                [disabled]="isLoading" (click)="setComs(item._id,'suertres')"
+                                                [disabled]="isLoading" (click)="setComsLotto(item.id,'suertres')"
                                                 class="btn btn-primary btn-sm">
                                                 <i class="fa fa-money"></i>
                                                 Set 3D Comms
                                             </button></div>
 
                                         <div><button style="width: 100%;font-size: 11px;; margin-top: 5px"
-                                                [disabled]="isLoading" (click)="setComs(item._id,'pick3')"
+                                                [disabled]="isLoading" (click)="setComsLotto(item.id,'pick3')"
                                                 class="btn btn-primary btn-sm">
                                                 <i class="fa fa-money"></i>
                                                 Set Pick3 Comms
-                                            </button></div> -->
+                                            </button></div>
+
+
+                                        <button style="width: 100%;font-size: 11px; margin-top: 5px" type="button"
+                                            class="btn btn-success btn-sm"
+                                            [routerLink]="'/agent/view-ctw-logs/' + item.id"
+                                            [queryParams]="{ name: item.username }">View CTW Logs</button>
+
+
 
 
 

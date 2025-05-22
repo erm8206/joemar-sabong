@@ -179,6 +179,23 @@
                                                 user?.amount}} </span> reverted back to your wallet
                                         </span>
 
+
+                                        <span
+                                            *ngIf="user.activity == 'suertres-revert' && userLoggendin.username === user.receiver.username">
+                                            Worth of <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span> reverted back to your wallet
+                                        </span>
+                                        <span
+                                            *ngIf="user.activity == 'pick2-revert' && userLoggendin.username === user.receiver.username">
+                                            Worth of <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span> reverted back to your wallet
+                                        </span>
+                                        <span
+                                            *ngIf="user.activity == 'pick3-revert' && userLoggendin.username === user.receiver.username">
+                                            Worth of <span style="color: green;font-weight: bolder;">+{{
+                                                user?.amount}} </span> reverted back to your wallet
+                                        </span>
+
                                         <span *ngIf="user.activity == 'master revert'">
                                             Worth <span style="color: red;font-weight: bolder;">-{{
                                                 user?.amount}}</span> was reverted

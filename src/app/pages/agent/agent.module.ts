@@ -21,6 +21,10 @@ import { PlayerBetHistoryComponent } from './player-bet-history/player-bet-histo
 import { AgentQueryComsComponent } from './agent-query-coms/agent-query-coms.component';
 import { EventSummaryComponent } from './event-summary/event-summary.component';
 import { CommissionLogsLottoComponent } from './commission-logs-lotto/commission-logs-lotto.component';
+import { LottoEventSummaryComponent } from './lotto-event-summary/lotto-event-summary.component';
+import { PlayerBetPick2HistoryComponent } from './player-bet-pick2-history/player-bet-pick2-history.component';
+import { PlayerBetPick3HistoryComponent } from './player-bet-pick3-history/player-bet-pick3-history.component';
+import { PlayerBetSuertresHistoryComponent } from './player-bet-suertres-history/player-bet-suertres-history.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +44,10 @@ import { CommissionLogsLottoComponent } from './commission-logs-lotto/commission
     PlayerBetHistoryComponent,
     AgentQueryComsComponent,
     CommissionLogsLottoComponent,
+    LottoEventSummaryComponent,
+    PlayerBetPick2HistoryComponent,
+    PlayerBetPick3HistoryComponent,
+    PlayerBetSuertresHistoryComponent,
 
   ],
   imports: [

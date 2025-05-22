@@ -37,6 +37,40 @@ export class UsersComponent implements OnInit {
     this.getUsers();
   }
 
+  async autoLogout(userId: string) {
+    this.isLoading = true;
+    try {
+
+      const response: any = await this._api.post('user',
+        { userId },
+        '/sign-out');
+
+      alert('Signout Success');
+      this.isLoading = false;
+
+    } catch (e) {
+      alert(e ?? 'Server Error');
+      this.isLoading = false;
+    }
+  }
+
+  async refreshUser(userId: string) {
+    this.isLoading = true;
+    try {
+
+      const response: any = await this._api.post('user',
+        { userId },
+        '/refresh');
+
+      alert('Refresh Success');
+      this.isLoading = false;
+
+    } catch (e) {
+      alert(e ?? 'Server Error');
+      this.isLoading = false;
+    }
+  }
+
   async getUsers(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {

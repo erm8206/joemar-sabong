@@ -94,36 +94,36 @@
                                         </button>
 
 
-                                        <button [disabled]="isLoading" class="btn btn-success btn-sm"
+                                        <button [disabled]="isLoading" class="btn btn-outline-primary btn-sm"
                                             [routerLink]="'/agent/player-bet-history/' + item.id"
                                             [queryParams]="{ name: item.username,type:'sabong'  }">
                                             <i class="fa fa-user-secret"></i>
                                             View Sabong Bet History
                                         </button>
 
-                                        <!-- <button [disabled]="isLoading" class="btn btn-success btn-sm"
-                                            [routerLink]="'/agent/player-bet-history/' + item._id"
-                                            [queryParams]="{ name: item.username ,type:'ez2' }">
+                                        <button [disabled]="isLoading" class="btn btn-outline-primary btn-sm"
+                                            [routerLink]="'/agent/player-bet-pick2-logs/' + item.id"
+                                            [queryParams]="{ name: item.username ,type:'pick2' }">
                                             <i class="fa fa-user-secret"></i>
-                                            View EZ2 Bet History
+                                            View 2D Bet History
                                         </button>
 
 
-                                        <button [disabled]="isLoading" class="btn btn-success btn-sm"
-                                            [routerLink]="'/agent/player-bet-history/' + item._id"
+                                        <button [disabled]="isLoading" class="btn btn-outline-primary btn-sm"
+                                            [routerLink]="'/agent/player-bet-suertres-logs/' + item.id"
                                             [queryParams]="{ name: item.username ,type:'suertres' }">
                                             <i class="fa fa-user-secret"></i>
-                                            View 3D Lotto Bet History
+                                            View Suertres Lotto Bet History
                                         </button>
 
 
 
-                                        <button [disabled]="isLoading" class="btn btn-success btn-sm"
-                                            [routerLink]="'/agent/player-bet-history/' + item._id"
+                                        <button [disabled]="isLoading" class="btn btn-outline-primary btn-sm"
+                                            [routerLink]="'/agent/player-bet-pick3-logs/' + item.id"
                                             [queryParams]="{ name: item.username ,type:'pick3' }">
                                             <i class="fa fa-user-secret"></i>
                                             View Pick3 Bet History
-                                        </button> -->
+                                        </button>
 
 
                                     </th>

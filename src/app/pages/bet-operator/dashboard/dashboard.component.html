@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <h3>Event Name:
-                    {{ fightSummary.fightEvent?.name || "No event yet" }}</h3>
+                    {{ event?.name || "No event yet" }}</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -111,71 +111,34 @@
                             <img src="../assets/images/fight.png" alt="Fight Image">
                             <div class="fight-number">5</div>
                         </div> -->
-                        <div class="card" *ngIf="event.leftName?.toLowerCase() == 'meron'"
-                            [ngClass]="fightSummary.fightEvent?.leftColor == 'blue' ? 'wala' : 'meron'">
+                        <div class="card" [ngClass]="event?.left?.color== 'blue' ? 'wala' : 'meron'">
                             <div class="card-body">
 
                                 <h4 class="text-white mb-3" style="font-weight: bolder">
-                                    {{ fightSummary.fightEvent?.leftName | uppercase }}
+                                    {{event?.left?.name | uppercase }}
                                 </h4>
                                 <h1 style="color: yellow">
                                     {{
-                                    getTotalBets(fightSummary.fightEvent?.leftName)
+                                    getTotalBets(event?.left?.route)
                                     | number : "1.0" || 0
                                     }}
                                 </h1>
                                 <h2 style="color: green">
                                     {{
-                                    getTotalFakeBets(fightSummary.fightEvent?.leftName)
+                                    getTotalFakeBets(event?.left?.route)
                                     | number : "1.0" || 0
                                     }}
                                 </h2>
                                 <h2 style="color: #31d5d5">
                                     {{
-                                    getTotalRealBets(fightSummary.fightEvent?.leftName)
+                                    getTotalRealBets(event?.left?.route)
                                     | number : "1.0" || 0
                                     }}
                                 </h2>
                                 <!-- <h2 style="color: #f5365c">{{ users.meronUsers || 0 }}</h2> -->
                                 <h3 style="color: white">
                                     PAYOUT =
-                                    {{ getPercentage(fightSummary.fightEvent?.leftName) || 0 }}
-                                </h3>
-
-
-
-                            </div>
-
-                        </div>
-                        <div class="card" *ngIf="event.leftName?.toLowerCase() == 'wala'"
-                            [ngClass]="fightSummary.fightEvent?.leftColor == 'blue' ? 'wala' : 'meron'">
-                            <div class="card-body">
-
-                                <h4 class="text-white mb-3" style="font-weight: bolder">
-                                    {{ fightSummary.fightEvent?.leftName | uppercase }}
-                                </h4>
-                                <h1 style="color: yellow">
-                                    {{
-                                    getTotalBets(fightSummary.fightEvent?.leftName)
-                                    | number : "1.0" || 0
-                                    }}
-                                </h1>
-                                <h2 style="color: green">
-                                    {{
-                                    getTotalFakeBets(fightSummary.fightEvent?.leftName)
-                                    | number : "1.0" || 0
-                                    }}
-                                </h2>
-                                <h2 style="color: #31d5d5">
-                                    {{
-                                    getTotalRealBets(fightSummary.fightEvent?.leftName)
-                                    | number : "1.0" || 0
-                                    }}
-                                </h2>
-                                <!-- <h2 style="color: #f5365c">{{ users.meronUsers || 0 }}</h2> -->
-                                <h3 style="color: white">
-                                    PAYOUT =
-                                    {{ getPercentage(fightSummary.fightEvent?.leftName) || 0 }}
+                                    {{ getPercentage(event?.left?.route) || 0 }}
                                 </h3>
 
 
@@ -184,73 +147,34 @@
 
                         </div>
 
-
-
-                        <div class="card" *ngIf="event.rightName?.toLowerCase() == 'meron'"
-                            [ngClass]="fightSummary.fightEvent?.rightColor == 'red' ? 'meron' : 'wala'">
+                        <div class="card" [ngClass]="event?.right?.color== 'blue' ? 'wala' : 'meron'">
                             <div class="card-body">
 
                                 <h4 class="text-white mb-3" style="font-weight: bolder">
-                                    {{ fightSummary.fightEvent?.rightName | uppercase }}
+                                    {{event?.right?.name | uppercase }}
                                 </h4>
                                 <h1 style="color: yellow">
                                     {{
-                                    getTotalBets(fightSummary.fightEvent?.rightName)
+                                    getTotalBets(event?.right?.route)
                                     | number : "1.0" || 0
                                     }}
                                 </h1>
                                 <h2 style="color: green">
                                     {{
-                                    getTotalFakeBets(fightSummary.fightEvent?.rightName)
+                                    getTotalFakeBets(event?.right?.route)
                                     | number : "1.0" || 0
                                     }}
                                 </h2>
                                 <h2 style="color: #31d5d5">
                                     {{
-                                    getTotalRealBets(fightSummary.fightEvent?.rightName)
+                                    getTotalRealBets(event?.right?.route)
                                     | number : "1.0" || 0
                                     }}
                                 </h2>
                                 <!-- <h2 style="color: #f5365c">{{ users.meronUsers || 0 }}</h2> -->
                                 <h3 style="color: white">
                                     PAYOUT =
-                                    {{ getPercentage(fightSummary.fightEvent?.rightName) || 0 }}
-                                </h3>
-
-
-
-                            </div>
-
-                        </div>
-                        <div class="card" *ngIf="event.rightName?.toLowerCase() == 'wala'"
-                            [ngClass]="fightSummary.fightEvent?.rightColor == 'red' ? 'meron' : 'wala'">
-                            <div class="card-body">
-
-                                <h4 class="text-white mb-3" style="font-weight: bolder">
-                                    {{ fightSummary.fightEvent?.rightName | uppercase }}
-                                </h4>
-                                <h1 style="color: yellow">
-                                    {{
-                                    getTotalBets(fightSummary.fightEvent?.rightName)
-                                    | number : "1.0" || 0
-                                    }}
-                                </h1>
-                                <h2 style="color: green">
-                                    {{
-                                    getTotalFakeBets(fightSummary.fightEvent?.rightName)
-                                    | number : "1.0" || 0
-                                    }}
-                                </h2>
-                                <h2 style="color: #31d5d5">
-                                    {{
-                                    getTotalRealBets(fightSummary.fightEvent?.rightName)
-                                    | number : "1.0" || 0
-                                    }}
-                                </h2>
-                                <!-- <h2 style="color: #f5365c">{{ users.meronUsers || 0 }}</h2> -->
-                                <h3 style="color: white">
-                                    PAYOUT =
-                                    {{ getPercentage(fightSummary.fightEvent?.rightName) || 0 }}
+                                    {{ getPercentage(event?.right?.route) || 0 }}
                                 </h3>
 
 
@@ -296,17 +220,17 @@
                     !fightSummary.fightNumber?.result
                   ">
                         <div class="col-md-12 text-center">
-                            <button style="width: 100%;" (click)="updateWinner(fightSummary.fightEvent?.leftName)"
-                                class="btn mb-2" [disabled]="isLoading"
-                                [ngClass]="fightSummary.fightEvent?.leftColor == 'red' ? 'btn-danger' : 'btn-info'">
-                                WINNER {{ fightSummary.fightEvent?.leftName }}
+                            <button style="width: 100%;" (click)="updateWinner(event?.left?.route)" class="btn mb-2"
+                                [disabled]="isLoading"
+                                [ngClass]="event?.left?.color == 'red' ? 'btn-danger' : 'btn-info'">
+                                WINNER {{ event?.left?.name }}
                             </button>
                         </div>
                         <div class="col-md-12 text-center">
-                            <button style="width: 100%;" (click)="updateWinner(fightSummary.fightEvent?.rightName)"
+                            <button style="width: 100%;" (click)="updateWinner(event?.right?.route)"
                                 [disabled]="isLoading" class="btn mb-2"
-                                [ngClass]="fightSummary.fightEvent?.rightColor == 'red' ? 'btn-danger' : 'btn-info'">
-                                WINNER {{ fightSummary.fightEvent?.rightName }}
+                                [ngClass]="event?.right?.color == 'red' ? 'btn-danger' : 'btn-info'">
+                                WINNER {{ event?.right?.name }}
                             </button>
                         </div>
                         <div class="col-md-12 text-center">

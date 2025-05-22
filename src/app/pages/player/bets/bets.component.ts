@@ -35,16 +35,10 @@ export class BetsComponent implements OnInit {
       this.getBetSummary();
     });
     this.getBetSummary();
-    this.getAnnouncement();
     this._userSub.getUserDetail();
   }
 
-  async getAnnouncement() {
-    try {
-      const response: any = await this._api.get('user', '/announcement');
-      this.announcement = response?.value || '';
-    } catch (e) { }
-  }
+
 
   getFloorValue(value: number) {
     return Math.floor(value);

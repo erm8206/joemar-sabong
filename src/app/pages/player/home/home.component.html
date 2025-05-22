@@ -48,7 +48,9 @@
                                     <span class="f-light">WS Rewards (Coming Soon)</span>
                                     <div class="d-flex align-items-end gap-1">
                                         <h4>₱0</h4>
-                                        <button class="btn btn-sm text-danger">Transfer to Wallet</button>
+                                        <button class="btn btn-sm text-danger">{{
+                                            model?.winStreakRewards | number : "1.2"
+                                            }}</button>
                                     </div>
                                     <div class="bg-gradient">
                                         <svg class="stroke-icon svg-fill">
@@ -78,7 +80,9 @@
                                 <div class="card-body secondary">
                                     <span class="f-light">Total Withdraw</span>
                                     <div class="d-flex align-items-end gap-1">
-                                        <h4>₱0</h4>
+                                        <h4>₱{{
+                                            model?.totalCashOut | number : "1.2"
+                                            }}</h4>
                                     </div>
                                     <div class="bg-gradient">
                                         <svg class="stroke-icon svg-fill">
@@ -93,7 +97,9 @@
                                 <div class="card-body success">
                                     <span class="f-light">Total Cash In</span>
                                     <div class="d-flex align-items-end gap-1">
-                                        <h4>₱0</h4>
+                                        <h4>₱{{
+                                            model?.totalCashIn | number : "1.2"
+                                            }}</h4>
                                     </div>
                                     <div class="bg-gradient">
                                         <svg class="stroke-icon svg-fill">
@@ -114,7 +120,8 @@
                 <div class="card-body pt-3">
                     <h5 class="mb-1">Sabong</h5>
                     <p class="f-light">Bet, Watch, and Experience the Ultimate Cockfighting Action!</p>
-                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home">Play
+                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
+                        [queryParams]="{ tag: 'sabong' }" routerLinkActive="active">Play
                         Now</a>
                 </div>
             </div>
@@ -148,7 +155,9 @@
                 <div class="card-body pt-3">
                     <h5 class="mb-1">VIVAMAX</h5>
                     <p class="f-light">Watch the latest movies and exclusive content on Viva Max!</p>
-                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
+                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
+                        [queryParams]="{ tag: 'vivamax' }" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
                 </div>
             </div>
         </div>

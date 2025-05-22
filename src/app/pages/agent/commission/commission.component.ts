@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { UserAccount, UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-commission',
@@ -10,6 +12,9 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
   styleUrls: ['./commission.component.scss'],
 })
 export class CommissionComponent implements OnInit {
+  searchSubject: Subject<string> = new Subject<string>();
+  // Search
+  searchTerm: string = '';
 
   // Pagination data from response
   totalCount: number = 0;
@@ -24,9 +29,17 @@ export class CommissionComponent implements OnInit {
   constructor(private _userSub: UserSub, private _api: ApiService) { }
 
   ngOnInit(): void {
+    this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
+      this.pageNumber = 1;
+      this.getCommissionConvertHistory();
+    });
 
     this._userSub.getUserDetail();
     this.getCommissionConvertHistory();
+  }
+
+  onSearchInputChange(): void {
+    this.searchSubject.next(this.searchTerm);
   }
 
   public getAccount(): Observable<UserAccount> {
@@ -37,9 +50,23 @@ export class CommissionComponent implements OnInit {
     return this._userSub.getUser();
   }
 
+  preventDecimal(event: KeyboardEvent) {
+    if (event.key === '.' || event.key === ',' || event.key === 'e') {
+      event.preventDefault();
+    }
+  }
+  blockDecimalPaste(event: ClipboardEvent): void {
+    const pastedText = event.clipboardData?.getData('text') || '';
+    if (pastedText.includes('.') || pastedText.includes(',') || /e/i.test(pastedText)) {
+      event.preventDefault();
+    }
+  }
+
+
+
   async getCommissionConvertHistory(page: number = 1): Promise<void> {
     try {
-      const res: any = await this._api.get('points', '/convert-commission');
+      const res: any = await this._api.get('points', `/convert-commission?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`);
 
 
       this.commissionConvertHistory = res.records || [];
@@ -77,12 +104,12 @@ export class CommissionComponent implements OnInit {
 
     if (this.gameType == 'sabong') {
       try {
-        await this._api.post(
+        const response: any = await this._api.post(
           'points',
           { amount: this.amount },
           '/convert-commission'
         );
-        alert('Success');
+        alert(response.message);
         this._userSub.getUserDetail();
         this.isLoading = false;
         this.getCommissionConvertHistory();
@@ -93,12 +120,12 @@ export class CommissionComponent implements OnInit {
     }
     else {
       try {
-        await this._api.post(
+        const response: any = await this._api.post(
           'points',
           { amount: this.amount, gameType: this.gameType },
           '/convert-commission-lotto'
         );
-        alert('Success');
+        alert(response.message);
         this._userSub.getUserDetail();
         this.isLoading = false;
         this.getCommissionConvertHistory();

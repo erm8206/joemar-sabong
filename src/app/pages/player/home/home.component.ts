@@ -25,6 +25,12 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = false;
   prefDraw: any = [];
   prefDraw3D: any = [];
+  model: any = {
+    "totalCashin": 0,
+    "totalCashout": 0,
+    "winstreakRewards": 0
+
+  };
   constructor(
     private _api: ApiService,
     private _userSub: UserSub,
@@ -34,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this._userSub.getUserDetail();
-    this.getAnnouncement();
+    this.getPlayerSummaryDetails();
   }
 
 
@@ -62,13 +68,13 @@ export class HomeComponent implements OnInit {
       this.isLoading = false;
     }
   }
-  async getAnnouncement() {
+
+  async getPlayerSummaryDetails() {
     try {
-      const response: any = await this._api.get('user', '/announcement');
-      this.announcement = response?.value || '';
+      const result: any = await this._api.get('playernew', `/summary`);
+      this.model = result;
     } catch (e) { }
   }
-
 
 
 

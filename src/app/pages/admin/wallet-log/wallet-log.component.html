@@ -79,8 +79,23 @@
                                 <tr *ngFor="let user of walletlogs; let i = index">
                                     <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
                                     <td>
+                                        <span *ngIf="user.activity == 'sabong comms withdraw'"
+                                            style="color: green;font-weight: bolder;">
+                                            +{{ user?.amount}}
+                                        </span>
 
-
+                                        <span *ngIf="user.activity == 'suertres comms withdraw'"
+                                            style="color: green;font-weight: bolder;">
+                                            +{{ user?.amount}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'pick2 comms withdraw'"
+                                            style="color: green;font-weight: bolder;">
+                                            +{{ user?.amount}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'pick3 comms withdraw'"
+                                            style="color: green;font-weight: bolder;">
+                                            +{{ user?.amount}}
+                                        </span>
                                         <span *ngIf="user.activity == 'manual cashin'"
                                             style="color: red;font-weight: bolder;">
                                             -{{ user?.amount}}
@@ -91,6 +106,18 @@
                                         </span>
                                     </td>
                                     <td>
+                                        <span *ngIf="user.activity == 'sabong comms withdraw'">
+                                            {{ user?.sender?.username}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'suertres comms withdraw'">
+                                            {{ user?.sender?.username}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'pick2 comms withdraw'">
+                                            {{ user?.sender?.username}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'pick3 comms withdraw'">
+                                            {{ user?.sender?.username}}
+                                        </span>
                                         <span *ngIf="user.activity == 'manual cashin'">
                                             {{ user?.sender?.username}}
                                         </span>
@@ -100,6 +127,18 @@
 
                                     </td>
                                     <td>
+                                        <span *ngIf="user.activity == 'sabong comms withdraw'">
+                                            {{ user?.receiver?.username}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'suertres comms withdraw'">
+                                            {{ user?.receiver?.username}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'pick2 comms withdraw'">
+                                            {{ user?.receiver?.username}}
+                                        </span>
+                                        <span *ngIf="user.activity == 'pick3 comms withdraw'">
+                                            {{ user?.receiver?.username}}
+                                        </span>
                                         <span *ngIf="user.activity == 'manual cashin'">
                                             {{ user?.receiver?.username}}
                                         </span>

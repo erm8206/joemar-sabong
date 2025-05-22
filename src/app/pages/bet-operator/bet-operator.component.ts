@@ -17,6 +17,9 @@ export class BetOperatorComponent implements OnInit, AfterViewInit {
   user: any = {};
   model: any = {};
   announcement: string = "";
+
+  title: string = "";
+  body: string = "";
   constructor(
     private _userSub: UserSub,
     private _jwt: JwtService,
@@ -25,6 +28,7 @@ export class BetOperatorComponent implements OnInit, AfterViewInit {
   ) { }
   ngOnInit(): void {
     this._userSub.getUserDetail();
+
   }
 
   ngAfterViewInit(): void {
@@ -54,34 +58,10 @@ export class BetOperatorComponent implements OnInit, AfterViewInit {
   }
 
 
-  async setAnnouncement() {
-    if (!this.announcement) {
-      alert('Please input your announcement!');
-      return;
-    }
-    this.isLoading = true;
-    try {
-      const result: any = await this._api.post(
-        'betopsnew',
-        { announcement: this.announcement },
-        '/announcement'
-      );
-      alert('Success ! Announcement has been set');
-      this.isLoading = false;
-    } catch (e) {
-      alert(e ?? 'Something went wrong');
-      this.isLoading = false;
-    }
-  }
 
 
 
-  async getAnnouncement() {
-    try {
-      const response: any = await this._api.get('betopsnew', '/announcement');
-      this.announcement = response;
-    } catch (e) { }
-  }
+
   public getUserInfo(): Observable<UserModel> {
     return this._userSub.getUser();
   }
@@ -130,6 +110,48 @@ export class BetOperatorComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+
+  async setAnnouncement() {
+    this.isLoading = true;
+
+    if (!this.title) {
+      alert('Please set a title');
+      this.isLoading = false;
+      return
+    }
+    if (!this.body) {
+      alert('Please set a body message');
+      this.isLoading = false;
+      return
+    }
+    try {
+      const result: any = await this._api.post(
+        'betopsnew',
+        { title: this.title, body: this.body },
+        '/announcement '
+      );
+      alert('Success ! Announcement has been set');
+      // await this.getAnnouncement();
+      this.isLoading = false;
+    } catch (e) {
+      alert(e ?? 'something went wrong!')
+      this.isLoading = false;
+    }
+
+
+  }
+
+  async getAnnouncement() {
+    try {
+      const response: any = await this._api.get('betopsnew', '/announcement');
+      this.title = response?.title || '';
+      this.body = response?.body || '';
+    } catch (e) { }
+  }
+
+
+
 
   logout() {
     this._jwt.removeToken();

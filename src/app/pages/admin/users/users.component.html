@@ -88,10 +88,23 @@
                                     <td>{{ user?.account?.commission }}</td>
                                     <td>
                                         <button (click)="changePass(user.id)" [disabled]="isLoading"
-                                            class="btn btn-success btn-sm">
+                                            class="btn btn-outline-success btn-sm">
                                             <i class="fa fa-check"></i>
                                             Change Pass
                                         </button>
+
+                                        <button (click)="autoLogout(user.id)" [disabled]="isLoading"
+                                            class="btn btn-outline-primary btn-sm">
+                                            <i class="fa-solid fa-right-from-bracket"></i>
+                                            Auto Logout
+                                        </button>
+
+                                        <button (click)="refreshUser(user.id)" [disabled]="isLoading"
+                                            class="btn btn-outline-secondary btn-sm">
+                                            <i class="fa-solid fa-arrows-rotate"></i>
+                                            Refresh
+                                        </button>
+
                                     </td>
                                 </tr>
                             </tbody>

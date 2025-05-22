@@ -5,22 +5,50 @@ import { UserAccount, UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { environment } from 'src/environments/environment';
 
+
+import { ElementRef, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
+import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.component';  // Import the alert modal component
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { OnDestroy, AfterViewInit } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from 'src/app/services/web-socket-service';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
+  isLoading: boolean = false;
+  dtOptions: DataTables.Settings = {};
+  @ViewChild(DataTableDirective, { static: false }) dtElement!: DataTableDirective;
+  dtTrigger: Subject<any> = new Subject();
+
+  commsWithdrawLogs: any = {};
   commissionConfig: any = {};
   commissionConfigEz2: any = {};
   commissionConfigPick3: any = {};
   commissionConfigGameEnding: any = {};
   commissionConfigSuertres: any = {};
   decimal: number = 0;
+  gameType: string = ""
   constructor(private _userSub: UserSub, private _api: ApiService) { }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      lengthChange: true,
+      pageLength: 10,
+      search: true,
+      processing: true,
+      ordering: true,
+    };
     this.getDecimal();
+    this.getCommsWithdrawLogs("");
 
   }
   async updatePlasada(commissionType: string) {
@@ -208,6 +236,7 @@ export class DashboardComponent implements OnInit {
           '/withdraw-coms'
         );
         await this._userSub.getUserDetail();
+        await this.getCommsWithdrawLogs(this.gameType)
         alert('Success !');
       }
     } catch (e) {
@@ -233,6 +262,48 @@ export class DashboardComponent implements OnInit {
     } catch (e) {
       alert(e ?? 'Something went wrong!')
     }
+
+  }
+
+
+
+
+
+  async getCommsWithdrawLogs(gameType: string) {
+    this.isLoading = true;
+
+    this.gameType = gameType;
+
+    try {
+      const response: any = await this._api.get(
+        'admin',
+        `/commission-logs/?type=${gameType}`
+      );
+
+      this.commsWithdrawLogs = response;
+      this.rerender();
+      this.isLoading = false;
+
+    } catch (e) {
+      alert(e ?? 'Something went wrong!');
+      this.isLoading = false;
+    }
+  }
+  rerender(): void {
+    this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next(this.dtOptions);
+    });
+  }
+  ngAfterViewInit(): void {
+
+    this.dtTrigger.next(this.dtOptions);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }
 

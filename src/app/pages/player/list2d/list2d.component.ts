@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { debounceTime } from 'rxjs/operators';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
+import { data } from 'jquery';
 
 
 @Component({
@@ -37,10 +38,10 @@ export class List2dComponent implements OnInit {
       this.searchTerm = term;
       this.getLottoEvents();
     });
+    const today = new Date();
 
-
-    this.from = this.getToday();
-    this.to = this.getToday();
+    this.from = this.formatDate2(today, 0, 0);
+    this.to = this.formatDate2(today, 23, 59);
 
     this.getLottoEvents();
     this._userSub.getUserDetail();
@@ -76,6 +77,20 @@ export class List2dComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
+  formatDate2(date: Date, hours: number, minutes: number): string {
+    const hourString = hours < 10 ? '0' + hours : hours.toString();
+    const minuteString = minutes < 10 ? '0' + minutes : minutes.toString();
+    return `${this.getDateString(date)}T${hourString}:${minuteString}`;
+  }
+
+  getDateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
   getToday(): string {
     const today = new Date();
     return today.toISOString().substring(0, 10); // returns format 'yyyy-MM-dd'

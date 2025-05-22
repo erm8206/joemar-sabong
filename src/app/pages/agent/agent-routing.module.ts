@@ -16,7 +16,27 @@ import { WalletstationComponent } from './walletstation/walletstation.component'
 import { AgentQueryComsComponent } from './agent-query-coms/agent-query-coms.component';
 import { EventSummaryComponent } from './event-summary/event-summary.component';
 import { CommissionLogsLottoComponent } from './commission-logs-lotto/commission-logs-lotto.component';
+import { LottoEventSummaryComponent } from './lotto-event-summary/lotto-event-summary.component';
+import { PlayerBetPick2HistoryComponent } from './player-bet-pick2-history/player-bet-pick2-history.component';
+import { PlayerBetPick3HistoryComponent } from './player-bet-pick3-history/player-bet-pick3-history.component';
+import { PlayerBetSuertresHistoryComponent } from './player-bet-suertres-history/player-bet-suertres-history.component';
 const routes: Routes = [
+    {
+        path: 'player-bet-pick2-logs/:playerId',
+        component: PlayerBetPick2HistoryComponent,
+    },
+    {
+        path: 'player-bet-pick3-logs/:playerId',
+        component: PlayerBetPick3HistoryComponent,
+    },
+    {
+        path: 'player-bet-suertres-logs/:playerId',
+        component: PlayerBetSuertresHistoryComponent,
+    },
+    {
+        path: 'lotto-event-summary',
+        component: LottoEventSummaryComponent,
+    },
     {
         path: 'commission-log-lotto',
         component: CommissionLogsLottoComponent,

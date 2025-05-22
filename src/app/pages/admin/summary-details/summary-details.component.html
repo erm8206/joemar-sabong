@@ -127,6 +127,57 @@
 
 
         </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card small-widget">
+                    <div class="card-body primary">
+                        <span class="f-light">Total Lotto Bets</span>
+                        <div class="d-flex align-items-end gap-1">
+                            <h4>₱{{model.totalLottobets | number : "1.2"}}</h4>
+
+                        </div>
+                        <div class="bg-gradient">
+                            <svg class="stroke-icon svg-fill">
+                                <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card small-widget">
+                    <div class="card-body primary">
+                        <span class="f-light">Total Lotto Wins</span>
+                        <div class="d-flex align-items-end gap-1">
+                            <h4>₱{{model.totalLottoWins | number : "1.2"}}</h4>
+
+                        </div>
+                        <div class="bg-gradient">
+                            <svg class="stroke-icon svg-fill">
+                                <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card small-widget">
+                    <div class="card-body primary">
+                        <span class="f-light">Accumulated Lotto Comms</span>
+                        <div class="d-flex align-items-end gap-1">
+                            <h4>₱{{model.accumulatedLottoComms | number : "1.2"}}</h4>
+
+                        </div>
+                        <div class="bg-gradient">
+                            <svg class="stroke-icon svg-fill">
+                                <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

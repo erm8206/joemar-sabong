@@ -89,7 +89,7 @@
                                         <button class="btn btn-sm text-danger"
                                             (click)="updatePlasada('pick2')">Update</button>
                                         <button class="btn btn-sm text-success"
-                                            (click)="withdrawComs('sabong')">Withdraw</button>
+                                            (click)="withdrawComs('pick2')">Withdraw</button>
                                     </div>
                                     <div class="bg-gradient">
                                         <svg class="stroke-icon svg-fill">
@@ -115,7 +115,7 @@
                                         <button class="btn btn-sm text-danger"
                                             (click)="updatePlasada('pick3')">Update</button>
                                         <button class="btn btn-sm text-success"
-                                            (click)="withdrawComs('sabong')">Withdraw</button>
+                                            (click)="withdrawComs('pick3')">Withdraw</button>
                                     </div>
                                     <div class="bg-gradient">
                                         <svg class="stroke-icon svg-fill">
@@ -141,7 +141,7 @@
                                         <button class="btn btn-sm text-danger"
                                             (click)="updatePlasada('suertres')">Update</button>
                                         <button class="btn btn-sm text-success"
-                                            (click)="withdrawComs('sabong')">Withdraw</button>
+                                            (click)="withdrawComs('suertres')">Withdraw</button>
                                     </div>
                                     <div class="bg-gradient">
                                         <svg class="stroke-icon svg-fill">
@@ -169,6 +169,73 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">List of Commission withdraw</div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs mb-2" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
+                                type="button" role="tab" aria-controls="all" aria-selected="true"
+                                (click)="getCommsWithdrawLogs('')">All</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="sabong-tab" data-bs-toggle="tab" data-bs-target="#sabong"
+                                type="button" role="tab" aria-controls="sabong" aria-selected="false"
+                                (click)="getCommsWithdrawLogs('sabong')">Sabong</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="2d-tab" data-bs-toggle="tab" data-bs-target="#2d" type="button"
+                                role="tab" aria-controls="2d" aria-selected="false"
+                                (click)="getCommsWithdrawLogs('pick2')">2D</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="3d-tab" data-bs-toggle="tab" data-bs-target="#3d" type="button"
+                                role="tab" aria-controls="3d" aria-selected="false"
+                                (click)="getCommsWithdrawLogs('suertres')">3D</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pick3-tab" data-bs-toggle="tab" data-bs-target="#pick3"
+                                type="button" role="tab" aria-controls="pick3" aria-selected="false"
+                                (click)="getCommsWithdrawLogs('pick3')">Pick3</button>
+                        </li>
+                    </ul>
+
+
+                    <!-- Loading spinner, visible when 'isLoading' is true -->
+                    <div *ngIf="isLoading" class="loading-container">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                            class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date Log</th>
+                                    <th>Withdraw Type</th>
+                                    <th>Amount</th>
+                                    <th>withdrawn By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor=" let item of commsWithdrawLogs">
+                                    <td>{{item?.createdAt | date : "short" }}</td>
+                                    <td>{{item?.withdrawType }}</td>
+                                    <td>{{item?.amount }}</td>
+                                    <td>{{item?.withdrawBy?.username }}</td>
+
+                                </tr>
+                            </tbody>
+
+
+
+                        </table>
                     </div>
                 </div>
             </div>

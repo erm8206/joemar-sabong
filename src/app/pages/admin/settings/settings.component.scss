@@ -1,0 +1,14 @@
+.payment-content {
+    /* box-shadow: 0 0 2.1875rem 0 rgba(154, 161, 171, 0.15); */
+    border-radius: 1rem;
+    box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+    border-color: 2px solid #ffff;
+    border: 2px solid #d4703e !important;
+    background-color: white;
+}
+
+.form-check-input:disabled {
+    pointer-events: none;
+    filter: none;
+    opacity: 1;
+}

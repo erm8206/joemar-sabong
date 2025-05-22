@@ -21,10 +21,11 @@
     <div class="page-title" style="    background-color: rgb(45 49 62);">
         <div style="display: flex;justify-content: flex-start;flex-wrap: wrap;" class="mt-2">
             <div class="form-group" style="margin-right: 10px;">
-                <input name="from" style="color: aliceblue;" type="date" class="form-control" [(ngModel)]="from" />
+                <input name="from" style="color: aliceblue;" type="datetime-local" class="form-control"
+                    [(ngModel)]="from" />
             </div>
             <div class="form-group" style="margin-right: 10px;">
-                <input type="date" style="color: aliceblue;" [(ngModel)]="to" class="form-control" />
+                <input type="datetime-local" style="color: aliceblue;" [(ngModel)]="to" class="form-control" />
             </div>
             <button class="btn btn-success btn-sm btn-block" (click)="getLottoEvents()">
                 Submit
@@ -85,14 +86,22 @@
                         <div class="ms-3">
                             <h4>Draw: {{ getTimeOnly(event.drawDate) }}</h4>
                             <p class="f-light"><span class="font-success">25</span><span class="ms-2">Tickets</span></p>
-                            <h4 *ngIf="!event?.result">
-                                No result yet
-                            </h4>
-                            <div class="numbers-display text-center mb-3" *ngIf="event?.result">
-                                <div class="lottery-ball2d" *ngFor="let num of event?.result">
-                                    {{ num }}
+                            <div *ngIf="!event?.isCancelled">
+
+                                <h4 *ngIf="!event?.result">
+                                    No result yet
+                                </h4>
+                                <div class="numbers-display text-center mb-3" *ngIf="event?.result">
+                                    <div class="lottery-ball2d" *ngFor="let num of event?.result">
+                                        {{ num }}
+                                    </div>
                                 </div>
+
                             </div>
+                            <div *ngIf="event?.isCancelled">
+                                <h4>Cancelled</h4>
+                            </div>
+
                         </div>
                     </div>
                     <a class="btn bg-light-primary font-primary w-100" routerLink="/player/dashboard-2d/{{event?.id}}"

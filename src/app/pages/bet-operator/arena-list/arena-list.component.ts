@@ -14,17 +14,47 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./arena-list.component.scss'],
 })
 export class ArenaListComponent implements OnInit {
+
+  colors = ['red', 'blue'];
+  routes = ['meron', 'wala'];
+
+  tags = ['sabong', 'vivamax', 'e-sports'];
+
+
+
   isLoading: boolean = false;
   // Pagination data from response
   totalCount: number = 0;
   pageNumber: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
   results: any = [];
-  model: any = {};
+  model: any = {
+    "name": "",
+    "plasada": "",
+    "videoUrl": "",
+    "left": {},
+    "right": {},
+  };
   dtTrigger: Subject<any> = new Subject();
-  currentEvent: any = {};
+  currentEvent: any = {
+    "name": "",
+    "plasada": "",
+    "videoUrl": "",
+    "left": {
+      "name": "",
+      "color": "",
+      "route": ""
+    },
+    "right": {
+      "name": "",
+      "color": "",
+      "route": ""
+    },
+    "id": "",
+    "status": ""
+  };
   constructor(private _api: ApiService) { }
 
   ngOnInit(): void {
@@ -66,13 +96,13 @@ export class ArenaListComponent implements OnInit {
   }
 
   async editEvent() {
+    this.currentEvent.plasada = this.currentEvent.plasada / 100;
     let newEventData: any = {};
     newEventData = {
+      tag: this.currentEvent.tag,
       name: this.currentEvent.name,
-      leftName: this.currentEvent.leftName,
-      rightName: this.currentEvent.rightName,
-      rightColor: this.currentEvent.rightColor,
-      leftColor: this.currentEvent.leftColor,
+      left: this.currentEvent.left,
+      right: this.currentEvent.right,
       plasada: this.currentEvent.plasada,
       videoUrl: this.currentEvent.videoUrl,
       status: this.currentEvent.status,
@@ -82,10 +112,22 @@ export class ArenaListComponent implements OnInit {
     try {
       const response: any = await this._api.put(
         'betopsnew',
-        this.currentEvent,
+        newEventData,
         '/events'
       );
+
+      this.currentEvent = {
+        "name": "",
+        "plasada": "",
+        "videoUrl": "",
+        "left": {},
+        "right": {},
+        "id": "",
+        "status": ""
+      };
       await this.getReports();
+
+
 
       alert('Success');
     } catch (e) {
@@ -93,14 +135,49 @@ export class ArenaListComponent implements OnInit {
     }
   }
 
+  getData(item: any = []) {
+    this.currentEvent = { ...item }; // clone object
+    this.currentEvent.plasada = item.plasada * 100; // safe to modify
+  }
+
+
   async duplicateEvent() {
+    this.currentEvent.plasada = this.currentEvent.plasada / 100;
+    let newEventData: any = {};
+    newEventData = {
+      tag: this.currentEvent.tag,
+      name: this.currentEvent.name,
+      left: {
+        name: this.currentEvent.left.name,
+        color: this.currentEvent.left.color,
+        route: this.currentEvent.left.route,
+      },
+      right: {
+        name: this.currentEvent.right.name,
+        color: this.currentEvent.right.color,
+        route: this.currentEvent.right.route,
+      },
+      plasada: this.currentEvent.plasada,
+      videoUrl: this.currentEvent.videoUrl,
+    };
+
+
     try {
       const response: any = await this._api.post(
         'betopsnew',
-        this.currentEvent,
+        newEventData,
         '/events'
       );
-      this.currentEvent = {};
+
+      this.currentEvent = {
+        "name": "",
+        "plasada": "",
+        "videoUrl": "",
+        "left": {},
+        "right": {},
+        "id": "",
+        "status": ""
+      };
       await this.getReports();
 
       alert('Success !');
@@ -110,13 +187,22 @@ export class ArenaListComponent implements OnInit {
   }
 
   async addEvent() {
+
+    this.model.plasada = this.model.plasada / 100;
+
     try {
       const response: any = await this._api.post(
         'betopsnew',
         { ...this.model },
         '/events'
       );
-      this.model = {};
+      this.model = {
+        "name": "",
+        "plasada": "",
+        "videoUrl": "",
+        "left": {},
+        "right": {},
+      };
       await this.getReports();
 
       alert('Success !');

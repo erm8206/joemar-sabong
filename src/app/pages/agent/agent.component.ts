@@ -6,6 +6,9 @@ import { JwtService } from 'src/app/services/jwt.service';
 import { UserAccount, UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { environment } from 'src/environments/environment';
+import { WebSocketService } from 'src/app/services/web-socket-service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-agent',
@@ -13,6 +16,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./agent.component.scss'],
 })
 export class AgentComponent implements OnInit {
+  private refreshSub: Subscription = new Subscription();
+  private logoutSub: Subscription = new Subscription();
   isLoading: boolean = false;
   messageErrorTrue: boolean = false;
   message: any = [];
@@ -22,7 +27,8 @@ export class AgentComponent implements OnInit {
     private _api: ApiService,
     private _userSub: UserSub,
     private _jwt: JwtService,
-    private _router: Router
+    private _router: Router,
+    private webSocketService: WebSocketService,
   ) {
     this._jwt.getDecodedToken().subscribe((data) => {
       this.user.type = data?.type;
@@ -31,6 +37,8 @@ export class AgentComponent implements OnInit {
 
   async ngOnInit() {
     this._userSub.getUserDetail();
+    this.listenLogoutUser();
+    this.listenMySelfRefresh();
   }
 
   ngAfterViewInit(): void {
@@ -47,6 +55,21 @@ export class AgentComponent implements OnInit {
     this.loadScript('assets/js/prism/prism.min.js');
     this.loadScript('assets/js/script.js');
     this.loadScript('assets/js/script1.js');
+  }
+
+  async listenLogoutUser() {
+    this.logoutSub = this.webSocketService.listen(`sign-out`).subscribe(() => {
+      alert("You've just been logout")
+      this.logout();
+    });
+  }
+  async listenMySelfRefresh() {
+    this.refreshSub = this.webSocketService.listen(`refresh`).subscribe(() => {
+      alert("Site will reload");
+      window.location.reload();
+
+
+    });
   }
 
   public loadScript(url: string) {
@@ -162,6 +185,11 @@ export class AgentComponent implements OnInit {
     console.log('here');
     var htmlElement = document.querySelector('html');
     htmlElement?.classList.remove('sidebar-left-opened');
+  }
+
+  ngOnDestroy(): void {
+    this.refreshSub?.unsubscribe();
+    this.logoutSub?.unsubscribe();
   }
 
   logout() {

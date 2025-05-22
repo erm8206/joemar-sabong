@@ -177,6 +177,21 @@
                             </li>
 
 
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" data-bs-toggle="modal"
+                                    data-bs-target="#setAnnouncement" (click)="getAnnouncement()">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#front-arrow"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-price"></use>
+                                    </svg><span>Set Anncouncement</span>
+                                </a>
+                            </li>
+
+
+
 
 
 
@@ -263,6 +278,44 @@
                 </button>
                 <button type="button" class="btn btn-success" (click)="changePassword()">
                     Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="setAnnouncement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Set Announcement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="title" class=" control-label">title</label>
+                    <div class="col-md-12">
+                        <input style="color: #d2d2d2;" [(ngModel)]="title" type="text" class="form-control" id="title"
+                            name="title" placeholder="Title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="control-label">Body Message</label>
+                    <div class="col-md-12">
+                        <textarea style="color: #d2d2d2;" class="form-control" [(ngModel)]="body" id="body" name="body"
+                            placeholder="Input Body Message"></textarea>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" [disabled]="isLoading" (click)="setAnnouncement()">
+                    Save changes
                 </button>
             </div>
         </div>

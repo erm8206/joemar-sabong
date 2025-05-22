@@ -84,9 +84,14 @@
                                         class="middle fa-solid fa-angle-down"></i></p>
                             </div>
                         </div>
+
                         <ul class="profile-dropdown onhover-show-div">
+                            <li><a data-bs-toggle="modal" data-bs-target="#changePass"><i data-feather="log-in">
+                                    </i><span>Change pass</span></a></li>
                             <li><a (click)="logout()"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                         </ul>
+
+
                     </li>
                 </ul>
             </div>
@@ -141,7 +146,8 @@
                             <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
                                 <a class="sidebar-link sidebar-title link-nav" routerLink="/player/sabong-home"
-                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    [queryParams]="{ tag: 'sabong' }" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: true }">
                                     <svg class="stroke-icon">
                                         <use href="assets/svg/icon-sprite.svg#stroke-widget"></use>
                                     </svg>
@@ -212,8 +218,8 @@
                                         <use href="assets/svg/icon-sprite.svg#fill-reports"></use>
                                     </svg><span>E-Lotto Games</span></a>
                                 <ul class="sidebar-submenu">
-                                    <li><a><span>Lotto</span></a>
-                                    </li>
+                                    <!-- <li><a><span>Lotto</span></a>
+                                    </li> -->
                                     <li>
                                         <i></i>
                                         <a routerLink="/player/list-2d" routerLinkActive="active"
@@ -299,7 +305,14 @@
             </div>
         </div>
         <!-- Page Sidebar Ends-->
-        <div class="page-body">
+        <div class="page-body" style="padding: 0px;">
+            <div style="padding: 7px;background-color: rgb(40, 5, 100);margin: 0px;top: 9px;position: relative;">
+                <marquee behavior="scroll" direction="left">{{model?.title}} <span data-bs-toggle="modal"
+                        data-bs-target="#showMessageModal" style="color: aqua;"
+                        (click)="showAnnouncementDetails(model?.id)">[read more..]</span>
+                </marquee>
+            </div>
+
             <router-outlet></router-outlet>
 
         </div>
@@ -313,5 +326,141 @@
                 </div>
             </div>
         </footer>
+    </div>
+</div>
+
+<div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="cancel()"><span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert" *ngIf="messageErrorTrue">
+                    <div *ngFor="let item of message">
+                        {{item}}
+                    </div>
+                </div>
+
+                <div class="alert alert-success" role="alert" *ngIf="!messageErrorTrue && message.length > 0">
+
+                    <div *ngFor="let item of message">
+                        {{item}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input-2">Old Password</label>
+                    <input [(ngModel)]="model.currentPassword" type="password" class="form-control"
+                        style="color: #d2d2d2;" id="input-1" placeholder="Enter old password" required>
+                </div>
+                <div class="form-group">
+                    <label for="input-2">New Password</label>
+                    <input [(ngModel)]="model.newPassword" type="password" class="form-control" style="color: #d2d2d2;"
+                        id="input-2" placeholder="Enter new password" required>
+                </div>
+                <div class="form-group">
+                    <label for="input-2">Confirm New Password</label>
+                    <input [(ngModel)]="model.confirmPassword" type="password" class="form-control"
+                        style="color: #d2d2d2;" id="input-3" placeholder="Confirm New Password" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">
+                    Close
+                </button>
+                <button type="button" class="btn btn-success" (click)="changePassword()">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Modal -->
+<!-- Message Modal -->
+<!-- Elegant Message Modal -->
+<!-- Elegant Message Modal -->
+<div class="modal fade" id="showMessageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="messageModalLabel">
+                    <i class="bi bi-envelope-paper-fill"></i> Announcements
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+
+                <!-- Single Message Preview -->
+                <div class="card border-0 shadow rounded-4 p-3 " style="border-radius: 20px;
+    background-color: #181818;" *ngIf="!showAll">
+                    <div>
+                        <h4 class="fw-semibold">{{ messageDetails?.title }}</h4>
+                        <p class="text-secondary fs-6">{{ messageDetails?.body }}</p>
+
+                        <div class="text-end mt-2">
+                            <button class="btn btn-outline-primary btn-sm rounded-pill px-4" (click)="seeAllMessages()">
+                                <i class="bi bi-list-ul me-1"></i> See All Messages
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- All Messages List -->
+                <!-- All Messages List -->
+                <div *ngIf="showAll">
+                    <div class="card border-0 shadow rounded-4 p-3"
+                        style="border-radius: 20px; background-color: #181818;">
+
+                        <!-- Scrollable area starts here -->
+                        <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;"
+                            (scroll)="onScroll($event)">
+                            <div *ngIf="messages.length > 0; else noMessages">
+                                <div *ngFor="let msg of messages" class="border-bottom py-3 px-3">
+                                    <h5 class="fw-semibold text-primary mb-1">
+                                        <i class="bi bi-bell-fill me-2 text-warning"></i>{{ msg.title }}
+                                    </h5>
+                                    <p class="text-secondary mb-2">{{ msg.body }}</p>
+                                    <div class="text-end">
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock me-1"></i>{{ msg.date | date:'short' }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-template #noMessages>
+                                <div class="alert alert-info text-center rounded-3 m-3">No messages available.</div>
+                            </ng-template>
+                        </div>
+                        <!-- Scrollable area ends here -->
+
+                    </div>
+                    <div class="text-center py-2" *ngIf="isLoading">
+                        <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-top-0 px-4 pb-4 pt-2">
+                <button class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i> Close
+                </button>
+            </div>
+
+        </div>
     </div>
 </div>

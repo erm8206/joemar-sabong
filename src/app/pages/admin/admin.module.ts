@@ -22,6 +22,10 @@ import { FightDetailsComponent } from './fight-details/fight-details.component';
 import { DrawSummaryComponent } from './draw-summary/draw-summary.component';
 import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
+import { SettingsComponent } from './settings/settings.component';
+import { DataTablesModule } from 'angular-datatables';
+import { LottoEventsComponent } from './lotto-events/lotto-events.component';
+import { LottoEventsDetailsComponent } from './lotto-events-details/lotto-events-details.component';
 
 @NgModule({
   declarations: [
@@ -42,13 +46,17 @@ import { CashoutComponent } from './cashout/cashout.component';
     DrawSummaryComponent,
     CashinComponent,
     CashoutComponent,
+    SettingsComponent,
+    LottoEventsComponent,
+    LottoEventsDetailsComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     NgSelectModule,
     AdminRoutingModule,
-    RouterModule
+    RouterModule,
+    DataTablesModule
   ],
   providers: [DatePipe],
 })

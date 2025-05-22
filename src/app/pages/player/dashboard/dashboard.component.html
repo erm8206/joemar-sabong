@@ -106,73 +106,21 @@
                             <div class="fight-number">{{
                                 fightSummary.fightNumber?.number || "N/A" }}</div>
                         </div>
-                        <div class="card" [ngClass]="fightSummary.fightEvent?.leftColor == 'red' ? 'meron' : 'wala'">
+                        <div class="card" [ngClass]="event?.left?.color == 'red' ? 'meron' : 'wala'">
                             <div class="card-body">
-                                <h1 class="text-white mb-3">{{ event.leftName?.toUpperCase() }}</h1>
+                                <h1 class="text-white mb-3">{{ event.left?.name.toUpperCase() }}</h1>
                                 <div class="odds mb-2">
                                     <h1 class="f-w-900" style="color: yellow;">
-                                        <span #numberElement>{{getInterpolatedValue(event.leftName)
+                                        <span #numberElement>{{getInterpolatedValue(event?.left?.route)
                                             | numberWithCommas
                                             }}</span>
                                     </h1>
                                     <h4 style="color: white;">PAYOUT = {{
-                                        getPercentage(event.leftName) ?? 0
+                                        getPercentage(event?.left?.route) ?? 0
                                         }}</h4>
                                 </div>
                                 <div class="total-bets mb-2">
-                                    <h4 style="color: yellow;">My bets: {{ getMyBetsByName(event.leftName) || 0 | number
-                                        }}</h4>
-                                </div>
-
-                                <span style="color: #fc0" *ngIf="fightSummary.fightNumber?.status != 'close'"
-                                    class="bet-amount bet-win amtsum">PAYS: 0<i class="fa-solid fa-coins"></i></span>
-
-                                <span style="color: #fc0" *ngIf="
-                                  fightSummary.fightNumber?.status == 'close' &&
-                                  getMyBetsByName(event.leftName) > 0
-                                " id="lblMeronWinning" class="bet-amount bet-win amtsum">PAYS:
-                                    {{
-                                    getFloorValue(
-                                    getMyBetsByName(event.leftName) *
-                                    (getPercentage(event.leftName) / 100)
-                                    )
-                                    }}<i class="fa-solid fa-coins"></i>
-                                </span>
-
-                                <span style="color: #fc0" *ngIf="
-                                  fightSummary.fightNumber?.status == 'close' &&
-                                  getMyBetsByName(event.leftName) < 1
-                                " id="lblMeronWinning" class="bet-amount bet-win amtsum">PAYS:
-                                    {{
-                                    getFloorValue(
-                                    getMyBetsByName(event.leftName) *
-                                    (getPercentage(event.leftName) / 100)
-                                    )
-                                    }}<i class="fa-solid fa-coins"></i>
-                                </span>
-                                <button class="Btn" data-text="Bet Now" [disabled]="
-                                fightSummary.fightNumber?.status == 'close' || fightSummary.fightNumber?.status == 'disbursing' || fightSummary.fightNumber?.status == 'settled' ||
-                                !fightSummary.fightNumber ||
-                                disableProceed
-                                " (click)="placeBet(event.leftName)">Bet Now</button>
-                            </div>
-
-                        </div>
-                        <div class="card" [ngClass]="fightSummary.fightEvent?.rightColor == 'red' ? 'meron' : 'wala'">
-                            <div class="card-body">
-                                <h1 class="text-white mb-3">{{ event.rightName?.toUpperCase() }}</h1>
-                                <div class="odds mb-2">
-                                    <h1 class="f-w-900" style="color: yellow;">
-                                        <span #numberElement2>{{getInterpolatedValue(event.rightName)
-                                            | numberWithCommas
-                                            }}</span>
-                                    </h1>
-                                    <h4 style="color: white;">PAYOUT = {{
-                                        getPercentage(event.rightName) ?? 0
-                                        }}</h4>
-                                </div>
-                                <div class="total-bets mb-2">
-                                    <h4 style="color: yellow;">My bets: {{ getMyBetsByName(event.rightName) || 0 |
+                                    <h4 style="color: yellow;">My bets: {{ getMyBetsByName(event?.left?.route) || 0 |
                                         number
                                         }}</h4>
                                 </div>
@@ -182,24 +130,24 @@
 
                                 <span style="color: #fc0" *ngIf="
                                   fightSummary.fightNumber?.status == 'close' &&
-                                  getMyBetsByName(event.rightName) > 0
+                                  getMyBetsByName(event?.left?.route) > 0
                                 " id="lblMeronWinning" class="bet-amount bet-win amtsum">PAYS:
                                     {{
                                     getFloorValue(
-                                    getMyBetsByName(event.rightName) *
-                                    (getPercentage(event.rightName) / 100)
+                                    getMyBetsByName(event?.left?.route) *
+                                    (getPercentage(event?.left?.route) / 100)
                                     )
                                     }}<i class="fa-solid fa-coins"></i>
                                 </span>
 
                                 <span style="color: #fc0" *ngIf="
                                   fightSummary.fightNumber?.status == 'close' &&
-                                  getMyBetsByName(event.rightName) < 1
+                                  getMyBetsByName(event?.left?.route) < 1
                                 " id="lblMeronWinning" class="bet-amount bet-win amtsum">PAYS:
                                     {{
                                     getFloorValue(
-                                    getMyBetsByName(event.rightName) *
-                                    (getPercentage(event.rightName) / 100)
+                                    getMyBetsByName(event?.left?.route) *
+                                    (getPercentage(event?.left?.route) / 100)
                                     )
                                     }}<i class="fa-solid fa-coins"></i>
                                 </span>
@@ -207,7 +155,60 @@
                                 fightSummary.fightNumber?.status == 'close' || fightSummary.fightNumber?.status == 'disbursing' || fightSummary.fightNumber?.status == 'settled' ||
                                 !fightSummary.fightNumber ||
                                 disableProceed
-                                " (click)="placeBet(event.rightName)">Bet Now</button>
+                                " (click)="placeBet(event?.left?.route)">Bet Now</button>
+                            </div>
+
+                        </div>
+                        <div class="card" [ngClass]="event?.right?.color == 'red' ? 'meron' : 'wala'">
+                            <div class="card-body">
+                                <h1 class="text-white mb-3">{{ event?.right?.name?.toUpperCase() }}</h1>
+                                <div class="odds mb-2">
+                                    <h1 class="f-w-900" style="color: yellow;">
+                                        <span #numberElement2>{{getInterpolatedValue(event?.right?.route)
+                                            | numberWithCommas
+                                            }}</span>
+                                    </h1>
+                                    <h4 style="color: white;">PAYOUT = {{
+                                        getPercentage(event?.right?.route) ?? 0
+                                        }}</h4>
+                                </div>
+                                <div class="total-bets mb-2">
+                                    <h4 style="color: yellow;">My bets: {{ getMyBetsByName(event?.right?.route) || 0 |
+                                        number
+                                        }}</h4>
+                                </div>
+
+                                <span style="color: #fc0" *ngIf="fightSummary.fightNumber?.status != 'close'"
+                                    class="bet-amount bet-win amtsum">PAYS: 0<i class="fa-solid fa-coins"></i></span>
+
+                                <span style="color: #fc0" *ngIf="
+                                  fightSummary.fightNumber?.status == 'close' &&
+                                  getMyBetsByName(event?.right?.route) > 0
+                                " id="lblMeronWinning" class="bet-amount bet-win amtsum">PAYS:
+                                    {{
+                                    getFloorValue(
+                                    getMyBetsByName(event?.right?.route) *
+                                    (getPercentage(event?.right?.route) / 100)
+                                    )
+                                    }}<i class="fa-solid fa-coins"></i>
+                                </span>
+
+                                <span style="color: #fc0" *ngIf="
+                                  fightSummary.fightNumber?.status == 'close' &&
+                                  getMyBetsByName(event?.right?.route) < 1
+                                " id="lblMeronWinning" class="bet-amount bet-win amtsum">PAYS:
+                                    {{
+                                    getFloorValue(
+                                    getMyBetsByName(event?.right?.route) *
+                                    (getPercentage(event?.right?.route) / 100)
+                                    )
+                                    }}<i class="fa-solid fa-coins"></i>
+                                </span>
+                                <button class="Btn" data-text="Bet Now" [disabled]="
+                                fightSummary.fightNumber?.status == 'close' || fightSummary.fightNumber?.status == 'disbursing' || fightSummary.fightNumber?.status == 'settled' ||
+                                !fightSummary.fightNumber ||
+                                disableProceed
+                                " (click)="placeBet(event?.right?.route)">Bet Now</button>
                             </div>
 
                         </div>

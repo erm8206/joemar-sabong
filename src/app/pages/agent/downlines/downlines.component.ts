@@ -83,28 +83,57 @@ export class DownlinesComponent implements OnInit {
     return this._sub.getUser();
   }
 
-  async setComs(userId: string, typeCommission: string) {
+
+
+  async setComs(userId: string) {
+    this.isLoading = true;
     const percentage = prompt('Please input percentage.');
     if (!percentage) return;
 
-    const typeToEndpoint: any = {
-      sabong: '/set-coms',
-      ez2: '/set-coms-pick2',
-      pick3: '/set-coms-pick3',
-      gameending: '/set-coms-game-ending',
-      suertres: '/set-coms-suertres',
-    };
-
-    const endpoint = typeToEndpoint[typeCommission];
-
-    if (!endpoint) return;
+    let endPoint: string = '/set-coms';
 
     try {
-      const response: any = await this._api.post('user', { userId, percentage }, endpoint);
+      const response: any = await this._api.post('user', { userId, percentage }, endPoint);
       await this.getDownlines(this.pageNumber);
       alert('Success');
+      this.isLoading = false;
     } catch (e) {
       alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+
+  async setComsLotto(userId: string, type: string) {
+    this.isLoading = true;
+    const percentage = prompt('Please input percentage.');
+    if (!percentage) return;
+
+    let endpoint = '';
+
+    switch (type) {
+      case 'pick2':
+        endpoint = '/set-coms-lotto';
+        break;
+      case 'pick3':
+        endpoint = '/set-coms-lotto';
+        break;
+
+      case 'suertres':
+        endpoint = '/set-coms-lotto';
+        break;
+      default:
+        alert('Invalid commission type.');
+        return;
+    }
+
+    try {
+      await this._api.post('user', { userId, percentage, type }, endpoint);
+      await this.getDownlines(this.pageNumber);
+      alert('Success');
+      this.isLoading = false;
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
     }
   }
 

@@ -35,6 +35,20 @@ export class MasterRevertComponent implements OnInit {
     this.getFightNumbers();
   }
 
+  async revertResult(id: string) {
+    this.isLoading = true;
+
+    try {
+      const response: any = await this._api.post('betopsnew', {}, `/revert-result/${id}`);
+      alert(response?.message);
+      this.getFightNumbers(this.pageNumber);
+      this.isLoading = false;
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+
   async masterRevert(id: string) {
     this.isLoading = true;
     try {
@@ -50,7 +64,7 @@ export class MasterRevertComponent implements OnInit {
       );
 
       alert("Revert Success")
-      this.getFightNumbers();
+      this.getFightNumbers(this.pageNumber);
       this.isLoading = false;
     } catch (e: any) {
       alert(e ?? 'Something went wrong');
@@ -71,7 +85,7 @@ export class MasterRevertComponent implements OnInit {
       this.disbursedLoading = false;
       alert(response?.message);
 
-      this.getFightNumbers();
+      this.getFightNumbers(this.pageNumber);
 
     } catch (e) {
       this.disbursedLoading = false;
@@ -94,7 +108,7 @@ export class MasterRevertComponent implements OnInit {
 
       }, `/fightnumber`);
       this.isLoading = false;
-      this.getFightNumbers();
+      this.getFightNumbers(this.pageNumber);
 
     } catch (e: any) {
       alert(e ?? 'Something went wrong');

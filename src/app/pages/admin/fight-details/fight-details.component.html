@@ -28,7 +28,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <p>Fight Reverted: <span class="detailsInfo">{{ summary.reverted }}</span></p>
+                            <p>Fight Reverted: <span class="detailsInfo">{{ summary.reverted }} <span
+                                        *ngIf="revertLogs.length > 0" style="color: rgb(244, 45, 45);"
+                                        data-bs-toggle="modal" data-bs-target="#revertLogsModal">[See
+                                        logs]</span></span></p>
                             <p>Meron Percentage: <span class="detailsInfo">{{ summary.meronPercentage }}</span></p>
                             <p>Wala Percentage: <span class="detailsInfo">{{ summary.walaPercentage }}</span></p>
                             <p>Result: <span class="detailsInfo">{{ summary.result }} wins</span></p>
@@ -215,4 +218,46 @@
     </div>
 
 
+</div>
+
+<div class="modal fade" id="revertLogsModal" tabindex="-1" role="dialog" aria-labelledby="revertLogsModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Revert Logs</h4>
+                <button #betsSubmit class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date Log</th>
+                                        <th>Previous Result</th>
+                                        <th>Reverted By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor=" let item of revertLogs">
+                                        <td>{{item?.createdAt | date : "short" }}</td>
+                                        <td>{{item?.previousResult }}</td>
+                                        <td>{{item?.revertedBy?.username }}</td>
+
+                                    </tr>
+                                </tbody>
+
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>

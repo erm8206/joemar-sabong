@@ -16,7 +16,22 @@ import { FightDetailsComponent } from './fight-details/fight-details.component';
 import { DrawSummaryComponent } from './draw-summary/draw-summary.component';
 import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
+import { SettingsComponent } from './settings/settings.component';
+import { LottoEventsComponent } from './lotto-events/lotto-events.component';
+import { LottoEventsDetailsComponent } from './lotto-events-details/lotto-events-details.component';
 const routes: Routes = [
+    {
+        path: 'lotto-events',
+        component: LottoEventsComponent,
+    },
+    {
+        path: 'lotto-events-details/:eventID',
+        component: LottoEventsDetailsComponent,
+    },
+    {
+        path: 'settings',
+        component: SettingsComponent,
+    },
     {
         path: 'cashin',
         component: CashinComponent,

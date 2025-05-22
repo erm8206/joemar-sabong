@@ -130,7 +130,8 @@
                             <label><strong>Amount</strong></label>
                             <div class="input-group">
                                 <input class="form-control" id="amount" placeholder="Enter Amount" required="required"
-                                    name="amount" type="text" [(ngModel)]="amount" />
+                                    name="amount" type="text" step="1" (keypress)="preventDecimal($event)"
+                                    (paste)="blockDecimalPaste($event)" [(ngModel)]="amount" />
                             </div>
                             <label style="margin-top: 10px;"><strong>Commission Type</strong></label>
                             <select class="form-control" id="transaction_type" required="required"
@@ -183,7 +184,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search transactions...">
+                                <input type="text" class="form-control" placeholder="Search user..."
+                                    [(ngModel)]="searchTerm" (ngModelChange)="onSearchInputChange()" />
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
                         </div>

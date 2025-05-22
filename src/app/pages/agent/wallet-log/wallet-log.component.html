@@ -91,7 +91,21 @@
                                             {{ user?.receiver?.username }}
                                         </span>
                                         <span *ngIf="user.activity == 'convert commission'">
-                                            Converted <span style="color: red; font-weight: bolder;">-{{ user?.amount
+                                            Converted <span style="color: green; font-weight: bolder;">+{{ user?.amount
+                                                }}</span> worth of commission to points
+                                        </span>
+
+
+                                        <span *ngIf="user.activity == 'convert pick3 commission'">
+                                            Converted <span style="color: green; font-weight: bolder;">+{{ user?.amount
+                                                }}</span> worth of commission to points
+                                        </span>
+                                        <span *ngIf="user.activity == 'convert suertres commission'">
+                                            Converted <span style="color: green; font-weight: bolder;">+{{ user?.amount
+                                                }}</span> worth of commission to points
+                                        </span>
+                                        <span *ngIf="user.activity == 'convert pick2 commission'">
+                                            Converted <span style="color: green; font-weight: bolder;">+{{ user?.amount
                                                 }}</span> worth of commission to points
                                         </span>
                                     </td>

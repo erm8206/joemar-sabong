@@ -7,12 +7,23 @@ import { UserModel } from 'src/app/services/models/user.model';
 import { ActivatedRoute } from '@angular/router';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 
+
+import { ElementRef, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
+import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.component';  // Import the alert modal component
+import { OnDestroy, AfterViewInit } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from 'src/app/services/web-socket-service';
+
 @Component({
   selector: 'app-fight-details',
   templateUrl: './fight-details.component.html',
   styleUrl: './fight-details.component.scss'
 })
 export class FightDetailsComponent implements OnInit {
+  revertLogs: any = [];
   isLoading: boolean = false;
   totalCount: number = 0;
   pageNumber: number = 1;
@@ -25,6 +36,11 @@ export class FightDetailsComponent implements OnInit {
   search: string = '';
   private searchSubject: Subject<string> = new Subject<string>();
 
+  dtTrigger: Subject<any> = new Subject();
+  dtOptions: DataTables.Settings = {};
+
+  @ViewChild(DataTableDirective, { static: false }) dtElement!: DataTableDirective;
+
   constructor(private _userSub: UserSub, private _api: ApiService, private _route: ActivatedRoute, private _router: Router) {
     this.fightId = this._route.snapshot.paramMap.get('fightNumberId') || '';
     if (!this.fightId) {
@@ -33,8 +49,16 @@ export class FightDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      lengthChange: true,
+      pageLength: 10,
+      search: true,
+      processing: true,
+      ordering: true,
+    };
     this.fightNumerDetails();
     this.getBets();
+    this.lottoBetSummary();
 
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged())
@@ -42,6 +66,23 @@ export class FightDetailsComponent implements OnInit {
         this.getBets(this.pageNumber);
       });
   }
+
+  async lottoBetSummary() {
+
+    try {
+      const response: any = await this._api.get(
+        'admin',
+        `/revert-logs/${this.fightId}`
+      );
+
+      this.revertLogs = response;
+      this.rerender();
+
+    } catch (e) {
+      alert(e ?? 'Something went wrong!');
+    }
+  }
+
 
   onSearchInputChange(): void {
     this.searchSubject.next(this.search);
@@ -108,5 +149,22 @@ export class FightDetailsComponent implements OnInit {
     } catch (e) {
       console.error('Error fetching summary:', e);
     }
+  }
+
+  rerender(): void {
+    this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next(this.dtOptions);
+    });
+  }
+  ngAfterViewInit(): void {
+
+    this.dtTrigger.next(this.dtOptions);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

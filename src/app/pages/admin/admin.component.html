@@ -38,7 +38,17 @@
                             </div>
                         </div>
                         <ul class="profile-dropdown onhover-show-div">
+                            <li>
+                                <a routerLink="/admin/settings" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: true }">
+                                    <i data-feather="settings"> </i>
+                                    <span>Settings</span>
+
+                                </a>
+                            </li>
                             <li><a (click)="logout()"><i data-feather="log-in"> </i><span>Log out</span></a></li>
+
+
                         </ul>
                     </li>
                 </ul>
@@ -100,7 +110,12 @@
                                             [routerLinkActiveOptions]="{ exact: true }"><span>Summary Details</span></a>
                                     </li>
                                     <li><a routerLink="/admin/list-events" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact: true }"><span>Events Summary</span></a>
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Sabong Events
+                                                Summary</span></a>
+                                    </li>
+                                    <li><a routerLink="/admin/lotto-events" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }"><span>Lotto Draw
+                                                Summary</span></a>
                                     </li>
                                     <li><a routerLink="/admin/draw-summary" routerLinkActive="active"
                                             [routerLinkActiveOptions]="{ exact: true }"><span>Draw Summary</span></a>
