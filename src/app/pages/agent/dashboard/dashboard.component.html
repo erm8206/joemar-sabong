@@ -51,6 +51,21 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-6">
+                            <div class="card o-hidden">
+                                <div class="card-body sabong-widget">
+                                    <span class="f-w-500 f-light">Your Points</span>
+                                    <h4 class="mb-3 mt-1 f-w-500 mb-0 f-22">₱{{ (getAccount() | async)?.points |
+                                        number
+                                        : "1.2" }}</h4>
+                                    <!-- <a class="btn btn-primary btn-hover-effect f-w-500" href="#">Withdraw</a> -->
+                                    <div class="mobile-right-img">
+                                        <img class="mobile-img" src="../assets/images/versus.png" alt="versus">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+
                             <div class="card small-widget">
                                 <div class="card-body primary">
                                     <span class="f-light">Current Commission ({{

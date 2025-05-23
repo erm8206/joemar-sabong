@@ -270,3 +270,67 @@ body.dark-only .page-wrapper .page-body-wrapper .page-body .card:not(.email-body
     border: none !important;
     padding: 0px;
 }
+
+
+.games-btn {
+    background: linear-gradient(90deg, #be580c -18.33%, #ce690c 62.78%);
+}
+
+.games-btn:hover {
+    background: linear-gradient(90deg, #e51414 -18.33%, var(--theme-default) 62.78%);
+    transition: 0.5s;
+}
+
+body.dark-only .page-wrapper .page-header .header-wrapper {
+    background-color: #004d88;
+}
+
+body.dark-only .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper {
+    background-color: #072841;
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .page-body {
+    background-color: #001b30;
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .page-title {
+    background-color: #aa4007;
+
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .page-body .card:not(.email-body) {
+    background-color: #012745;
+}
+
+.meron {
+    background-color: #ff005a !important;
+    box-shadow: 0 4px 8px #a90303 !important;
+}
+
+.wala {
+    background-color: #0f5bc3 !important;
+    box-shadow: 0 4px 8px #01017c !important;
+}
+
+.tether-box {
+    background-color: #1d2d63;
+}
+
+body.dark-only .form-control {
+    background-color: #001d35;
+    border-color: #374558;
+}
+
+body.dark-only .form-select {
+    background-color: #001d35;
+    border: 1px solid #374558;
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .page-body .card:not(.email-body) .card-footer {
+    background-color: #03223b;
+    border-top: 1px solid #374558;
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .footer {
+    background-color: #004d88;
+}

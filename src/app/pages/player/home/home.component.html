@@ -42,39 +42,7 @@
 
                 <div class="col-xxl-7 col-md-5 box-col-5">
                     <div class="row">
-                        <div class="col-6">
-                            <div class="card small-widget">
-                                <div class="card-body primary">
-                                    <span class="f-light">WS Rewards (Coming Soon)</span>
-                                    <div class="d-flex align-items-end gap-1">
-                                        <h4>₱0</h4>
-                                        <button class="btn btn-sm text-danger">{{
-                                            model?.winStreakRewards | number : "1.2"
-                                            }}</button>
-                                    </div>
-                                    <div class="bg-gradient">
-                                        <svg class="stroke-icon svg-fill">
-                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="card small-widget">
-                                <div class="card-body warning">
-                                    <span class="f-light">Highest Win Streak (Coming Soon)</span>
-                                    <div class="d-flex align-items-end gap-1">
-                                        <h4>0</h4>
-                                    </div>
-                                    <div class="bg-gradient">
-                                        <svg class="stroke-icon svg-fill">
-                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="col-6">
                             <div class="card small-widget">
                                 <div class="card-body secondary">
@@ -158,7 +126,7 @@
                         <div class="games-card-content">
 
                             <a class="games-btn btn btn-hover-effect btn-primary f-w-500"
-                                routerLink="/player/sabong-home" [queryParams]="{ tag: 'vivamax' }"
+                                routerLink="/player/vivamax-home" [queryParams]="{ tag: 'vivamax' }"
                                 routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
                         </div>
                     </div>

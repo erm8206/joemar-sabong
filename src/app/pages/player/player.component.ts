@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core'
+import { AfterViewInit, Component, OnInit, OnDestroy, ViewChild } from '@angular/core'
 import { Router } from '@angular/router';
 import { lastValueFrom, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -8,6 +8,7 @@ import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { environment } from 'src/environments/environment';
 import { WebSocketService } from 'src/app/services/web-socket-service';
 import { Subscription } from 'rxjs';
+import { AlertModalComponent } from '../shared/alert-modal/alert-modal.component';  // Import the alert modal component
 
 declare var feather: any; // ✅ outside the class
 declare var $: any;
@@ -17,7 +18,7 @@ declare var $: any;
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
-  //  @ViewChild('lotoModal') lotoModal!: ElementRef;
+  @ViewChild(AlertModalComponent) alertModal!: AlertModalComponent;  // Reference to the modal component
   showAll: boolean = false;
   isLoading: boolean = false;
   messageErrorTrue: boolean = false;
@@ -69,14 +70,24 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async listenLogoutUser() {
     this.logoutSub = this.webSocketService.listen(`sign-out`).subscribe(() => {
-      alert("You've just been logout")
-      this.logout();
+      this.alertModal.openModal("You've just been logout", 'error',
+        () => {
+          this.logout();
+          // You can place any logic here — like refreshing data or showing another component
+        }
+      );
+
     });
   }
   async listenMySelfRefresh() {
     this.refreshSub = this.webSocketService.listen(`refresh`).subscribe(() => {
-      alert("Site will reload");
-      window.location.reload();
+      this.alertModal.openModal("Website will reload", 'error',
+        () => {
+          window.location.reload();
+          // You can place any logic here — like refreshing data or showing another component
+        }
+      );
+
 
 
     });

@@ -28,6 +28,7 @@ import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.compone
 import { DataTablesModule } from 'angular-datatables';
 import { LottoReceiptsComponent } from './lotto-receipts/lotto-receipts.component';
 import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component';
+import { VivamaxHomeComponent } from './vivamax-home/vivamax-home.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -52,7 +53,8 @@ import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component
     Dashboard3dComponent,
     Dashboardpick3Component,
     LottoReceiptsComponent,
-    LottoAllBetsComponent
+    LottoAllBetsComponent,
+    VivamaxHomeComponent
   ],
   imports: [
     CommonModule,

@@ -23,12 +23,14 @@ import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.compone
 
 import { LottoReceiptsComponent } from './lotto-receipts/lotto-receipts.component';
 import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component';
+import { VivamaxHomeComponent } from './vivamax-home/vivamax-home.component';
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'home', component: HomeComponent },
     { path: 'arena', component: ArenaComponent },
     { path: 'wallet', component: WalletComponent },
     { path: 'sabong-home', component: SabongHomeComponent },
+    { path: 'vivamax-home', component: VivamaxHomeComponent },
     { path: 'arena/:eventId', component: DashboardComponent },
     { path: 'wallet-logs', component: WalletLogComponent },
     { path: 'bets-history', component: BetsComponent },

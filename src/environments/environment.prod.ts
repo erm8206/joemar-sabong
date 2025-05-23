@@ -4,9 +4,9 @@
 
 export const environment = {
   production: true,
-  baseUrl: 'https://api.allinoneconsole.live/api',
-  refUrl: 'https://allinoneconsole.live/play/signup',
-  webSocketUrl: 'https://api.allinoneconsole.live/talpakanhub',
+  baseUrl: 'https://lunagazer-api.azurewebsites.net/api',
+  refUrl: 'https://https://lunagazer-api.azurewebsites.net//play/signup',
+  webSocketUrl: 'https://lunagazer-api.azurewebsites.net/talpakanhub',
   gameServerUrl: 'https://games.example.com', // Added for casino games
   webSocketConfig: {
     withCredentials: true,

@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://devxxx-test.azurewebsites.net/api',
+  baseUrl: 'https://lunagazer-api.azurewebsites.net/api',
   refUrl: 'http://localhost:4200/play/signup',
-  webSocketUrl: 'https://devxxx-test.azurewebsites.net/talpakanhub',
+  webSocketUrl: 'https://lunagazer-api.azurewebsites.net/talpakanhub',
   gameServerUrl: 'https://games.example.com', // Added for casino games
   // baseUrl: 'https://dev.classmatex.com/api',
   // refUrl: 'https://dev.classmatex.com/auth/register',

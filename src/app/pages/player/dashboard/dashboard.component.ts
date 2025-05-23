@@ -313,7 +313,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async listenMySelfRefresh() {
     this.refreshSub = this.webSocketService.listen(`refresh-${this.eventId}`).subscribe(() => {
-      alert("Refresh ko" + this.eventId)
+      this.alertModal.openModal("Website will reload", 'success',
+        () => {
+          window.location.reload();
+          // You can place any logic here — like refreshing data or showing another component
+        }
+      );
       //this.refresh();
     });
   }
