@@ -306,8 +306,7 @@
         </div>
         <!-- Page Sidebar Ends-->
         <div class="page-body" style="padding: 0px;">
-            <div *ngIf="model.modelAnnouncement.title"
-                style="padding: 7px;background-color: rgb(40, 5, 100);margin: 0px;top: 9px;position: relative;">
+            <div *ngIf="modelAnnouncement.title" class="message-move">
                 <marquee behavior="scroll" direction="left">{{modelAnnouncement?.title}} <span data-bs-toggle="modal"
                         data-bs-target="#showMessageModal" style="color: aqua;"
                         (click)="showAnnouncementDetails(modelAnnouncement?.id)">[read more..]</span>
