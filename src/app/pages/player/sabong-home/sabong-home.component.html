@@ -26,10 +26,10 @@
                     <div class="col-lg-3 col-sm-6" *ngFor="let item of events">
                         <div class="sabongtable">
                             <div class="sabongtable-header">
-                                <h3 class="title"> {{ item?.name?.toUpperCase() }}</h3>
+                                <h5 class="title"> {{ item?.name?.toUpperCase() }}</h5>
                             </div>
                             <div class="sabong-value">
-                                <img src="../assets/images/versus.png" alt="sabong-value" class="img-fluid">
+                                <img src="../assets/images/lunasabong.png" alt="sabong-value" class="img-fluid">
                             </div>
                             <ul class="sabong-content">
                                 <li> {{ item?.createdAt | date : "fullDate" }}</li>

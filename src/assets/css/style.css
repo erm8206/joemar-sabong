@@ -9733,13 +9733,13 @@ button.button-primary:hover {
   gap: 10px;
 }
 
-/* Added styles for .meron and .wala classes */
 .meron {
-  background-color: red !important;
+  background-color: #c70b0b !important;
   box-shadow: 0 4px 8px red !important;
   color: white !important;
   text-align: center;
 }
+
 
 .wala {
   background-color: blue !important;
