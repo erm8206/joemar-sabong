@@ -81,7 +81,8 @@
                         </div>
                         <div class="ms-3">
                             <h4>Draw: {{ getTimeOnly(event.drawDate) }}</h4>
-                            <p class="f-light"><span class="font-success">25</span><span class="ms-2">Tickets</span></p>
+                            <p class="f-light"><span class="font-success">{{event?.totalTickets}}</span><span
+                                    class="ms-2">Tickets</span></p>
                             <div *ngIf="!event?.isCancelled">
 
                                 <h4 *ngIf="!event?.result">

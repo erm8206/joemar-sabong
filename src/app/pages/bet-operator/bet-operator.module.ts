@@ -20,6 +20,7 @@ import { List2dComponent } from './list2d/list2d.component';
 import { List3dComponent } from './list3d/list3d.component';
 import { Dashboard2dComponent } from './dashboard2d/dashboard2d.component';
 import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
+import { ListMessagesComponent } from './list-messages/list-messages.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
     List3dComponent,
     Dashboard2dComponent,
     Dashboard3dComponent,
+    ListMessagesComponent,
   ],
   imports: [
     CommonModule,

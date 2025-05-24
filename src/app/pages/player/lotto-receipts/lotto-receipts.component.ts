@@ -35,9 +35,10 @@ export class LottoReceiptsComponent {
 
     this.startLoading();
 
+    const today = new Date();
 
-    this.from = this.getToday();
-    this.to = this.getToday();
+    this.from = this.formatDate2(today, 0, 0);
+    this.to = this.formatDate2(today, 23, 59);
 
     this.getLottoReceipts();
     this._userSub.getUserDetail();
@@ -45,6 +46,19 @@ export class LottoReceiptsComponent {
 
 
 
+  }
+
+  formatDate2(date: Date, hours: number, minutes: number): string {
+    const hourString = hours < 10 ? '0' + hours : hours.toString();
+    const minuteString = minutes < 10 ? '0' + minutes : minutes.toString();
+    return `${this.getDateString(date)}T${hourString}:${minuteString}`;
+  }
+
+  getDateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
   getTimeOnly(dateStr: string): string {

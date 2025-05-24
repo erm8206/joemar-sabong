@@ -87,13 +87,25 @@ export class DownlinesComponent implements OnInit {
 
   async setComs(userId: string) {
     this.isLoading = true;
-    const percentage = prompt('Please input percentage.');
-    if (!percentage) return;
+
+    const percentage = prompt('Please input percentage (e.g., 10 or 10.5)');
+    if (percentage === null) return;
+
+    const trimmed = percentage.trim();
+
+    // Allow whole numbers or numbers with only 1 decimal place
+    const isValid = /^(\d+|\d+\.\d{1})$/.test(trimmed);
+
+    if (!isValid) {
+      alert('Invalid input. Please enter a number with at most one decimal place (e.g., 10 or 10.5)');
+      this.isLoading = false;
+      return;
+    }
 
     let endPoint: string = '/set-coms';
 
     try {
-      const response: any = await this._api.post('user', { userId, percentage }, endPoint);
+      const response: any = await this._api.post('user', { userId, percentage: parseFloat(trimmed) }, endPoint);
       await this.getDownlines(this.pageNumber);
       alert('Success');
       this.isLoading = false;

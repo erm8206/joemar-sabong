@@ -54,22 +54,34 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   async updatePlasada(commissionType: string) {
     if (commissionType == 'sabong') {
       try {
-        const result = prompt('Please input percentage.');
+        const result = prompt('Please input percentage (e.g., 10, 10.5, 10.55, 10.555)');
 
         if (result) {
+          const trimmed = result.trim();
+
+          // Regex: Whole number OR number with 1 to 3 decimals
+          const isValid = /^(\d+|\d+\.\d{1,3})$/.test(trimmed);
+
+          if (!isValid) {
+            alert('Invalid input. Enter a whole number or a decimal with 1 to 3 digits (e.g., 10, 10.5, 10.55, 10.555)');
+            return;
+          }
+
           const response: any = await this._api.post(
             'admin',
             {
-              percentage: result,
+              percentage: parseFloat(trimmed),
             },
             '/commission-config'
           );
+
           await this.getUserDetail();
           alert('Success !');
         }
       } catch (e) {
         alert(e ?? 'Server Error');
       }
+
     } else if (commissionType == 'pick2') {
       try {
         const result = prompt('Please input percentage.');

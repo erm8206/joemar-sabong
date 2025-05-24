@@ -25,10 +25,18 @@ import { Dashboard2dComponent } from './dashboard2d/dashboard2d.component';
 import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
 
 
+import { ListMessagesComponent } from './list-messages/list-messages.component';
+
+
 
 
 
 const routes: Routes = [
+    {
+        path: 'list-messages',
+        component: ListMessagesComponent,
+        canActivate: [IsBetOperator1GuardService],
+    },
     {
         path: 'dashboard-3d/:eventId',
         component: Dashboard3dComponent,
