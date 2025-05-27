@@ -13,6 +13,8 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subscription } from 'rxjs';
 import { WebSocketService } from 'src/app/services/web-socket-service';
 
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Component({
   selector: 'app-dashboard2d',
@@ -178,15 +180,26 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
   async submitBets() {
     this.isLoading = true;
 
-
-
-    if (this.storeListBets.length === 0) {
+    // ✅ 1. Check if there are bets
+    if (!this.storeListBets || this.storeListBets.length === 0) {
       this.alertModal.openModal("No bets to submit!", 'error');
       this.isLoading = false;
       return;
     }
 
-    // Wait for the confirmation modal result (Yes/No)
+    // ✅ 2. Validate bet amounts (only whole numbers allowed)
+    const validWholeNumber = /^\d+$/;
+    const hasInvalidBet = this.storeListBets.some(bet =>
+      !validWholeNumber.test(bet.amount?.toString())
+    );
+
+    if (hasInvalidBet) {
+      this.alertModal.openModal("Invalid bet detected. Only whole numbers are allowed.", 'error');
+      this.isLoading = false;
+      return;
+    }
+
+    // ✅ 3. Confirmation Modal
     const confirmationResult = await new Promise<boolean>((resolve) => {
       if (this.modalComponent) {
         this.modalComponent.openModal(
@@ -194,10 +207,12 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
           `Update Result?`
         );
 
-        // Wait for the confirmation result
-        this.modalComponent.result.subscribe((result) => {
+        const sub = this.modalComponent.result.subscribe((result) => {
+          sub.unsubscribe();
           resolve(result);
         });
+      } else {
+        resolve(false);
       }
     });
 
@@ -206,53 +221,60 @@ export class Dashboard2dComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
+    // ✅ Step: Generate unique requestId
+    const requestId = uuidv4();
+
     try {
-
-
+      // ✅ 4. Submit to backend
       const response: any = await this._api.post(
         'playernew',
         {
           remarks: this.remarks,
-          choice: this.storeListBets
+          choice: this.storeListBets,
+          requestId
         },
         `/my-lotto-bets/${this.eventId}`
       );
 
+      this.alertModal.openModal(response?.message || 'Success!', 'success');
 
-      this.alertModal.openModal(response?.message, 'success');
-      this._userSub.getUserDetail();
-      this.getDrawDetails();
-      this.lottoBetSummary();
-      this.myBetHistory();
-      this.getAllBetsHistory();
+      // ✅ 5. Refresh user/bets
+      this.refreshData();
 
-      // ✅ Clear data
-      this.storeListBets = [];
-      this.result = [];
-      this.remarks = ''; // Optional: clear remarks if applicable
+      // ✅ 6. Clear form state
+      this.clearBetForm();
 
-      // ✅ Close modal
-      this.closeOverviewModal();
-
-      this.isLoading = false;
     } catch (e: any) {
-      this.alertModal.openModal(e ?? 'Something went wrong', 'error');
+      this.alertModal.openModal(e?.message || 'Something went wrong', 'error');
+
+      // ⚠️ Refresh only necessary parts after failure
       this._userSub.getUserDetail();
       this.getDrawDetails();
       this.lottoBetSummary();
       this.myBetHistory();
       this.getAllBetsHistory();
-
-      // ✅ Clear data
-      this.storeListBets = [];
-      this.result = [];
-      this.remarks = ''; // Optional: clear remarks if applicable
-
-      // ✅ Close modal
-      this.closeOverviewModal();
+    } finally {
       this.isLoading = false;
     }
   }
+
+
+  private refreshData() {
+    this._userSub.getUserDetail();
+    this.getDrawDetails();
+    this.lottoBetSummary();
+    this.myBetHistory();
+    this.getAllBetsHistory();
+  }
+
+  private clearBetForm() {
+    this.storeListBets = [];
+    this.result = [];
+    this.remarks = '';
+    this.closeOverviewModal();
+  }
+
+
 
   closeOverviewModal(): void {
 

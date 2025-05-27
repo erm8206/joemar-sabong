@@ -45,10 +45,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   totalCount: number = 0;
   totalPages: number = 1;
-
+  userId: string = ""
 
   private refreshSub: Subscription = new Subscription();
   private logoutSub: Subscription = new Subscription();
+  private suspendedSub: Subscription = new Subscription();
   showProfileMenu = false;
   isSidebarVisible = true;
   isMobileSidebarOpen = false;
@@ -62,8 +63,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this._userSub.getUser().subscribe((user: UserModel) => {
+      if (user?.id) {
+        this.userId = user?.id
+        // You can now use user.id as needed
+      }
+    });
     this.listenLogoutUser();
     this.listenMySelfRefresh();
+    // this.listenSuspendedUser();
 
     this.showLatestAnnouncement()
   }
@@ -92,6 +100,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
     });
   }
+  async listenSuspendedUser() {
+    this.suspendedSub = this.webSocketService.listen(`logout-${this.userId}`).subscribe(() => {
+      this.alertModal.openModal("You've just been logout", 'error',
+        () => {
+          this.logout();
+          // You can place any logic here — like refreshing data or showing another component
+        }
+      );
+
+    });
+  }
+
 
   public loadScript(url: string) {
     const body = <HTMLDivElement>document.body;
@@ -107,6 +127,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.refreshSub?.unsubscribe();
     this.logoutSub?.unsubscribe();
+    this.suspendedSub?.unsubscribe();
+
   }
 
 

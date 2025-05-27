@@ -64,6 +64,7 @@
                                     <th>Date Registered</th>
                                     <th>Username</th>
                                     <th>Type</th>
+                                    <th>Upline</th>
                                     <th>Status</th>
                                     <th>Points</th>
                                     <th>Sabong Commission</th>
@@ -75,7 +76,9 @@
                                     <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
                                     <td>{{ user.createdAt | date: 'medium' }}</td>
                                     <td>{{ user.username }}</td>
-                                    <td>{{ user.type }}</td>
+                                    <td>{{ agentTypeMap[user.type] || user.type }}</td>
+                                    <td>{{user?.upline?.username}}</td>
+
                                     <td>
                                         <span class="badge bg-warning" *ngIf="user.status === 'pending'">
                                             {{ user.status }}
@@ -84,9 +87,24 @@
                                             {{ user.status }}
                                         </span>
                                     </td>
-                                    <td>{{ user?.account?.points }}</td>
-                                    <td>{{ user?.account?.commission }}</td>
+                                    <td>{{ user?.account?.points | number : "1.2"}}</td>
+                                    <td>{{ user?.account?.commission | number : "1.2"}}</td>
                                     <td>
+
+                                        <button
+                                            *ngIf="(user.type == 'player' || user.type == 'agent1' || user.type == 'agent2' || user.type == 'agent3' || user.type == 'agent4' || user.type == 'agent5') && user.status == 'pending'"
+                                            [disabled]="isLoading" (click)="approveUser(user.id)"
+                                            class="btn btn-outline-info btn-sm">
+                                            <i class="fa fa-times"></i>
+                                            Activate
+                                        </button>
+                                        <button
+                                            *ngIf="(user.type == 'player' || user.type == 'agent1' || user.type == 'agent2' || user.type == 'agent3' || user.type == 'agent4' || user.type == 'agent5') && user.status == 'approved'"
+                                            [disabled]="isLoading" (click)="deactivateUser(user.id)"
+                                            class="btn btn-outline-danger btn-sm">
+                                            <i class="fa fa-times"></i>
+                                            Deactivate
+                                        </button>
                                         <button (click)="changePass(user.id)" [disabled]="isLoading"
                                             class="btn btn-outline-success btn-sm">
                                             <i class="fa fa-check"></i>

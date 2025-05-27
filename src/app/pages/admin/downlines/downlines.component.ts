@@ -79,15 +79,7 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
 
-  async deactivateUser(userId: string) {
-    try {
-      await this._api.post('user', { userId }, '/deactivate');
-      await this.getDownlines(this.pageNumber);
-      alert('Success! Player has been Deactivated');
-    } catch (e) {
-      alert(e ?? 'Something went wrong');
-    }
-  }
+
 
   public getUser(): Observable<UserModel> {
     return this._sub.getUser();

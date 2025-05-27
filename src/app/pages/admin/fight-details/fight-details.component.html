@@ -125,7 +125,7 @@
                                                     <td>{{ user?.amount}}
                                                     <td>{{ user?.result }}</td>
                                                     <td>
-                                                        <span class="badge badge-success" *ngIf="user?.status == 'win'">
+                                                        <span class="badge badge-info" *ngIf="user?.status == 'win'">
                                                             {{ user?.status
                                                             }}</span>
                                                         <span class="badge badge-danger" *ngIf="user?.status == 'lose'">
@@ -133,6 +133,10 @@
                                                             }}</span>
                                                         <span class="badge badge-secondary"
                                                             *ngIf="user?.status == 'cancelled'"> {{
+                                                            user?.status }}</span>
+
+                                                        <span class="badge badge-success"
+                                                            *ngIf="user?.status == 'draw'"> {{
                                                             user?.status }}</span>
 
                                                     </td>

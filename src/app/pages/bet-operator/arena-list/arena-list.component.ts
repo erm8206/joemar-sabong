@@ -96,6 +96,7 @@ export class ArenaListComponent implements OnInit {
   }
 
   async editEvent() {
+    this.isLoading = false;
     this.currentEvent.plasada = this.currentEvent.plasada / 100;
     let newEventData: any = {};
     newEventData = {
@@ -126,12 +127,14 @@ export class ArenaListComponent implements OnInit {
         "status": ""
       };
       await this.getReports();
+      this.isLoading = false;
 
 
 
       alert('Success');
     } catch (e) {
       alert(e);
+      this.isLoading = false;
     }
   }
 
@@ -142,6 +145,7 @@ export class ArenaListComponent implements OnInit {
 
 
   async duplicateEvent() {
+    this.isLoading = true;
     this.currentEvent.plasada = this.currentEvent.plasada / 100;
     let newEventData: any = {};
     newEventData = {
@@ -181,12 +185,15 @@ export class ArenaListComponent implements OnInit {
       await this.getReports();
 
       alert('Success !');
+      this.isLoading = false;
     } catch (e) {
       alert(e);
+      this.isLoading = false;
     }
   }
 
   async addEvent() {
+    this.isLoading = true;
 
     this.model.plasada = this.model.plasada / 100;
 
@@ -206,8 +213,10 @@ export class ArenaListComponent implements OnInit {
       await this.getReports();
 
       alert('Success !');
+      this.isLoading = false;
     } catch (e) {
       alert(e);
+      this.isLoading = false;
     }
   }
 

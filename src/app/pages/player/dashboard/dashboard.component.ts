@@ -19,6 +19,7 @@ import { AnimationBuilder } from '@angular/animations';
 import { Location } from '@angular/common';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { AlertModalComponent } from '../../shared/alert-modal/alert-modal.component';  // Import the alert modal component
+import { v4 as uuidv4 } from 'uuid';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -436,34 +437,17 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     return (this.account.points || 0) + totalBets;
   }
 
-  async placeBet(name: string) {
-    this.disableProceed = true;
+  async placeBetSimulate(name: string) {
     let fName = name.toLowerCase();
 
-    // Wait for the confirmation modal result (Yes/No)
-    const confirmationResult = await new Promise<boolean>((resolve) => {
-      if (this.modalComponent) {
-        this.modalComponent.openModal(
-          `Betting Confirm:`,
-          `Add ${this.myBetModel.amount} to ${name} ?`
-        );
+    // ✅ Step: Generate unique requestId
+    const requestId = uuidv4();
 
-        // Wait for the confirmation result
-        this.modalComponent.result.subscribe((result) => {
-          resolve(result);
-        });
-      }
-    });
-
-    if (!confirmationResult) {
-      this.disableProceed = false;
-      return;
-    }
     try {
 
       const response: any = await this._api.post(
         'playernew',
-        { amount: this.myBetModel.amount, choice: fName },
+        { amount: this.myBetModel.amount, choice: fName, requestId },
         `/my-bets/${this.eventId}`
       );
       this.myBetModel = {
@@ -477,18 +461,80 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-      this.alertModal.openModal(`Success! Added Bet on ${name}`, 'success');
-      this.disableProceed = false;
     } catch (e: any) {
-      this.alertModal.openModal(e ?? 'Something went wrong', 'error');
+    }
+  }
+
+  async placeBet(name: string) {
+    this.disableProceed = true;
+    const fName = name.toLowerCase();
+
+    const amount = this.myBetModel.amount;
+    const validPattern = /^\d+$/;
+
+    if (!amount || !validPattern.test(amount.toString())) {
+      this.alertModal.openModal('Invalid amount. Please enter a whole number only.', 'error');
+      this.disableProceed = false;
+      return;
+    }
+
+    const confirmationResult = await new Promise<boolean>((resolve) => {
+      if (this.modalComponent) {
+        this.modalComponent.openModal(
+          `Betting Confirm:`,
+          `Add ${amount} to ${name}?`
+        );
+        const sub = this.modalComponent.result.subscribe((result) => {
+          sub.unsubscribe();
+          resolve(result);
+        });
+      } else {
+        resolve(false);
+      }
+    });
+
+    if (!confirmationResult) {
+      this.disableProceed = false;
+      return;
+    }
+
+    // ✅ Step: Generate unique requestId
+    const requestId = uuidv4();
+
+    try {
+      const response: any = await this._api.post(
+        'playernew',
+        {
+          amount,
+          choice: fName,
+          requestId // ✅ Send it to backend
+        },
+        `/my-bets/${this.eventId}`
+      );
+
+      // Reset form
+      this.myBetModel = { amount: 0 };
+
+      // Update UI
+      this.updatePoints(response.userAccount.points);
+      this.myBets.myTotalDrawBets = response.myTotalDrawBets;
+      this.myBets.myTotalMeronBets = response.myTotalMeronBets;
+      this.myBets.myTotalWalaBets = response.myTotalWalaBets;
+
+      this.alertModal.openModal(`Success! Added Bet on ${name}`, 'success');
+    } catch (e: any) {
+      this.alertModal.openModal(e?.message || 'Something went wrong', 'error');
+    } finally {
       this.disableProceed = false;
     }
   }
 
 
+
   //FOR TESTING 
 
-  async simulateBetsBatch(name: string, total: number = 20, batchSize: number = 5, delayMs: number = 5) {
+  async simulateBetsBatch(name: string, total: number = 20, batchSize: number = 2, delayMs: number = 1000) {
+
     let completed = 0;
 
     while (completed < total) {
@@ -514,7 +560,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async placeBetWithRetry(name: string, retries = 3, delayMs = 3000): Promise<void> {
     try {
-      await this.placeBet(name);
+      await this.placeBetSimulate(name);
     } catch (e: any) {
       if ((e?.status === 429 || this.isTooManyRequests(e)) && retries > 0) {
         console.warn(`⚠️ 429 Too Many Requests. Retrying in ${delayMs / 1000}s... (${retries} retries left)`);
@@ -550,19 +596,30 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   async addDrawBet() {
     this.disableProceed = true;
 
+    const amount = this.myBetModel.amount;
+    const validWholeNumber = /^\d+$/;
 
-    // Wait for the confirmation modal result (Yes/No)
+    // ✅ Validate amount
+    if (!amount || !validWholeNumber.test(amount.toString())) {
+      this.alertModal.openModal('Invalid amount. Please enter a whole number only.', 'error');
+      this.disableProceed = false;
+      return;
+    }
+
+    // ✅ Confirmation Modal
     const confirmationResult = await new Promise<boolean>((resolve) => {
       if (this.modalComponent) {
         this.modalComponent.openModal(
           `Betting Confirm:`,
-          `Add ${this.myBetModel.amount} to Draw ?`
+          `Add ${amount} to Draw?`
         );
 
-        // Wait for the confirmation result
-        this.modalComponent.result.subscribe((result) => {
+        const sub = this.modalComponent.result.subscribe((result) => {
+          sub.unsubscribe();
           resolve(result);
         });
+      } else {
+        resolve(false);
       }
     });
 
@@ -571,25 +628,32 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
+    // ✅ Step: Generate unique requestId
+    const requestId = uuidv4();
+
     try {
       const response: any = await this._api.post(
         'playernew',
-        { amount: this.myBetModel.amount, choice: 'draw' },
+        { amount, choice: 'draw', requestId },
         `/my-bets/${this.eventId}`
       );
+
+      // ✅ Reset form and update data
       this.myBetModel = {};
       this.updatePoints(response.userAccount.points);
       this.myBets.myTotalDrawBets = response.myTotalDrawBets;
       this.myBets.myTotalMeronBets = response.myTotalMeronBets;
       this.myBets.myTotalWalaBets = response.myTotalWalaBets;
+
       this.drawCloseBtn?.nativeElement?.click();
       this.alertModal.openModal('Success! Added Bet on DRAW', 'success');
-      this.disableProceed = false;
     } catch (e: any) {
-      this.alertModal.openModal(e ?? 'Something went wrong', 'error');
+      this.alertModal.openModal(e?.message || 'Something went wrong', 'error');
+    } finally {
       this.disableProceed = false;
     }
   }
+
 
   logout() {
     this._jwt.removeToken();

@@ -8,16 +8,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MasterRevertComponent } from './master-revert/master-revert.component';
 import { ArenaListComponent } from './arena-list/arena-list.component';
 
-import { Ez2revertlistComponent } from './ez2revertlist/ez2revertlist.component';
-import { Ez2revertconsoleComponent } from './ez2revertconsole/ez2revertconsole.component';
-import { SuertresrevertlistComponent } from './suertresrevertlist/suertresrevertlist.component';
-import { SuertresrevertconsoleComponent } from './suertresrevertconsole/suertresrevertconsole.component';
+
 
 import { Pick3Component } from './pick3/pick3.component';
 import { Pick3ConsoleComponent } from './pick3-console/pick3-console.component';
-import { Pick3revertlistComponent } from './pick3revertlist/pick3revertlist.component';
-import { Pick3revertconsoleComponent } from './pick3revertconsole/pick3revertconsole.component';
-
 
 import { List2dComponent } from './list2d/list2d.component';
 import { List3dComponent } from './list3d/list3d.component';
@@ -27,11 +21,33 @@ import { Dashboard3dComponent } from './dashboard3d/dashboard3d.component';
 
 import { ListMessagesComponent } from './list-messages/list-messages.component';
 
+import { List3dMasterrevertComponent } from './list3d-masterrevert/list3d-masterrevert.component';
+import { List2dMasterrevertComponent } from './list2d-masterrevert/list2d-masterrevert.component';
+import { Listpick3MasterrevertComponent } from './listpick3-masterrevert/listpick3-masterrevert.component';
+
 
 
 
 
 const routes: Routes = [
+    {
+        path: 'master-revert-pick3',
+        component: Listpick3MasterrevertComponent,
+        canActivate: [IsBetOperator1GuardService],
+    },
+
+    {
+        path: 'master-revert-2d',
+        component: List2dMasterrevertComponent,
+        canActivate: [IsBetOperator1GuardService],
+    },
+
+    {
+        path: 'master-revert-3d',
+        component: List3dMasterrevertComponent,
+        canActivate: [IsBetOperator1GuardService],
+    },
+
     {
         path: 'list-messages',
         component: ListMessagesComponent,
@@ -90,43 +106,6 @@ const routes: Routes = [
         ,
     },
 
-
-    {
-        path: 'pick3-masterrevert-list',
-        component: Pick3revertlistComponent
-        ,
-    },
-
-
-    {
-        path: 'pick3-revert/console/:id',
-        component: Pick3revertconsoleComponent
-
-    },
-
-
-
-    {
-        path: 'ez2revert-list',
-        component: Ez2revertlistComponent
-        ,
-    },
-
-    {
-        path: 'ez2revert/console/:id',
-        component: Ez2revertconsoleComponent
-
-    },
-    {
-        path: '3d-lotto-revert-list',
-        component: SuertresrevertlistComponent
-
-    },
-    {
-        path: '3dlottorevert/console/:id',
-        component: SuertresrevertconsoleComponent
-
-    },
 
 
 

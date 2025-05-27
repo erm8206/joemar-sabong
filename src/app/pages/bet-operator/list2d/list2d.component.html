@@ -110,9 +110,17 @@
                                             (click)="editModelData(event)">
                                             <i class="fa fa-plus"></i> Edit Event
                                         </button>
+                                        <button class="btn btn-info btn-sm" style="margin-right: 10px;"
+                                            data-bs-toggle="modal" data-bs-target="#duplicateArena"
+                                            (click)="editModelData(event)">
+                                            <i class="fa fa-plus"></i> Duplicate Event
+                                        </button>
                                         <button class="btn btn-danger btn-sm"
                                             routerLink="/operator/dashboard-2d/{{event.id}}" routerLinkActive="active"
                                             [routerLinkActiveOptions]="{ exact: true }">Dashboard</button>
+
+
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -373,7 +381,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Draw Date From</label>
+                                    <label>Draw Date</label>
                                     <input class="form-control" type="datetime-local"
                                         [(ngModel)]="editModel.drawDate" />
                                 </div>
@@ -504,6 +512,179 @@
                 </button>
                 <button type="button" class="btn btn-primary" (click)="editEvent()">
                     Edit Event
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="duplicateArena" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Duplicate 2D event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Draw Date From</label>
+                                            <input class="form-control" type="date" [(ngModel)]="editModel.drawDateFrom"
+                                                (ngModelChange)="onDrawDateChange($event, 'from')" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Draw Date To</label>
+                                            <input class="form-control" type="date" [(ngModel)]="editModel.drawDateTo"
+                                                (ngModelChange)="onDrawDateChange($event, 'to')" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Draw Time</label>
+                                    <input class="form-control" type="time" [(ngModel)]="editModel.drawTime"
+                                        (ngModelChange)="onDrawTimeChange($event)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control" type="text" name="name"
+                                        [(ngModel)]="editModel.drawName" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Min no. of choices</label>
+                                    <input class="form-control" type="number" name="ballNumberMin"
+                                        [(ngModel)]="editModel.minChoice" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max no. of choices</label>
+                                    <input class="form-control" type="number" name="ballNumberMax"
+                                        [(ngModel)]="editModel.maxChoice" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Min Bet</label>
+                                    <input class="form-control" type="number" name="ballNumberMin"
+                                        [(ngModel)]="editModel.minBet" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max Bet</label>
+                                    <input class="form-control" type="number" name="ballNumberMax"
+                                        [(ngModel)]="editModel.maxBet" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Number Select</label>
+                                    <input class="form-control" type="number" name="videoUrl"
+                                        [(ngModel)]="editModel.numSelect" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Win Multiplier</label>
+                                    <input class="form-control" type="number" name="winMultiplier"
+                                        [(ngModel)]="editModel.winMultiplier" />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+
+
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Video Url</label>
+                                    <input class="form-control" type="text" name="videoUrl"
+                                        [(ngModel)]="editModel.videoUrl" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Result Url</label>
+                                    <input class="form-control" type="text" name="resultUrl"
+                                        [(ngModel)]="editModel.resultUrl" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" (click)="duplicateEvent()">
+                    Duplicate Event
                 </button>
             </div>
         </div>

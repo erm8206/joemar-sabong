@@ -313,6 +313,98 @@ export class List3dComponent implements OnInit {
 
   }
 
+  async duplicateEvent() {
+
+    let duplicateDate = {
+      'drawDateFrom': this.editModel.drawDateFrom,
+      'drawDateTo': this.editModel.drawDateTo,
+      'drawTime': this.editModel.drawTime,
+      'drawName': this.editModel.drawName,
+      'minChoice': this.editModel.minChoice,
+      'maxChoice': this.editModel.maxChoice,
+      'minBet': this.editModel.minBet,
+      'maxBet': this.editModel.maxBet,
+      'numSelect': this.editModel.numSelect,
+      'winMultiplier': this.editModel.winMultiplier,
+      'videoUrl': this.editModel.videoUrl,
+      'resultUrl': this.editModel.resultUrl,
+      'tags': this.editModel.tags
+    }
+
+
+
+    const requiredFields = [
+      'drawDateFrom',
+      'drawDateTo',
+      'drawTime',
+      'drawName',
+      'minChoice',
+      'maxChoice',
+      'minBet',
+      'maxBet',
+      'winMultiplier',
+      'videoUrl',
+      'resultUrl',
+      'tags'
+    ];
+
+
+    // Basic required field check (excluding minChoice for now)
+    for (const field of requiredFields) {
+      if (!duplicateDate[field]) {
+        console.log(field)
+        if (field != "minChoice") {
+          alert(`${this.toLabel(field)} is required.`);
+          this.isLoading = false;
+          return;
+        }
+        else {
+          console.log("im here!")
+          // Separate logic for minChoice
+          const minChoice = duplicateDate.minChoice;
+          if (minChoice === null || minChoice === undefined || minChoice === '') {
+            alert(`Min no. of choices is required.`);
+            this.isLoading = false;
+            return;
+          }
+
+
+        }
+
+      }
+      else {
+        if (field == "minChoice") {
+
+          // Separate logic for minChoice
+          const minChoice = duplicateDate.minChoice;
+
+          if (Number(minChoice) < 0) {
+            alert(`Min no. of choices must not be negative.`);
+            this.isLoading = false;
+            return;
+          }
+
+        }
+      }
+    }
+
+    try {
+      const response: any = await this._api.post(
+        'betopsnew',
+        { ...duplicateDate },
+        '/events-lotto'
+      );
+      this.editModel = {};
+
+      await this.getLottoEvents(this.pageNumber);
+      alert('Success !');
+    } catch (e) {
+      alert(e);
+    }
+
+  }
+
+
   toLabel(field: string): string {
     return field
       .replace(/([A-Z])/g, ' $1')     // insert space before capital letters

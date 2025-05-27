@@ -2,7 +2,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h3>List Of Lotto Events</h3>
+                <h3>Master Revert</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -10,31 +10,11 @@
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                             </svg></a></li>
-                    <li class="breadcrumb-item">Events</li>
-                    <li class="breadcrumb-item active">List Of Lotto Events</li>
+                    <li class="breadcrumb-item">3D-Lotto</li>
+                    <li class="breadcrumb-item active">Master Revert</li>
                 </ol>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="container-fluid">
-    <div class="page-title" style="    background-color: rgb(45 49 62);;">
-
-        <div style="display: flex;justify-content: flex-start;flex-wrap: wrap;" class="mt-2">
-            <div class="form-group" style="margin-right: 10px;">
-                <input name="from" style="color: aliceblue;" type="datetime-local" class="form-control"
-                    [(ngModel)]="from" />
-            </div>
-            <div class="form-group" style="margin-right: 10px;">
-                <input type="datetime-local" style="color: aliceblue;" [(ngModel)]="to" class="form-control" />
-            </div>
-            <button class="btn btn-success btn-sm btn-block" (click)="getEvents()">
-                Submit
-            </button>
-        </div>
-
-
     </div>
 </div>
 <!-- Container-fluid starts-->
@@ -44,35 +24,10 @@
             <div class="card">
                 <div class="card-header" style="font-size: 13px">
                     <i class="fa fa-align-justify"></i>
-                    LIST OF Lotto EVENTS
-
-
+                    List of Fight Numbers
                 </div>
 
                 <div class="card-body">
-                    <ul class="nav nav-tabs mb-2" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
-                                type="button" role="tab" aria-controls="all" aria-selected="true"
-                                (click)="changeTag('')">All</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="2d-tab" data-bs-toggle="tab" data-bs-target="#2d" type="button"
-                                role="tab" aria-controls="2d" aria-selected="false"
-                                (click)="changeTag('pick2')">2D</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="3d-tab" data-bs-toggle="tab" data-bs-target="#3d" type="button"
-                                role="tab" aria-controls="3d" aria-selected="false"
-                                (click)="changeTag('suertres')">3D</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pick3-tab" data-bs-toggle="tab" data-bs-target="#pick3"
-                                type="button" role="tab" aria-controls="pick3" aria-selected="false"
-                                (click)="changeTag('pick3')">Super Pick</button>
-                        </li>
-                    </ul>
-
                     <!-- PAGE SIZE DROPDOWN -->
 
                     <div class="row mb-3">
@@ -80,15 +35,13 @@
                             <div>
                                 <select class="form-select" id="pageSize" [value]="pageSize"
                                     (change)="onPageSizeChange($event)">
-                                    <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}</option>
+                                    <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{ size }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search events..."
-                                    [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
-
+                                <input type="text" class="form-control" placeholder="Search transactions...">
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
@@ -107,54 +60,78 @@
                         <div *ngIf="isLoading" class="loading-container">
                             <div class="spinner"></div>
                         </div>
-                        <table *ngIf="!isLoading && events.length > 0" border="1" width="100%" cellpadding="8"
+                        <table *ngIf="!isLoading && drawEvents.length > 0" border="1" width="100%" cellpadding="8"
                             class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Draw Date</th>
                                     <th>Draw Name</th>
-                                    <th>Game Type</th>
-                                    <th>Multiplier</th>
-                                    <th>Status</th>
                                     <th>Result</th>
+                                    <th>Status</th>
+
+
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let user of events; let i = index">
+                                <tr *ngFor="let user of drawEvents; let i = index">
                                     <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-                                    <td>{{ user?.drawDate | date: 'medium' }}</td>
-                                    <td>{{ user?.drawName }}</td>
-                                    <td>{{ user?.tags }}</td>
-                                    <td>{{ user?.winMultiplier }}</td>
-                                    <td *ngIf="user?.isCancelled">
-                                        {{ user.status }} - Cancelled
-                                    </td>
-                                    <td *ngIf="!user?.isCancelled">
-                                        {{ user.status }}
-                                    </td>
-                                    <td>
-                                        {{ user.result }}
-                                    </td>
-                                    <td>
-                                        <button [disabled]="isLoading" class="btn btn-success btn-sm"
-                                            (click)=getDrawDetails(user?.id)>
-                                            <i class="fa fa-list"></i>
-                                            Get Reports
+                                    <td>{{ user.drawDate | date: 'medium' }}</td>
+                                    <td>{{ user.drawName }}</td>
+                                    <td>{{ user.result }}</td>
+                                    <td *ngIf="user?.isCancelled">{{ user.status }} - Cancelled</td>
+                                    <td *ngIf="!user?.isCancelled">{{ user.status }}</td>
+
+
+                                    <td *ngIf="(user.result && user.disbursed && user.status == 'settled')">
+                                        <button [disabled]="isLoading" class="btn btn-danger btn-sm"
+                                            (click)="masterRevert(user.id)">
+
+                                            Revert
                                         </button>
                                     </td>
+
+                                    <td *ngIf="(!user.result && user.disbursed && user.status == 'settled')">
+                                        <button [disabled]="isLoading" class="btn btn-danger btn-sm"
+                                            (click)="masterRevert(user.id)">
+
+                                            Revert
+                                        </button>
+                                    </td>
+                                    <td *ngIf="user.status == 'disbursing'">
+                                        <h3>disbursing... Please refresh in a few minutes!</h3>
+                                    </td>
+                                    <td *ngIf="user.status == 'reverting'">
+                                        <h3>Reverting... Please refresh in a few minutes!</h3>
+                                    </td>
+                                    <td *ngIf="(!user.result && !user.disbursed && user.status == 'close')">
+
+                                        <a class="btn btn-danger btn-sm"
+                                            routerLink="/operator/pick3/console/{{user?.id}}" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">Go to Dashboard and
+                                            disbursed</a>
+
+                                    </td>
+
+                                    <td *ngIf="user?.status == 'close' &&
+                                    user?.result &&
+                                    !user?.disbursed
+                                  ">
+                                        <a class="btn btn-danger btn-sm"
+                                            routerLink="/operator/pick3/console/{{user?.id}}" routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }">Go to Dashboard and
+                                            disbursed</a>
+                                    </td>
+
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- NO USERS -->
-                    <div *ngIf="!isLoading && events.length === 0" style="text-align: center;padding: 20px;">
-                        <div>
-                            <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
-                        </div>
-                        <span>No Events found.</span>
+                    <div *ngIf="!isLoading && drawEvents.length === 0">
+                        No Data found.
                     </div>
 
                 </div>
@@ -164,7 +141,7 @@
 
 
                         <!-- ENTRIES INFO -->
-                        <div *ngIf="!isLoading && events.length > 0">
+                        <div *ngIf="!isLoading && drawEvents.length > 0">
                             Showing
                             {{ (pageNumber - 1) * pageSize + 1 }}
                             to

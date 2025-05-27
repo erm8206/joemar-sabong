@@ -85,15 +85,27 @@
                                         {{ user.status }}
                                     </td>
                                     <td>{{ user.createdAt | date: 'medium' }}</td>
-                                    <td
-                                        *ngIf="(user.result && user.disbursed && user.status == 'settled') || user.status == 'disbursing'">
+                                    <td *ngIf="(user.result && user.disbursed && user.status == 'settled')">
                                         <button [disabled]="isLoading" class="btn btn-danger btn-sm"
                                             (click)="masterRevert(user.id)">
 
                                             Revert
                                         </button>
                                     </td>
-                                    <td *ngIf="(!user.result && !user.disbursed && user.status == 'close')">
+                                    <td
+                                        *ngIf="(!user.result && !user.disbursed && user.status == 'close' && !user?.forResult)">
+                                        <h6>Game still in progress</h6>
+                                    </td>
+                                    <td *ngIf="user.status == 'reverting'">
+                                        <h3>Reverting... Please refresh in a few minutes!</h3>
+                                    </td>
+
+                                    <td *ngIf="user.status == 'disbursing'">
+                                        <h3>disbursing... Please refresh in a few minutes!</h3>
+                                    </td>
+
+                                    <td
+                                        *ngIf="(!user.result && !user.disbursed && user.status == 'close' && user?.forResult)">
                                         <div class="row">
                                             <div class="col-md-12 text-center">
                                                 <button style="width: 100%;" class="btn mb-2" [disabled]="isLoading"
@@ -142,16 +154,9 @@
                                                 {{user?.result}}</h3>
 
 
-                                            <div class="col-12" style="margin-top: 10px">
-                                                <button style="width: 100%;" [disabled]="isLoading"
-                                                    class="btn btn-info btn-block"
-                                                    (click)="revertResult(user?.fightEvent?.id)">
-                                                    REVERT
-                                                </button>
-                                            </div>
 
                                             <div class="col-12" style="margin-top: 10px">
-                                                <button style="width: 100%;" [disabled]="disbursedLoading"
+                                                <button style="width: 100%;" [disabled]="isLoading"
                                                     class="btn btn-danger btn-block"
                                                     (click)="reDisbursedResult(user?.id)">
                                                     DISBURSED RESULT

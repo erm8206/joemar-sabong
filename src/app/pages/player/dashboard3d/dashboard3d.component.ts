@@ -16,6 +16,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subscription } from 'rxjs';
 import { WebSocketService } from 'src/app/services/web-socket-service';
 
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-dashboard3d',
@@ -242,15 +243,24 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
   async submitBets() {
     this.isLoading = true;
 
-
-
-    if (this.storeListBets.length === 0) {
+    // ✅ Step 1: Validate list is not empty
+    if (!this.storeListBets || this.storeListBets.length === 0) {
       this.alertModal.openModal("No bets to submit!", 'error');
       this.isLoading = false;
       return;
     }
 
-    // Wait for the confirmation modal result (Yes/No)
+    // ✅ Step 2: Validate all amounts (whole numbers only)
+    const validWholeNumber = /^\d+$/;
+    const hasInvalidBet = this.storeListBets.some(bet => !validWholeNumber.test(bet.amount?.toString()));
+
+    if (hasInvalidBet) {
+      this.alertModal.openModal("One or more bet amounts are invalid. Only whole numbers are allowed.", 'error');
+      this.isLoading = false;
+      return;
+    }
+
+    // ✅ Step 3: Confirm
     const confirmationResult = await new Promise<boolean>((resolve) => {
       if (this.modalComponent) {
         this.modalComponent.openModal(
@@ -258,10 +268,12 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
           `Update Result?`
         );
 
-        // Wait for the confirmation result
-        this.modalComponent.result.subscribe((result) => {
+        const sub = this.modalComponent.result.subscribe((result) => {
+          sub.unsubscribe();
           resolve(result);
         });
+      } else {
+        resolve(false);
       }
     });
 
@@ -270,56 +282,47 @@ export class Dashboard3dComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
+    // ✅ Step: Generate unique requestId
+    const requestId = uuidv4();
+
     try {
-
-
       const response: any = await this._api.post(
         'playernew',
         {
           remarks: this.remarks,
-          choice: this.storeListBets
+          choice: this.storeListBets,
+          requestId
         },
         `/my-lotto-bets/${this.eventId}`
       );
 
+      this.alertModal.openModal(response?.message || 'Success!', 'success');
 
-      this.alertModal.openModal(response?.message, 'success');
-      this._userSub.getUserDetail();
-      this.getDrawDetails();
-      this.lottoBetSummary();
-      this.myBetHistory();
-      this.getAllBetsHistory();
-      this.lottoBetSummary();
+      // ✅ Refresh and clear data
+      await this.refreshAfterSubmit();
 
-      // ✅ Clear data
-      this.storeListBets = [];
-      this.result = [];
-      this.remarks = ''; // Optional: clear remarks if applicable
-
-      // ✅ Close modal
-      this.closeOverviewModal();
-
-      this.isLoading = false;
     } catch (e: any) {
-      this.alertModal.openModal(e ?? 'Something went wrong', 'error');
-      this._userSub.getUserDetail();
-      this.getDrawDetails();
-      this.lottoBetSummary();
-      this.myBetHistory();
-      this.getAllBetsHistory();
-      this.lottoBetSummary();
-
-      // ✅ Clear data
-      this.storeListBets = [];
-      this.result = [];
-      this.remarks = ''; // Optional: clear remarks if applicable
-
-      // ✅ Close modal
-      this.closeOverviewModal();
-
+      this.alertModal.openModal(e?.message || 'Something went wrong', 'error');
+    } finally {
       this.isLoading = false;
     }
   }
+  private async refreshAfterSubmit() {
+    this._userSub.getUserDetail();
+    this.getDrawDetails();
+    this.myBetHistory();
+    this.getAllBetsHistory();
+    this.lottoBetSummary();
+
+    // ✅ Clear temporary data
+    this.storeListBets = [];
+    this.result = [];
+    this.remarks = '';
+
+    this.closeOverviewModal();
+  }
+
+
 
   closeOverviewModal(): void {
 

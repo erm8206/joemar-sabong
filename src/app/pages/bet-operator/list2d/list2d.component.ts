@@ -239,6 +239,70 @@ export class List2dComponent implements OnInit {
 
   }
 
+  async duplicateEvent() {
+
+    let duplicateDate = {
+      'drawDateFrom': this.editModel.drawDateFrom,
+      'drawDateTo': this.editModel.drawDateTo,
+      'drawTime': this.editModel.drawTime,
+      'drawName': this.editModel.drawName,
+      'minChoice': this.editModel.minChoice,
+      'maxChoice': this.editModel.maxChoice,
+      'minBet': this.editModel.minBet,
+      'maxBet': this.editModel.maxBet,
+      'numSelect': this.editModel.numSelect,
+      'winMultiplier': this.editModel.winMultiplier,
+      'videoUrl': this.editModel.videoUrl,
+      'resultUrl': this.editModel.resultUrl,
+      'tags': this.editModel.tags
+    }
+
+
+
+    const requiredFields = [
+      'drawDateFrom',
+      'drawDateTo',
+      'drawTime',
+      'drawName',
+      'minChoice',
+      'maxChoice',
+      'minBet',
+      'maxBet',
+      'numSelect',
+      'winMultiplier',
+      'videoUrl',
+      'resultUrl',
+      'tags'
+    ];
+
+
+
+    for (const field of requiredFields) {
+      if (!duplicateDate[field]) {
+        alert(`${this.toLabel(field)} is required.`);
+        return;
+      }
+    }
+
+    // Proceed with form submission
+    console.log('All fields valid:', this.model);
+
+    try {
+      const response: any = await this._api.post(
+        'betopsnew',
+        { ...duplicateDate },
+        '/events-lotto'
+      );
+      this.editModel = {};
+
+      await this.getLottoEvents(this.pageNumber);
+      alert('Success !');
+    } catch (e) {
+      alert(e);
+    }
+
+  }
+
   toLabel(field: string): string {
     return field
       .replace(/([A-Z])/g, ' $1')     // insert space before capital letters

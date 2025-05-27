@@ -27,7 +27,7 @@ export class WalletLogComponent implements OnInit {
   constructor(
     private _api: ApiService,
     private http: HttpClient,
-    private _jwt: JwtService
+    private _jwt: JwtService,
   ) {
     this._jwt.getDecodedToken().subscribe((data) => {
       this.userLoggendin.username = data?.username;

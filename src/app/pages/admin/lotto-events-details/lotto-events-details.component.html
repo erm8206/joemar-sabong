@@ -34,7 +34,10 @@
                                         logs]</span></span></p>
                             <p>Draw Date: <span class="detailsInfo">{{ summary.drawDate | date: 'medium' }}</span></p>
                             <p>Draw Name: <span class="detailsInfo">{{ summary.drawName }}</span></p>
-                            <p>Result: <span class="detailsInfo">{{ summary.result }}</span></p>
+                            <p>Result:
+                                <span class="detailsInfo" *ngIf="summary.isCancelled">CANCELLED</span>
+                                <span class="detailsInfo" *ngIf="!summary.isCancelled">{{ summary.result }}</span>
+                            </p>
 
                         </div>
                         <div class="col-md-4">

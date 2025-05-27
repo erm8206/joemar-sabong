@@ -261,16 +261,16 @@
                         <div class="col-12" style="margin-top: 10px">
                             <button style="width: 100%;" [disabled]="disbursedLoading" *ngIf="
                               fightSummary.fightNumber?.status == 'close' &&
-                              fightSummary.fightNumber?.result &&
-                              !fightSummary.fightNumber?.disbursed
+                              fightSummary.fightNumber?.result && 
+                              !fightSummary.fightNumber?.disbursed 
                             " class="btn btn-danger btn-block" (click)="disbursedResult()">
                                 DISBURSED RESULT
                             </button>
                         </div>
                         <div class="col-12">
                             <button style="width: 100%;" *ngIf="
-                          fightSummary.fightNumber?.status == 'disbursing' ||
-                          (fightSummary.fightNumber?.status == 'settled' && fightSummary.fightNumber?.disbursed)
+                         
+                          (fightSummary.fightNumber?.status == 'settled' && fightSummary.fightNumber?.disbursed) ||  (fightSummary.fightNumber?.status == 'disbursing')
                         " class="btn btn-success btn-block" (click)="updateFightNext()">
                                 NEXT FIGHT
                             </button>

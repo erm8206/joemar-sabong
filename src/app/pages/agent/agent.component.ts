@@ -134,6 +134,15 @@ export class AgentComponent implements OnInit {
     }
   }
 
+
+  agentTypeMap: { [key: string]: string } = {
+    agent1: 'VIP',
+    agent2: 'INCO',
+    agent3: 'OP',
+    agent4: 'SUB ADMIN',
+    agent5: 'SUB AGENT',
+  };
+
   //sidebar-left sidebar-left-opened
 
   async cancel() {

@@ -76,7 +76,7 @@ export class LottoEventsDetailsComponent implements OnInit {
     try {
       const response: any = await this._api.get(
         'admin',
-        `/revert-logs/${this.eventID}`
+        `/lotto-revert-logs/${this.eventID}`
       );
 
       this.revertLogs = response;

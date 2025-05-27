@@ -17,6 +17,11 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  eventDisbursing: boolean = false;
+
+
+
   fightSummaryTotals: any = {};
   isLoading: boolean = false;
   currentRow!: number;
@@ -123,7 +128,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.disburseSub = this.webSocketService
       .listen(`disbursement-${this.eventId}`)
       .subscribe(async (data: any) => {
+        console.log(`disbursement-${this.eventId}`)
         alert(data?.message)
+
       });
   }
 
@@ -289,24 +296,35 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       alert(e ?? 'Something went wrong');
     }
   }
-
   async updateMultiplier() {
     try {
-      const state = prompt(`Please input a number`);
+      const state = prompt('Please input a number');
       console.log(state);
-      if (state !== null) {
-        const result: any = await this._api.post(
-          'betopsnew',
-          { amount: state },
-          `/fight-config/${this.eventId}`
-        );
-        alert(result.message)
-        this.getEventDetails();
+
+      // Regular expression: matches whole numbers or up to 2 decimal places
+      const validPattern = /^\d+(\.\d{1,2})?$/;
+
+      if (state === null) return;
+
+      if (!validPattern.test(state)) {
+        alert('Invalid input. Only whole numbers or numbers with up to 2 decimal places are allowed.');
+        return;
       }
+
+      const result: any = await this._api.post(
+        'betopsnew',
+        { amount: parseFloat(state) },
+        `/fight-config/${this.eventId}`
+      );
+
+      alert(result.message);
+      this.getEventDetails();
+
     } catch (e: any) {
       alert(e ?? 'Something went wrong');
     }
   }
+
 
   async endEvent() {
     this.isLoading = true;

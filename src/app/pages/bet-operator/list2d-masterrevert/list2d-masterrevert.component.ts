@@ -6,12 +6,11 @@ import { UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 
 @Component({
-  selector: 'app-master-revert',
-  templateUrl: './master-revert.component.html',
-  styleUrls: ['./master-revert.component.scss']
+  selector: 'app-list2d-masterrevert',
+  templateUrl: './list2d-masterrevert.component.html',
+  styleUrl: './list2d-masterrevert.component.scss'
 })
-export class MasterRevertComponent implements OnInit {
-  eventDisbursing: boolean = false;
+export class List2dMasterrevertComponent implements OnInit {
 
   disbursedLoading: boolean = false;
 
@@ -22,7 +21,7 @@ export class MasterRevertComponent implements OnInit {
   totalPages: number = 0;
   totalItems: number = 0;
 
-  fightNumbers: any = [];
+  drawEvents: any = [];
   isLoading: boolean = false;
   constructor(
     private _sub: UserSub,
@@ -33,12 +32,12 @@ export class MasterRevertComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this.getFightNumbers();
+    this.getDrawEvents();
   }
 
 
-
   async masterRevert(id: string) {
+    let tags = "pick2"
     this.isLoading = true;
     try {
       const state = confirm(`Proceed on reverting? this will revert all data on its last state!`);
@@ -48,12 +47,12 @@ export class MasterRevertComponent implements OnInit {
       }
       const response: any = await this._api.put(
         'betops',
-        { id },
-        `/sabong/master-revert`
+        { id, tags },
+        `/lotto/master-revert`
       );
 
-      alert("Revert Success")
-      this.getFightNumbers(this.pageNumber);
+      alert(response.message)
+      this.getDrawEvents(this.pageNumber);
       this.isLoading = false;
     } catch (e: any) {
       alert(e ?? 'Something went wrong');
@@ -61,61 +60,11 @@ export class MasterRevertComponent implements OnInit {
     }
   }
 
-
-  async reDisbursedResult(id: string) {
-    this.isLoading = true;
-
-    try {
-      const response: any = await this._api.post(
-        'betopsnew',
-        {},
-        `/redisbursed-result/${id}`
-      );
-
-      alert(response?.message);
-
-
-      this.getFightNumbers(this.pageNumber);
-      this.isLoading = false;
-
-    } catch (e) {
-      this.isLoading = false;
-      alert(e ?? 'Something went wrong');
-    }
-  }
-
-
-  async updateWinner(result: string, id: string) {
+  async getDrawEvents(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {
-      let resultString = 'Update RESULT to ' + result;
-      const state = confirm(resultString);
-      if (!state) {
-        this.isLoading = false;
-        return;
-      }
-      await this._api.put('betopsnew', {
-        'id': id,
-        'result': result
-
-      }, `/fightnumber`);
-
-      this.getFightNumbers(this.pageNumber);
-      this.isLoading = false;
-
-    } catch (e: any) {
-      alert(e ?? 'Something went wrong');
-      this.isLoading = false;
-    }
-  }
-
-
-
-  async getFightNumbers(page: number = 1): Promise<void> {
-    this.isLoading = true;
-    try {
-      const res: any = await this._api.get('betops', `/sabong/master-revert?pageNumber=${page}&pageSize=${this.pageSize}`);
-      this.fightNumbers = res.records || [];
+      const res: any = await this._api.get('betops', `/lotto/master-revert/pick2?pageNumber=${page}&pageSize=${this.pageSize}`);
+      this.drawEvents = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
       this.pageSize = res.pageSize;
@@ -128,15 +77,17 @@ export class MasterRevertComponent implements OnInit {
     }
   }
 
+
+
   onPageSizeChange(event: any): void {
     this.pageSize = +event.target.value;
     this.pageNumber = 1;
-    this.getFightNumbers();
+    this.getDrawEvents();
   }
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.getFightNumbers(page);
+      this.getDrawEvents(page);
     }
   }
 

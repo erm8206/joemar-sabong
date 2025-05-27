@@ -51,6 +51,7 @@ export class UserSub {
         refCode: result?.refCode,
         username: result?.username,
         type: result?.type,
+        id: result?.id,
         refUrl: environment.refUrl + `?ref=${result?.refCode}`,
       };
 
