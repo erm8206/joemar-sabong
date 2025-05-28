@@ -21,7 +21,7 @@ export class DownlinesComponent implements OnInit {
   search: string = '';
   searchSubject: Subject<string> = new Subject<string>();
 
-  constructor(private _api: ApiService, private _sub: UserSub) { }
+  constructor(private _api: ApiService, private _sub: UserSub, private _userSub: UserSub,) { }
 
   ngOnInit(): void {
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
@@ -69,31 +69,134 @@ export class DownlinesComponent implements OnInit {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
 
-  async deactivateUser(userId: string) {
-    try {
-      const response: any = await this._api.post('user', { userId }, '/deactivate');
-      await this.getDownlines(this.pageNumber);
-      alert('Success ! Player has been Deactivated');
-    } catch (e) {
-      alert(e ?? 'Something went wrong');
-    }
+
+  agentTypeMap: { [key: string]: string } = {
+    agent1: 'VIP',
+    agent2: 'INCO',
+    agent3: 'OP',
+    agent4: 'SUB ADMIN',
+    agent5: 'SUB AGENT',
+  };
+
+  public getUserInfo(): Observable<UserModel> {
+    return this._userSub.getUser();
   }
+
 
   public getUser(): Observable<UserModel> {
     return this._sub.getUser();
   }
 
 
+  async load(user: string) {
+    this.isLoading = true;
 
+    const input = prompt('Please input amount.');
+    const amount = input?.toString().trim();
+    const validWholeNumber = /^\d+$/;
+
+    if (!amount || !validWholeNumber.test(amount)) {
+      alert('Invalid amount. Please enter a whole number only.');
+      this.isLoading = false;
+      return;
+    }
+
+    try {
+      await this._api.post('points', { amount: parseInt(amount), user }, '/deposit');
+      alert('Success! Points have been loaded');
+      this._userSub.getUserDetail();
+      await this.getDownlines(this.pageNumber);
+    } catch (e) {
+      alert(e ?? 'Server Error');
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+
+  async withdraw(user: string) {
+    this.isLoading = true;
+
+    const input = prompt('Please input amount.');
+    const amount = input?.toString().trim();
+    const validWholeNumber = /^\d+$/;
+
+    if (!amount || !validWholeNumber.test(amount)) {
+      alert('Invalid amount. Please enter a whole number only.');
+      this.isLoading = false;
+      return;
+    }
+
+    try {
+      await this._api.post('points', { amount: parseInt(amount), user }, '/withdraw');
+      alert('Success! Points have been withdrawn');
+      this._userSub.getUserDetail();
+      await this.getDownlines(this.pageNumber);
+    } catch (e) {
+      alert(e ?? 'Server Error');
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async deactivateUser(userId: string) {
+    this.isLoading = true;
+    const state = confirm(`Deactivate this account?`);
+    if (!state) {
+      this.isLoading = false;
+      return;
+    }
+
+    try {
+      await this._api.post('user', { userId }, '/deactivate');
+      await this.getDownlines(this.pageNumber);
+      alert('Success! User has been Deactivated');
+      this.isLoading = false;
+
+      this.autoLogout(userId);
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+
+  async autoLogout(userId: string) {
+    this.isLoading = true;
+    try {
+
+      const response: any = await this._api.post('user',
+        { userId },
+        '/sign-out');
+
+      alert('Signout Success');
+      this.isLoading = false;
+
+    } catch (e) {
+      alert(e ?? 'Server Error');
+      this.isLoading = false;
+    }
+  }
   async setComs(userId: string) {
     this.isLoading = true;
-    const percentage = prompt('Please input percentage.');
-    if (!percentage) return;
+
+    const percentage = prompt('Please input percentage (e.g., 10 or 10.5)');
+    if (percentage === null) return;
+
+    const trimmed = percentage.trim();
+
+    // Allow whole numbers or numbers with only 1 decimal place
+    const isValid = /^(\d+|\d+\.\d{1})$/.test(trimmed);
+
+    if (!isValid) {
+      alert('Invalid input. Please enter a number with at most one decimal place (e.g., 10 or 10.5)');
+      this.isLoading = false;
+      return;
+    }
 
     let endPoint: string = '/set-coms';
 
     try {
-      const response: any = await this._api.post('user', { userId, percentage }, endPoint);
+      const response: any = await this._api.post('user', { userId, percentage: parseFloat(trimmed) }, endPoint);
       await this.getDownlines(this.pageNumber);
       alert('Success');
       this.isLoading = false;
@@ -105,37 +208,48 @@ export class DownlinesComponent implements OnInit {
 
   async setComsLotto(userId: string, type: string) {
     this.isLoading = true;
-    const percentage = prompt('Please input percentage.');
-    if (!percentage) return;
+
+    const input = prompt('Please input percentage.');
+    const percentage = input?.toString().trim();
+    const validWholeNumber = /^\d+$/;
+
+    // ✅ Validate whole number percentage
+    if (!percentage || !validWholeNumber.test(percentage)) {
+      alert('Invalid percentage. Please enter a whole number only.');
+      this.isLoading = false;
+      return;
+    }
 
     let endpoint = '';
 
     switch (type) {
       case 'pick2':
-        endpoint = '/set-coms-lotto';
-        break;
       case 'pick3':
-        endpoint = '/set-coms-lotto';
-        break;
-
       case 'suertres':
         endpoint = '/set-coms-lotto';
         break;
       default:
         alert('Invalid commission type.');
+        this.isLoading = false;
         return;
     }
 
     try {
-      await this._api.post('user', { userId, percentage, type }, endpoint);
+      await this._api.post(
+        'user',
+        { userId, percentage: parseInt(percentage), type },
+        endpoint
+      );
       await this.getDownlines(this.pageNumber);
       alert('Success');
-      this.isLoading = false;
     } catch (e) {
       alert(e ?? 'Something went wrong');
+    } finally {
       this.isLoading = false;
     }
   }
+
+
 
   onSearchInputChange(): void {
     this.searchSubject.next(this.search);

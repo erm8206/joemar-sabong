@@ -2,7 +2,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h3>Direct Agent</h3>
+                <h3>Direct Agents</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -11,7 +11,7 @@
                                 <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                             </svg></a></li>
                     <li class="breadcrumb-item">Users</li>
-                    <li class="breadcrumb-item active">Direct Agent</li>
+                    <li class="breadcrumb-item active">Direct Agents</li>
                 </ol>
             </div>
         </div>
@@ -24,9 +24,9 @@
             <div class="card">
                 <div class="card-header" style="font-size: 13px">
                     <i class="fa fa-align-justify"></i>
-                    LIST OF
-                    <strong>{{ (getUser() | async)?.username?.toUpperCase() }}'s</strong>
-                    Master Admin
+                    List of
+                    <strong>{{ (getUser() | async)?.username }}'s</strong>
+                    VIP Agents
                 </div>
                 <div class="card-body">
                     <!-- PAGE SIZE DROPDOWN -->
@@ -79,11 +79,7 @@
                                 <tr *ngFor="let item of users" style="font-size: 13px">
                                     <th>
 
-                                        <button style="width: 100%;font-size: 11px;" [disabled]="isLoading"
-                                            (click)="deactivateUser(item._id)" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-times"></i>
-                                            Deactivate
-                                        </button>
+
                                         <button style="width: 100%;font-size: 11px;; margin-top: 5px"
                                             [disabled]="isLoading" (click)="setComs(item.id)"
                                             class="btn btn-primary btn-sm">

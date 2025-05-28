@@ -79,32 +79,36 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
 
-  async deactivateUser(userId: string) {
-    try {
-      await this._api.post('user', { userId }, '/deactivate');
-      await this.getDownlines(this.pageNumber);
-      alert('Success! Player has been Deactivated');
-    } catch (e) {
-      alert(e ?? 'Something went wrong');
-    }
-  }
+
 
   public getUser(): Observable<UserModel> {
     return this._sub.getUser();
   }
 
-  async setComs(userId: string,) {
-    const percentage = prompt('Please input percentage.');
+  async setComs(userId: string) {
+    const percentage = prompt('Please input percentage (e.g., 10, 10.5, 10.55, 10.555)');
     if (!percentage) return;
 
+    const trimmed = percentage.trim();
+
+    // Accept whole numbers or decimals with 1–3 digits after the decimal point
+    const isValid = /^(\d+|\d+\.\d{1,3})$/.test(trimmed);
+
+    if (!isValid) {
+      alert('Invalid input. Please enter a whole number or a number with 1 to 3 decimal places (e.g., 10, 10.5, 10.55, 10.555)');
+      return;
+    }
+
     try {
-      await this._api.post('user', { userId, percentage }, `/set-coms`);
+      await this._api.post('user', { userId, percentage: parseFloat(trimmed) }, '/set-coms');
       await this.getDownlines(this.pageNumber);
       alert('Success');
     } catch (e) {
       alert(e ?? 'Something went wrong');
     }
   }
+
+
   async setComsLotto(userId: string, type: string) {
     const percentage = prompt('Please input percentage.');
     if (!percentage) return;

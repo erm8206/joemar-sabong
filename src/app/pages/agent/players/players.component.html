@@ -70,13 +70,13 @@
                                     <th>
 
                                         <button [disabled]="isLoading" (click)="deactivateUser(item.id)"
-                                            class="btn btn-secondary btn-sm">
+                                            class="btn btn-danger btn-sm">
                                             <i class="fa fa-times"></i>
                                             Deactivate
                                         </button>
 
                                         <button [disabled]="isLoading" (click)="load(item.id)"
-                                            class="btn btn-danger btn-sm">
+                                            class="btn btn-success btn-sm">
                                             <i class="fa fa-money"></i>
                                             Load
                                         </button>
@@ -84,13 +84,13 @@
                                         <button [disabled]="isLoading" (click)="withdraw(item.id)"
                                             class="btn btn-info btn-sm">
                                             <i class="fa fa-money"></i>
-                                            Withdraw Load
+                                            Withdraw
                                         </button>
 
-                                        <button *ngIf="user?.type != 'silver'" [disabled]="isLoading"
-                                            (click)="setAsAgent(item.id)" class="btn btn-warning btn-sm">
+                                        <button [disabled]="isLoading" (click)="setAsAgent(item.id)"
+                                            class="btn btn-warning btn-sm">
                                             <i class="fa fa-user-secret"></i>
-                                            Set as {{ getType() }}
+                                            Set as {{ agentTypeMap[(getUserInfo() | async)?.type] }}
                                         </button>
 
 

@@ -17,7 +17,7 @@ export class PlayersComponent implements OnInit {
   pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
-
+  agentType: string = "";
   users: any = [];
   isLoading: boolean = false;
   user: UserModel = {};
@@ -37,12 +37,66 @@ export class PlayersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getUserInfo().subscribe(user => {
+      this.agentType = this.agentTypeMap[user.type] || user.type;
+    });
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
       this.pageNumber = 1;
       this.getDownlines();
     });
 
     this.getDownlines();
+  }
+
+
+  agentTypeMap: { [key: string]: string } = {
+    agent1: 'VIP',
+    agent2: 'INCO',
+    agent3: 'OP',
+    agent4: 'SUB ADMIN',
+    agent5: 'SUB AGENT',
+  };
+
+  public getUserInfo(): Observable<UserModel> {
+    return this._userSub.getUser();
+  }
+
+  async deactivateUser(userId: string) {
+    this.isLoading = true;
+    const state = confirm(`Deactivate this account?`);
+    if (!state) {
+      this.isLoading = false;
+      return;
+    }
+
+    try {
+      await this._api.post('user', { userId }, '/deactivate');
+      await this.getDownlines(this.pageNumber);
+      alert('Success! User has been Deactivated');
+      this.isLoading = false;
+
+      this.autoLogout(userId);
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+
+  async autoLogout(userId: string) {
+    this.isLoading = true;
+    try {
+
+      const response: any = await this._api.post('user',
+        { userId },
+        '/sign-out');
+
+      alert('Signout Success');
+      this.isLoading = false;
+
+    } catch (e) {
+      alert(e ?? 'Server Error');
+      this.isLoading = false;
+    }
   }
 
   async getDownlines(page: number = this.pageNumber): Promise<void> {
@@ -87,17 +141,25 @@ export class PlayersComponent implements OnInit {
     this.searchSubject.next(this.search);
   }
 
-  async deactivateUser(userId: string) {
+
+  async load(user: string) {
     this.isLoading = true;
-    const state = confirm(`Deactivate this account?`);
-    if (!state) {
+
+    const input = prompt('Please input amount.');
+    const amount = input?.toString().trim();
+    const validWholeNumber = /^\d+$/;
+
+    if (!amount || !validWholeNumber.test(amount)) {
+      alert('Invalid amount. Please enter a whole number only.');
       this.isLoading = false;
       return;
     }
+
     try {
-      await this._api.post('user', { userId }, '/deactivate');
+      await this._api.post('points', { amount: parseInt(amount), user }, '/deposit');
+      alert('Success! Points have been loaded');
+      this._userSub.getUserDetail();
       await this.getDownlines(this.pageNumber);
-      alert('Success ! Player has been Deactivated');
     } catch (e) {
       alert(e ?? 'Server Error');
     } finally {
@@ -105,55 +167,42 @@ export class PlayersComponent implements OnInit {
     }
   }
 
-  async load(user: string) {
-    this.isLoading = true;
-    const amount = prompt('Please input amount.');
-
-    if (amount) {
-      try {
-        await this._api.post('points', { amount, user }, '/deposit');
-        alert('Success ! Points has been loaded');
-        this._userSub.getUserDetail();
-        await this.getDownlines(this.pageNumber);
-      } catch (e) {
-        alert(e ?? 'Server Error');
-      } finally {
-        this.isLoading = false;
-      }
-    } else {
-      this.isLoading = false;
-    }
-  }
 
   async withdraw(user: string) {
     this.isLoading = true;
-    const amount = prompt('Please input amount.');
 
-    if (amount) {
-      try {
-        await this._api.post('points', { amount, user }, '/withdraw');
-        alert('Success ! Points has been withdrawn');
-        this._userSub.getUserDetail();
-        await this.getDownlines(this.pageNumber);
-      } catch (e) {
-        alert(e ?? 'Server Error');
-      } finally {
-        this.isLoading = false;
-      }
-    } else {
+    const input = prompt('Please input amount.');
+    const amount = input?.toString().trim();
+    const validWholeNumber = /^\d+$/;
+
+    if (!amount || !validWholeNumber.test(amount)) {
+      alert('Invalid amount. Please enter a whole number only.');
+      this.isLoading = false;
+      return;
+    }
+
+    try {
+      await this._api.post('points', { amount: parseInt(amount), user }, '/withdraw');
+      alert('Success! Points have been withdrawn');
+      this._userSub.getUserDetail();
+      await this.getDownlines(this.pageNumber);
+    } catch (e) {
+      alert(e ?? 'Server Error');
+    } finally {
       this.isLoading = false;
     }
   }
 
+
   async setAsAgent(userId: string) {
-    const state = confirm(`Convert player to ${this.getType()} ?`);
+    const state = confirm(`Convert player to ${this.agentType} ?`);
     if (!state) {
       return;
     }
     try {
       await this._api.post('user', { userId }, '/set-as-agent');
       await this.getDownlines(this.pageNumber);
-      alert(`Success ! Player has been promoted to ${this.getType()}.`);
+      alert(`Success ! Player has been promoted to ${this.agentType}.`);
     } catch (e) {
       alert(e ?? 'Server Error. Please Contact Support');
     }

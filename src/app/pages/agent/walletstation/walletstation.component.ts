@@ -75,21 +75,33 @@ export class WalletstationComponent implements OnInit {
   async load() {
     this.isLoading = true;
 
+    const validWholeNumber = /^\d+$/;
+    const amount = this.model.amount?.toString().trim();
+
+    // ✅ Validate whole number
+    if (!amount || !validWholeNumber.test(amount)) {
+      alert('Invalid amount. Please enter a whole number only.');
+      this.isLoading = false;
+      return;
+    }
+
     try {
       const response: any = await this._api.post(
         'points',
         this.model,
         '/deposit'
       );
+
       this._userSub.getUserDetail();
-      alert('Success ! Points has been loaded');
-      this.isLoading = false;
+      alert('Success! Points have been loaded');
       this.clear();
     } catch (e) {
       alert(e ?? 'Server Error');
+    } finally {
       this.isLoading = false;
     }
   }
+
 
   clear() {
     this.model = {};
@@ -99,21 +111,34 @@ export class WalletstationComponent implements OnInit {
 
   async withdraw() {
     this.isLoading = true;
+
+    const validWholeNumber = /^\d+$/;
+    const amount = this.model.amount?.toString().trim();
+
+    // ✅ Validate amount as whole number
+    if (!amount || !validWholeNumber.test(amount)) {
+      alert('Invalid amount. Please enter a whole number only.');
+      this.isLoading = false;
+      return;
+    }
+
     try {
       const response: any = await this._api.post(
         'points',
         this.model,
         '/withdraw'
       );
+
       this._userSub.getUserDetail();
-      alert('Success ! Points has been withdrawn');
-      this.isLoading = false;
+      alert('Success! Points have been withdrawn');
       this.clear();
     } catch (e) {
       alert(e ?? 'Server Error');
+    } finally {
       this.isLoading = false;
     }
   }
+
 
   onScrollToEnd() {
     if (this.users.length < this.totalItems) {
@@ -130,6 +155,7 @@ export class WalletstationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.getAllDownlines();
   }
 }

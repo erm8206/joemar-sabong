@@ -3,14 +3,29 @@
 
 <head>
   <meta charset="utf-8">
-  <title>SabongApp</title>
+  <title>Allinone-Console</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave&display=swap" rel="stylesheet">
+
 </head>
 
 <body class="dark-only">
+
   <app-root></app-root>
+
+  <!-- Splash screen -->
+  <div id="splash-screen">
+    <div class="loader"></div>
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+      <span id="progress-text">0%</span>
+    </div>
+  </div>
+
   <script src="./assets/js/jquery.js"></script>
 </body>
 

@@ -36,6 +36,13 @@ export class UsersComponent implements OnInit {
 
     this.getUsers();
   }
+  agentTypeMap: { [key: string]: string } = {
+    agent1: 'VIP',
+    agent2: 'INCO',
+    agent3: 'OP',
+    agent4: 'SUB ADMIN',
+    agent5: 'SUB AGENT',
+  };
 
   async autoLogout(userId: string) {
     this.isLoading = true;
@@ -109,6 +116,45 @@ export class UsersComponent implements OnInit {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
 
+
+  async deactivateUser(userId: string) {
+    this.isLoading = true;
+    const state = confirm(`Deactivate this account?`);
+    if (!state) {
+      this.isLoading = false;
+      return;
+    }
+
+    try {
+      await this._api.post('user', { userId }, '/deactivate');
+      await this.getUsers(this.pageNumber);
+      alert('Success! User has been Deactivated');
+      this.isLoading = false;
+
+      this.autoLogout(userId);
+    } catch (e) {
+      alert(e ?? 'Something went wrong');
+      this.isLoading = false;
+    }
+  }
+  async approveUser(userId: string) {
+    this.isLoading = true;
+    const state = confirm(`Approve this account?`);
+    if (!state) {
+      this.isLoading = false;
+      return;
+    }
+
+    try {
+      await this._api.post('user', { userId }, '/approve');
+      await this.getUsers(this.pageNumber);
+      alert('Success! User Approved.');
+    } catch (e) {
+      alert(e ?? 'Server Error');
+    } finally {
+      this.isLoading = false;
+    }
+  }
   async changePass(id: string) {
     try {
       const state = prompt(`Please enter password`);
