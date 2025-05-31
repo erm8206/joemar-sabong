@@ -53,7 +53,18 @@
   --bs-border-color: #e9edf1;
   --bs-table-bg: var(--bs-emphasis-color-rgb);
   --bs-heading-color: #333333;
-  /* Do not show the "remove tag" (x) button when only a single tag remains */
+  --yellow: #ffcc00;
+  --blue: #0088cc;
+  --pink: #ff66aa;
+  --green: #33cc33;
+  --purple: #9933cc;
+  --orange: #ff8800;
+  --dark-wood: #5a3921;
+  --light-wood: #8b5a2b;
+  --casino-red: #8b0000;
+  --casino-gold: #d4af37;
+  --casino-gold-rgb: 212, 175, 55;
+
 }
 
 :root .customLook {
@@ -4779,6 +4790,8 @@ body {
   overflow-x: hidden;
   font-family: Rubik, sans-serif;
   color: #404040;
+  margin: 0;
+  padding: 0;
 }
 
 h1,

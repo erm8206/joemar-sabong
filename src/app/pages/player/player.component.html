@@ -181,13 +181,29 @@
                                 </ul>
                             </li>
 
+                             <li class="sidebar-main-title">
+                                <div>
+                                    <h6>Color Game</h6>
+                                </div>
+                            </li>
+                            <li class="sidebar-list">
+                                <i class="fa-solid fa-thumbtack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" routerLink="/player/colorgame"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <svg class="stroke-icon">
+                                        <use href="assets/svg/icon-sprite.svg#stroke-animation"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="assets/svg/icon-sprite.svg#fill-animation"></use>
+                                    </svg><span>Color Game</span>
+                                </a>
+                            </li>
+
                             <li class="sidebar-main-title">
                                 <div>
                                     <h6>Casino (Coming Soon)</h6>
                                 </div>
-                            </li>
-
-                            <li class="sidebar-list">
+                            </li>                            <li class="sidebar-list">
                                 <i class="fa-solid fa-thumbtack"></i>
                                 <a class="sidebar-link sidebar-title link-nav" routerLink="/player/casino-games"
                                     routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">

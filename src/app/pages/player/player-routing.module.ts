@@ -10,6 +10,7 @@ import { BetsComponent } from './bets/bets.component';
 import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
 import { CasinoGamesComponent } from './casino-games/casino-games.component';  // Import the SharedModule
+import { ColorgameComponent } from './colorgame/colorgame.component';
 import { List2dComponent } from './list2d/list2d.component';
 import { List3dComponent } from './list3d/list3d.component';
 import { Listpick3Component } from './listpick3/listpick3.component';
@@ -33,8 +34,8 @@ const routes: Routes = [
     { path: 'wallet-logs', component: WalletLogComponent },
     { path: 'bets-history', component: BetsComponent },
     { path: 'cashin', component: CashinComponent },
-    { path: 'cashout', component: CashoutComponent },
-    { path: 'casino-games', component: CasinoGamesComponent },
+    { path: 'cashout', component: CashoutComponent },    { path: 'casino-games', component: CasinoGamesComponent },
+    { path: 'colorgame', component: ColorgameComponent },
 
     //e-lotto list 
 

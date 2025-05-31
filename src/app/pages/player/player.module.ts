@@ -16,6 +16,7 @@ import { CashinComponent } from './cashin/cashin.component';
 import { CashoutComponent } from './cashout/cashout.component';
 import { SharedModule } from '../shared/shared.module';
 import { CasinoGamesComponent } from './casino-games/casino-games.component';
+import { ColorgameComponent } from './colorgame/colorgame.component';
 import { List2dComponent } from './list2d/list2d.component';
 import { List3dComponent } from './list3d/list3d.component';
 import { Listpick3Component } from './listpick3/listpick3.component';
@@ -28,8 +29,7 @@ import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.compone
 import { DataTablesModule } from 'angular-datatables';
 import { LottoReceiptsComponent } from './lotto-receipts/lotto-receipts.component';
 import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component';
-@NgModule({
-  declarations: [
+@NgModule({  declarations: [
     HomeComponent,
     WalletComponent,
     ArenaComponent,
@@ -42,6 +42,7 @@ import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component
     CashinComponent,
     CashoutComponent,
     CasinoGamesComponent,
+    ColorgameComponent,
     List2dComponent,
     List3dComponent,
     Listpick3Component,
