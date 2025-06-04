@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://powerpuff-api.azurewebsites.net/api',
-  refUrl: 'http://localhost:4200/play/signup',
-  webSocketUrl: 'https://powerpuff-api.azurewebsites.net/talpakanhub',
+  baseUrl: 'https://luna.allinoneconsole.live/api',
+  refUrl: 'https://lunagazer.live/play/signup',
+  webSocketUrl: 'https://luna.allinoneconsole.live/talpakanhub',
   gameServerUrl: 'https://games.example.com', // Added for casino games
   // baseUrl: 'https://dev.classmatex.com/api',
   // refUrl: 'https://dev.classmatex.com/auth/register',

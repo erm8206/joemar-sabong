@@ -2,7 +2,8 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h3>My {{ agentTypeMap[(getUserInfo() | async)?.type] }}</h3>
+                <h3>My {{
+                    agentTypeMapDL[(getUserInfo() | async)?.type] }}</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -11,7 +12,8 @@
                                 <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                             </svg></a></li>
                     <li class="breadcrumb-item">Users</li>
-                    <li class="breadcrumb-item active">My {{ agentTypeMap[(getUserInfo() | async)?.type] }}</li>
+                    <li class="breadcrumb-item active">My {{
+                        agentTypeMapDL[(getUserInfo() | async)?.type] }}</li>
                 </ol>
             </div>
         </div>
@@ -26,7 +28,8 @@
                     <i class="fa fa-align-justify"></i>
                     List of
                     <strong>{{ (getUser() | async)?.username }}'s</strong>
-                    {{ agentTypeMap[(getUserInfo() | async)?.type] }}
+                    {{
+                    agentTypeMapDL[(getUserInfo() | async)?.type] }}
                 </div>
                 <div class="card-body">
                     <!-- PAGE SIZE DROPDOWN -->

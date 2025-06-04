@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './agent.component.html',
   styleUrls: ['./agent.component.scss'],
 })
-export class AgentComponent implements OnInit {
+export class AgentComponent implements OnInit, OnDestroy {
   private refreshSub: Subscription = new Subscription();
   private logoutSub: Subscription = new Subscription();
   isLoading: boolean = false;
@@ -23,6 +23,7 @@ export class AgentComponent implements OnInit {
   message: any = [];
   user: UserModel = {};
   model: any = {};
+
   constructor(
     private _api: ApiService,
     private _userSub: UserSub,
@@ -143,6 +144,12 @@ export class AgentComponent implements OnInit {
     agent5: 'SUB AGENT',
   };
 
+  agentTypeMapDL: { [key: string]: string } = {
+    agent1: 'INCO',
+    agent2: 'OP',
+    agent3: 'SUB ADMIN',
+    agent4: 'SUB AGENT',
+  };
   //sidebar-left sidebar-left-opened
 
   async cancel() {

@@ -60,17 +60,59 @@
                             <thead>
                                 <tr style="font-size: 13px">
                                     <th>Action</th>
-                                    <th>Date Registered</th>
-                                    <th>Username</th>
+                                    <th (click)="toggleSort('createdAt')" style="cursor: pointer;">
+                                        Date Registered
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sortField === 'createdAt' && sortAsc,
+            'fa-sort-down': sortField === 'createdAt' && !sortAsc,
+            'fa-sort': sortField !== 'createdAt'
+          }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('username')" style="cursor: pointer;">
+                                        Username
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sortField === 'username' && sortAsc,
+            'fa-sort-down': sortField === 'username' && !sortAsc,
+            'fa-sort': sortField !== 'username'
+          }"></i>
+                                    </th>
                                     <th>Points</th>
                                     <th>Sabong Comms</th>
                                     <th>2D Comms</th>
                                     <th>3D Comms</th>
                                     <th>Pick3 Comms</th>
-                                    <th>Sabong Comms %</th>
-                                    <th>2D Comms %</th>
-                                    <th>3D Comms %</th>
-                                    <th>Pick3 Comms %</th>
+                                    <th (click)="toggleSort('percentage')" style="cursor: pointer;">
+                                        Sabong Comms %
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sortField === 'percentage' && sortAsc,
+            'fa-sort-down': sortField === 'percentage' && !sortAsc,
+            'fa-sort': sortField !== 'percentage'
+          }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('pick2Percentage')" style="cursor: pointer;">
+                                        2D Comms %
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sortField === 'pick2Percentage' && sortAsc,
+            'fa-sort-down': sortField === 'pick2Percentage' && !sortAsc,
+            'fa-sort': sortField !== 'pick2Percentage'
+          }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('suertresPercentage')" style="cursor: pointer;">
+                                        3d Comms %
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sortField === 'suertresPercentage' && sortAsc,
+            'fa-sort-down': sortField === 'suertresPercentage' && !sortAsc,
+            'fa-sort': sortField !== 'suertresPercentage'
+          }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('pick3Percentage')" style="cursor: pointer;">
+                                        PICK3 Comms %
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sortField === 'pick3Percentage' && sortAsc,
+            'fa-sort-down': sortField === 'pick3Percentage' && !sortAsc,
+            'fa-sort': sortField !== 'pick3Percentage'
+          }"></i>
+                                    </th>
 
 
                                 </tr>

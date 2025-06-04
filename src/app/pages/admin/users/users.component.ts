@@ -10,7 +10,6 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-
   users: any[] = [];
   isLoading: boolean = false;
 
@@ -25,6 +24,10 @@ export class UsersComponent implements OnInit {
   searchTerm: string = '';
   searchChanged: Subject<string> = new Subject<string>();
 
+  // Sorting
+  sortField: string = 'createdAt';
+  sortAsc: boolean = false;
+
   constructor(private _api: ApiService, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -36,6 +39,7 @@ export class UsersComponent implements OnInit {
 
     this.getUsers();
   }
+
   agentTypeMap: { [key: string]: string } = {
     agent1: 'VIP',
     agent2: 'INCO',
@@ -47,16 +51,11 @@ export class UsersComponent implements OnInit {
   async autoLogout(userId: string) {
     this.isLoading = true;
     try {
-
-      const response: any = await this._api.post('user',
-        { userId },
-        '/sign-out');
-
+      await this._api.post('user', { userId }, '/sign-out');
       alert('Signout Success');
-      this.isLoading = false;
-
     } catch (e) {
       alert(e ?? 'Server Error');
+    } finally {
       this.isLoading = false;
     }
   }
@@ -64,16 +63,11 @@ export class UsersComponent implements OnInit {
   async refreshUser(userId: string) {
     this.isLoading = true;
     try {
-
-      const response: any = await this._api.post('user',
-        { userId },
-        '/refresh');
-
+      await this._api.post('user', { userId }, '/refresh');
       alert('Refresh Success');
-      this.isLoading = false;
-
     } catch (e) {
       alert(e ?? 'Server Error');
+    } finally {
       this.isLoading = false;
     }
   }
@@ -81,7 +75,9 @@ export class UsersComponent implements OnInit {
   async getUsers(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/users?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/users?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(
+        this.searchTerm
+      )}&sort=${this.sortField}&asc=${this.sortAsc}`;
       const res: any = await this._api.get('admin', query);
       this.users = res.records || [];
       this.totalCount = res.totalCount;
@@ -116,6 +112,16 @@ export class UsersComponent implements OnInit {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
 
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
+    this.getUsers();
+  }
 
   async deactivateUser(userId: string) {
     this.isLoading = true;
@@ -129,14 +135,14 @@ export class UsersComponent implements OnInit {
       await this._api.post('user', { userId }, '/deactivate');
       await this.getUsers(this.pageNumber);
       alert('Success! User has been Deactivated');
-      this.isLoading = false;
-
-      this.autoLogout(userId);
+      await this.autoLogout(userId);
     } catch (e) {
       alert(e ?? 'Something went wrong');
+    } finally {
       this.isLoading = false;
     }
   }
+
   async approveUser(userId: string) {
     this.isLoading = true;
     const state = confirm(`Approve this account?`);
@@ -155,6 +161,7 @@ export class UsersComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
   async changePass(id: string) {
     try {
       const state = prompt(`Please enter password`);
@@ -166,5 +173,4 @@ export class UsersComponent implements OnInit {
       alert(e ?? 'Contact support');
     }
   }
-
 }

@@ -68,16 +68,54 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Created At</th>
+                                    <th (click)="toggleSort('createdAt')" style="cursor: pointer;">
+                                        Created At
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'createdAt' && sortAsc,
+        'fa-sort-down': sortField === 'createdAt' && !sortAsc,
+        'fa-sort': sortField !== 'createdAt'
+      }"></i>
+                                    </th>
                                     <th>Player</th>
                                     <th>Fight Event</th>
                                     <th>Fight Number</th>
-                                    <th>Choice</th>
-                                    <th>Amount</th>
-                                    <th>Result</th>
-                                    <th>Winning Status</th>
+                                    <th (click)="toggleSort('choice')" style="cursor: pointer;">
+                                        Choice
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'choice' && sortAsc,
+        'fa-sort-down': sortField === 'choice' && !sortAsc,
+        'fa-sort': sortField !== 'choice'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('amount')" style="cursor: pointer;">
+                                        Amount
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'amount' && sortAsc,
+        'fa-sort-down': sortField === 'amount' && !sortAsc,
+        'fa-sort': sortField !== 'amount'
+      }"></i>
+                                    </th>
+                                    <th style="cursor: pointer;">
+                                        Result
+
+                                    </th>
+                                    <th (click)="toggleSort('status')" style="cursor: pointer;">
+                                        Winnint Status
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'status' && sortAsc,
+        'fa-sort-down': sortField === 'status' && !sortAsc,
+        'fa-sort': sortField !== 'status'
+      }"></i>
+                                    </th>
                                     <th>Status</th>
-                                    <th>Won Amount</th>
+                                    <th (click)="toggleSort('wonAmount')" style="cursor: pointer;">
+                                        Won Amount
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'wonAmount' && sortAsc,
+        'fa-sort-down': sortField === 'wonAmount' && !sortAsc,
+        'fa-sort': sortField !== 'wonAmount'
+      }"></i>
+                                    </th>
                                     <!-- <th>Remaining Balance</th> -->
                                 </tr>
                             </thead>

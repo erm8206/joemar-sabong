@@ -150,6 +150,8 @@ export class List2dComponent implements OnInit {
   }
   async addEvent() {
 
+    this.isLoading = true
+
     this.model.tags = "pick2";
 
 
@@ -172,6 +174,7 @@ export class List2dComponent implements OnInit {
     for (const field of requiredFields) {
       if (!this.model[field]) {
         alert(`${this.toLabel(field)} is required.`);
+        this.isLoading = false;
         return;
       }
     }
@@ -188,9 +191,11 @@ export class List2dComponent implements OnInit {
       this.model = {};
 
       await this.getLottoEvents(this.pageNumber);
+      this.isLoading = false;
       alert('Success !');
     } catch (e) {
       alert(e);
+      this.isLoading = false;
     }
 
   }
@@ -198,6 +203,7 @@ export class List2dComponent implements OnInit {
 
   async editEvent() {
 
+    this.isLoading = true;
 
     const requiredFields = [
       'drawDate',
@@ -216,6 +222,7 @@ export class List2dComponent implements OnInit {
     for (const field of requiredFields) {
       if (!this.editModel[field]) {
         alert(`${this.toLabel(field)} is required.`);
+        this.isLoading = false;
         return;
       }
     }
@@ -233,13 +240,17 @@ export class List2dComponent implements OnInit {
 
       await this.getLottoEvents(this.pageNumber);
       alert('Success Updated the Event!');
+      this.isLoading = false;
     } catch (e) {
       alert(e);
+      this.isLoading = false;
     }
 
   }
 
   async duplicateEvent() {
+
+    this.isLoading = true;
 
     let duplicateDate = {
       'drawDateFrom': this.editModel.drawDateFrom,
@@ -280,6 +291,7 @@ export class List2dComponent implements OnInit {
     for (const field of requiredFields) {
       if (!duplicateDate[field]) {
         alert(`${this.toLabel(field)} is required.`);
+        this.isLoading = false;
         return;
       }
     }
@@ -297,8 +309,10 @@ export class List2dComponent implements OnInit {
 
       await this.getLottoEvents(this.pageNumber);
       alert('Success !');
+      this.isLoading = false;
     } catch (e) {
       alert(e);
+      this.isLoading = false;
     }
 
   }

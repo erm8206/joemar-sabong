@@ -15,16 +15,17 @@ export class ApprovalsComponent implements OnInit {
   users: any[] = [];
   isLoading: boolean = false;
 
-  // Pagination
   totalCount: number = 0;
   pageNumber: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 2;
   totalPages: number = 0;
   totalItems: number = 0;
 
-  // Search
   searchTerm: string = '';
   searchChanged: Subject<string> = new Subject<string>();
+
+  sortField: string = 'CreatedAt';
+  sortAsc: boolean = false;
 
   constructor(
     private _sub: UserSub,
@@ -49,7 +50,9 @@ export class ApprovalsComponent implements OnInit {
   async getForApprovals(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/for-approval?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/for-approval?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(
+        this.searchTerm
+      )}&sort=${this.sortField}&asc=${this.sortAsc}`;
       const res: any = await this._api.get('user', query);
       this.users = res.records || [];
       this.totalCount = res.totalCount;
@@ -78,6 +81,17 @@ export class ApprovalsComponent implements OnInit {
 
   getShowingRangeEnd(): number {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
+  }
+
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
+    this.getForApprovals();
   }
 
   async approveUser(userId: string) {

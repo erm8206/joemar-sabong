@@ -28,6 +28,10 @@ export class CashoutComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   searchChanged: Subject<string> = new Subject<string>();
 
+  // Sorting
+  sortField: string = 'createdAt';
+  sortAsc: boolean = false;
+
   constructor(
     private _sub: UserSub,
     private _api: ApiService,
@@ -69,10 +73,21 @@ export class CashoutComponent implements OnInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
 
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
+    this.getTransaction();
+  }
+
   async getTransaction(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/summary-cashout?pageNumber=${page}&pageSize=${this.pageSize}&from=${this.from}&to=${this.to}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/summary-cashout?pageNumber=${page}&pageSize=${this.pageSize}&from=${this.from}&to=${this.to}&search=${encodeURIComponent(this.searchTerm)}&sort=${this.sortField}&asc=${this.sortAsc}`;
       const res: any = await this._api.get('admin', query);
       this.cashouts = res.records || [];
       this.totalCount = res.totalCount;

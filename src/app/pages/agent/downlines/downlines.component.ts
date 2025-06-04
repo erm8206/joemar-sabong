@@ -31,6 +31,13 @@ export class DownlinesComponent implements OnInit {
     this.getDownlines();
   }
 
+  agentTypeMapDL: { [key: string]: string } = {
+    agent1: 'INCO',
+    agent2: 'OP',
+    agent3: 'SUB ADMIN',
+    agent4: 'SUB AGENT',
+  };
+
   async getDownlines(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {

@@ -20,6 +20,9 @@ export class WalletLogComponent implements OnInit {
   search: string = '';
   searchSubject: Subject<string> = new Subject<string>();
 
+  sort: string = 'createdAt';
+  asc: boolean = false;
+
   isLoading: boolean = false;
   walletlogs: any = [];
   userLoggendin: UserModel = {};
@@ -32,12 +35,14 @@ export class WalletLogComponent implements OnInit {
     this._jwt.getDecodedToken().subscribe((data) => {
       this.userLoggendin.username = data?.username;
     });
+
+    this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
+      this.pageNumber = 1;
+      this.getWalletLogs();
+    });
   }
 
   ngOnInit(): void {
-    this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
-      this.getWalletLogs();
-    });
     this.getWalletLogs();
   }
 
@@ -47,7 +52,7 @@ export class WalletLogComponent implements OnInit {
       const encodedSearch = encodeURIComponent(this.search.trim());
       const res: any = await this._api.get(
         'user',
-        `/wallet-log?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodedSearch}`
+        `/wallet-log?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodedSearch}&sort=${this.sort}&asc=${this.asc}`
       );
       this.walletlogs = res.records || [];
       this.totalCount = res.totalCount;
@@ -81,5 +86,20 @@ export class WalletLogComponent implements OnInit {
 
   onSearchInputChange(): void {
     this.searchSubject.next(this.search);
+  }
+
+  setSort(column: string): void {
+    if (this.sort === column) {
+      this.asc = !this.asc;
+    } else {
+      this.sort = column;
+      this.asc = true;
+    }
+    this.getWalletLogs();
+  }
+
+  toggleSortDirection(): void {
+    this.asc = !this.asc;
+    this.getWalletLogs();
   }
 }

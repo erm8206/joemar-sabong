@@ -112,11 +112,46 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Draw Date</th>
-                                    <th>Draw Name</th>
-                                    <th>Game Type</th>
-                                    <th>Multiplier</th>
-                                    <th>Status</th>
+                                    <th (click)="toggleSort('drawDate')" style="cursor: pointer;">
+                                        Draw Date
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'drawDate' && sortAsc,
+        'fa-sort-down': sortField === 'drawDate' && !sortAsc,
+        'fa-sort': sortField !== 'drawDate'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('drawName')" style="cursor: pointer;">
+                                        Draw Name
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'drawName' && sortAsc,
+        'fa-sort-down': sortField === 'drawName' && !sortAsc,
+        'fa-sort': sortField !== 'drawName'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('tags')" style="cursor: pointer;">
+                                        Game Type
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'tags' && sortAsc,
+        'fa-sort-down': sortField === 'tags' && !sortAsc,
+        'fa-sort': sortField !== 'tags'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('winMultiplier')" style="cursor: pointer;">
+                                        Win Multiplier
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'winMultiplier' && sortAsc,
+        'fa-sort-down': sortField === 'winMultiplier' && !sortAsc,
+        'fa-sort': sortField !== 'winMultiplier'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('status')" style="cursor: pointer;">
+                                        Status
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'status' && sortAsc,
+        'fa-sort-down': sortField === 'status' && !sortAsc,
+        'fa-sort': sortField !== 'status'
+      }"></i>
+                                    </th>
                                     <th>Result</th>
                                     <th>Action</th>
                                 </tr>

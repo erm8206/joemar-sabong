@@ -26,6 +26,10 @@ export class EventSummaryComponent implements OnInit {
   search: string = '';
   searchSubject: Subject<string> = new Subject();
 
+  // Sorting
+  sortField: string = 'totalComs';
+  sortAsc: boolean = false;
+
   constructor(
     private _sub: UserSub,
     private _api: ApiService,
@@ -45,13 +49,24 @@ export class EventSummaryComponent implements OnInit {
     this.searchSubject.next(this.search);
   }
 
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
+    this.getForApprovals();
+  }
+
   async getForApprovals(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {
       const encodedSearch = encodeURIComponent(this.search);
       const res: any = await this._api.get(
         'user',
-        `/reports?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodedSearch}`
+        `/reports?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodedSearch}&sort=${this.sortField}&asc=${this.sortAsc}`
       );
       this.events = res.records || [];
       this.totalCount = res.totalCount;
@@ -81,6 +96,4 @@ export class EventSummaryComponent implements OnInit {
   getShowingRangeEnd(): number {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
-
-
-}
+} 

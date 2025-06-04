@@ -14,16 +14,17 @@ export class DownlinesComponent implements OnInit, OnDestroy {
   users: any = [];
   isLoading: boolean = false;
 
-  // Pagination
   totalCount: number = 0;
   pageNumber: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
 
-  // Search
   searchTerm: string = '';
   searchChanged: Subject<string> = new Subject<string>();
+
+  sortField: string = 'createdAt';
+  sortAsc: boolean = false;
 
   constructor(private _api: ApiService, private _sub: UserSub) { }
 
@@ -45,10 +46,21 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     this.searchChanged.next(value);
   }
 
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
+    this.getDownlines();
+  }
+
   async getDownlines(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/agent/downlines?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/agent/downlines?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}&sort=${this.sortField}&asc=${this.sortAsc}`;
       const response: any = await this._api.get('user', query);
       this.users = response.records || [];
       this.totalCount = response.totalCount;
@@ -79,8 +91,6 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
 
-
-
   public getUser(): Observable<UserModel> {
     return this._sub.getUser();
   }
@@ -90,12 +100,10 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     if (!percentage) return;
 
     const trimmed = percentage.trim();
-
-    // Accept whole numbers or decimals with 1–3 digits after the decimal point
     const isValid = /^(\d+|\d+\.\d{1,3})$/.test(trimmed);
 
     if (!isValid) {
-      alert('Invalid input. Please enter a whole number or a number with 1 to 3 decimal places (e.g., 10, 10.5, 10.55, 10.555)');
+      alert('Invalid input. Please enter a whole number or a number with 1 to 3 decimal places.');
       return;
     }
 
@@ -108,27 +116,15 @@ export class DownlinesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   async setComsLotto(userId: string, type: string) {
     const percentage = prompt('Please input percentage.');
     if (!percentage) return;
 
-    let endpoint = '';
+    const endpoint = '/set-coms-lotto';
 
-    switch (type) {
-      case 'pick2':
-        endpoint = '/set-coms-lotto';
-        break;
-      case 'pick3':
-        endpoint = '/set-coms-lotto';
-        break;
-
-      case 'suertres':
-        endpoint = '/set-coms-lotto';
-        break;
-      default:
-        alert('Invalid commission type.');
-        return;
+    if (!['pick2', 'pick3', 'suertres'].includes(type)) {
+      alert('Invalid commission type.');
+      return;
     }
 
     try {

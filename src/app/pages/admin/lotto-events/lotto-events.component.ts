@@ -25,10 +25,14 @@ export class LottoEventsComponent implements OnInit, OnDestroy {
   totalPages: number = 0;
   totalItems: number = 0;
 
-  // Search
+  // Search and filter
   searchTerm: string = '';
   tag: string = '';
   searchChanged: Subject<string> = new Subject<string>();
+
+  // Sorting
+  sortField: string = 'createdAt';
+  sortAsc: boolean = false;
 
   constructor(
     private _sub: UserSub,
@@ -40,12 +44,32 @@ export class LottoEventsComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.from = this.formatDate(date, 0, 0);
     this.to = this.formatDate(date, 23, 59);
+
     this.searchChanged.pipe(debounceTime(400)).subscribe((term) => {
       this.searchTerm = term;
       this.pageNumber = 1;
       this.getEvents();
     });
 
+    this.getEvents();
+  }
+
+  ngOnDestroy(): void {
+    this.searchChanged.unsubscribe();
+  }
+
+  onSearchChange(value: string): void {
+    this.searchChanged.next(value);
+  }
+
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
     this.getEvents();
   }
 
@@ -61,23 +85,17 @@ export class LottoEventsComponent implements OnInit, OnDestroy {
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
-  ngOnDestroy(): void {
-    this.searchChanged.unsubscribe();
-  }
-
-  onSearchChange(value: string): void {
-    this.searchChanged.next(value);
-  }
 
   changeTag(tag: string) {
     this.tag = tag;
+    this.pageNumber = 1;
     this.getEvents();
   }
 
   async getEvents(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/lotto-events?pageNumber=${page}&pageSize=${this.pageSize}&startDate=${this.from}&endDate=${this.to}&tag=${encodeURIComponent(this.tag)}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/lotto-events?pageNumber=${page}&pageSize=${this.pageSize}&startDate=${this.from}&endDate=${this.to}&tag=${encodeURIComponent(this.tag)}&search=${encodeURIComponent(this.searchTerm)}&sort=${this.sortField}&asc=${this.sortAsc}`;
       const res: any = await this._api.get('admin', query);
       this.events = res.records || [];
       this.totalCount = res.totalCount;
@@ -109,7 +127,6 @@ export class LottoEventsComponent implements OnInit, OnDestroy {
   }
 
   getDrawDetails(eventID: string) {
-
     this._router.navigate(['/admin/lotto-events-details', eventID]);
   }
 

@@ -67,10 +67,38 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Created At</th>
-                                    <th>Fight Event</th>
-                                    <th>Plasada</th>
-                                    <th>Status</th>
+                                    <th (click)="toggleSort('createdAt')" style="cursor: pointer;">
+                                        Created At
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'createdAt' && sortAsc,
+        'fa-sort-down': sortField === 'createdAt' && !sortAsc,
+        'fa-sort': sortField !== 'createdAt'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('name')" style="cursor: pointer;">
+                                        Fight Event
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'name' && sortAsc,
+        'fa-sort-down': sortField === 'name' && !sortAsc,
+        'fa-sort': sortField !== 'name'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('plasada')" style="cursor: pointer;">
+                                        Plasada
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'plasada' && sortAsc,
+        'fa-sort-down': sortField === 'plasada' && !sortAsc,
+        'fa-sort': sortField !== 'plasada'
+      }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('status')" style="cursor: pointer;">
+                                        Status
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'status' && sortAsc,
+        'fa-sort-down': sortField === 'status' && !sortAsc,
+        'fa-sort': sortField !== 'status'
+      }"></i>
+                                    </th>
                                     <th>Fight #</th>
                                     <th>Action</th>
                                 </tr>

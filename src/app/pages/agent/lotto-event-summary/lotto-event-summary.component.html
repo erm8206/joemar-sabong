@@ -55,10 +55,39 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Draw Date</th>
-                                    <th>Draw Name</th>
-                                    <th>Status</th>
-                                    <th>Total Comms</th>
+                                    <th (click)="setSort('drawDate')" style="cursor: pointer;">
+                                        Draw Date
+                                        <i class="fa" [ngClass]="{
+    'fa-sort-up': sort === 'drawDate' && asc,
+    'fa-sort-down': sort === 'drawDate' && !asc,
+    'fa-sort': sort !== 'drawDate'
+  }"></i>
+                                    </th>
+
+                                    <th (click)="setSort('drawName')" style="cursor: pointer;">
+                                        Draw Name
+                                        <i class="fa" [ngClass]="{
+    'fa-sort-up': sort === 'drawName' && asc,
+    'fa-sort-down': sort === 'drawName' && !asc,
+    'fa-sort': sort !== 'drawName'
+  }"></i>
+                                    </th>
+                                    <th (click)="setSort('status')" style="cursor: pointer;">
+                                        Status
+                                        <i class="fa" [ngClass]="{
+    'fa-sort-up': sort === 'status' && asc,
+    'fa-sort-down': sort === 'status' && !asc,
+    'fa-sort': sort !== 'status'
+  }"></i>
+                                    </th>
+                                    <th (click)="setSort('totalCommmsReceive')" style="cursor: pointer;">
+                                        Comms Received
+                                        <i class="fa" [ngClass]="{
+    'fa-sort-up': sort === 'totalCommmsReceive' && asc,
+    'fa-sort-down': sort === 'totalCommmsReceive' && !asc,
+    'fa-sort': sort !== 'totalCommmsReceive'
+  }"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

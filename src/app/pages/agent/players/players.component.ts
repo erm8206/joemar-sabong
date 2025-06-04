@@ -37,9 +37,8 @@ export class PlayersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserInfo().subscribe(user => {
-      this.agentType = this.agentTypeMap[user.type] || user.type;
-    });
+
+
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
       this.pageNumber = 1;
       this.getDownlines();
@@ -49,12 +48,12 @@ export class PlayersComponent implements OnInit {
   }
 
 
-  agentTypeMap: { [key: string]: string } = {
-    agent1: 'VIP',
-    agent2: 'INCO',
-    agent3: 'OP',
-    agent4: 'SUB ADMIN',
-    agent5: 'SUB AGENT',
+
+  agentTypeMapDL: { [key: string]: string } = {
+    agent1: 'INCO',
+    agent2: 'OP',
+    agent3: 'SUB ADMIN',
+    agent4: 'SUB AGENT',
   };
 
   public getUserInfo(): Observable<UserModel> {
@@ -195,17 +194,24 @@ export class PlayersComponent implements OnInit {
 
 
   async setAsAgent(userId: string) {
-    const state = confirm(`Convert player to ${this.agentType} ?`);
-    if (!state) {
-      return;
-    }
-    try {
-      await this._api.post('user', { userId }, '/set-as-agent');
-      await this.getDownlines(this.pageNumber);
-      alert(`Success ! Player has been promoted to ${this.agentType}.`);
-    } catch (e) {
-      alert(e ?? 'Server Error. Please Contact Support');
-    }
+    this.getUserInfo().subscribe(user => {
+      const agentType = this.agentTypeMapDL[user.type] || user.type;
+
+      const state = confirm(`Convert player to ${agentType} ?`);
+      if (!state) {
+        return;
+      }
+      try {
+
+        this._api.post('user', { userId }, '/set-as-agent');
+        this.getDownlines(this.pageNumber);
+        alert(`Success ! Player has been promoted to ${agentType}.`);
+      } catch (e) {
+        alert(e ?? 'Server Error. Please Contact Support');
+      }
+
+    });
+
   }
 
   getType(): string {

@@ -1,12 +1,8 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, debounceTime } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lotto-event-summary',
@@ -26,12 +22,15 @@ export class LottoEventSummaryComponent implements OnInit {
   search: string = '';
   searchSubject: Subject<string> = new Subject();
 
+  sort: string = 'drawDate';
+  asc: boolean = false;
+
   constructor(
     private _sub: UserSub,
     private _api: ApiService,
     private _router: Router
   ) {
-    this.searchSubject.pipe(debounceTime(500)).subscribe((searchText) => {
+    this.searchSubject.pipe(debounceTime(500)).subscribe(() => {
       this.pageNumber = 1;
       this.getForApprovals();
     });
@@ -45,14 +44,27 @@ export class LottoEventSummaryComponent implements OnInit {
     this.searchSubject.next(this.search);
   }
 
+  setSort(column: string): void {
+    if (this.sort === column) {
+      this.asc = !this.asc;
+    } else {
+      this.sort = column;
+      this.asc = true;
+    }
+    this.getForApprovals();
+  }
+
+  toggleSortDirection(): void {
+    this.asc = !this.asc;
+    this.getForApprovals();
+  }
+
   async getForApprovals(page: number = 1): Promise<void> {
     this.isLoading = true;
     try {
       const encodedSearch = encodeURIComponent(this.search);
-      const res: any = await this._api.get(
-        'user',
-        `/lotto-events-summary?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodedSearch}`
-      );
+      const query = `/lotto-events-summary?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodedSearch}&sort=${this.sort}&asc=${this.asc}`;
+      const res: any = await this._api.get('user', query);
       this.events = res.records || [];
       this.totalCount = res.totalCount;
       this.pageNumber = res.pageNumber;
@@ -65,6 +77,8 @@ export class LottoEventSummaryComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
+
 
   onPageSizeChange(event: any): void {
     this.pageSize = +event.target.value;
@@ -81,7 +95,4 @@ export class LottoEventSummaryComponent implements OnInit {
   getShowingRangeEnd(): number {
     return Math.min(this.pageNumber * this.pageSize, this.totalItems);
   }
-
-
 }
-

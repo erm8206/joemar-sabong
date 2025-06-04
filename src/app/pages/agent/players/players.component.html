@@ -88,9 +88,10 @@
                                         </button>
 
                                         <button [disabled]="isLoading" (click)="setAsAgent(item.id)"
+                                            *ngIf="(getUserInfo() | async)?.type != 'agent5'"
                                             class="btn btn-warning btn-sm">
                                             <i class="fa fa-user-secret"></i>
-                                            Set as {{ agentTypeMap[(getUserInfo() | async)?.type] }}
+                                            Set as {{ agentTypeMapDL[(getUserInfo() | async)?.type] }}
                                         </button>
 
 

@@ -48,10 +48,23 @@
                                     {{
                                     transactionType == "withdraw" ? "From" : "To"
                                     }}</strong></label>
-                            <ng-select class="custom-ng-select" [(ngModel)]="model.user" [items]="users" name="users"
+                            <!-- <ng-select class="custom-ng-select" [(ngModel)]="model.user" [items]="users" name="users"
                                 bindLabel="username" bindValue="id" (change)="dataModelChanged($event)"
                                 [virtualScroll]="true" (scrollToEnd)="onScrollToEnd()">
-                            </ng-select>
+                            </ng-select> -->
+
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Recipient's username"
+                                    aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                    [value]="labelUsername" disabled>
+                                <input type="text" style="display: none;" class="form-control"
+                                    placeholder="Recipient's username" aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2" [(ngModel)]="model.user">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2" data-bs-toggle="modal"
+                                        data-bs-target="#allUsers">Select</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group col-sm-6">
@@ -98,6 +111,159 @@
                     </h2>
                     <h5 style="padding: 20px">Current Wallet</h5>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="allUsers" tabindex="-1" role="dialog" aria-labelledby="allUsers" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Users</h4>
+                <button #selectUserClose class="btn-close" type="button" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header" style="font-size: 13px">
+                                <i class="fa fa-align-justify"></i>
+                                LIST OF ALL ACTIVE USERS
+                            </div>
+
+                            <div class="card-body">
+                                <!-- PAGE SIZE AND SEARCH -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6 text-end">
+                                        <select class="form-select" id="pageSize" [value]="pageSize"
+                                            (change)="onPageSizeChange($event)">
+                                            <option *ngFor="let size of [10, 20, 50, 100]" [value]="size">{{ size }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search users..."
+                                                [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+                                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- LOADING SPINNER -->
+                                <div *ngIf="isLoading" class="loading-container">
+                                    <div class="spinner"></div>
+                                </div>
+
+                                <!-- TABLE -->
+                                <div class="table-responsive">
+                                    <table *ngIf="!isLoading && users.length > 0" border="1" width="100%"
+                                        cellpadding="8" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th (click)="toggleSort('Username')" style="cursor: pointer;">
+                                                    Username
+                                                    <i class="fa" [ngClass]="{
+    'fa-sort-up': sortField === 'Username' && sortAsc,
+    'fa-sort-down': sortField === 'Username' && !sortAsc,
+    'fa-sort': sortField !== 'Username'
+  }"></i>
+                                                </th>
+
+                                                <th>Type</th>
+                                                <th>Points</th>
+                                                <th (click)="toggleSort('CreatedAt')" style="cursor: pointer;">
+                                                    Created At
+                                                    <i class="fa" [ngClass]="{
+                      'fa-sort-up': sortField === 'CreatedAt' && sortAsc,
+                      'fa-sort-down': sortField === 'CreatedAt' && !sortAsc,
+                      'fa-sort': sortField !== 'CreatedAt'
+                    }"></i>
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let user of users; let i = index">
+                                                <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+                                                <td>{{ user.username }}</td>
+                                                <td>{{ user.type }}</td>
+                                                <td>{{ user.account.points }}</td>
+
+                                                <td>{{ user.createdAt | date: 'medium' }}</td>
+                                                <td>
+                                                    <button (click)="dataModelChanged(user)" [disabled]="isLoading"
+                                                        class="btn btn-success btn-sm">
+                                                        <i class="fa fa-check"></i> Select
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- NO USERS FOUND -->
+                                <div *ngIf="!isLoading && users.length === 0" style="text-align: center;padding: 20px;">
+                                    <div>
+                                        <i class="fa-solid fa-circle-exclamation" style="font-size: 24px;"></i>
+                                    </div>
+                                    <span>No users found.</span>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="pagination-footer">
+                                    <!-- ENTRIES INFO -->
+                                    <div *ngIf="!isLoading && users.length > 0">
+                                        Showing
+                                        {{ (pageNumber - 1) * pageSize + 1 }}
+                                        to
+                                        {{ getShowingRangeEnd() }}
+                                        of
+                                        {{ totalItems }}
+                                        entries
+                                    </div>
+
+                                    <!-- PAGINATION -->
+                                    <div *ngIf="totalPages > 1">
+                                        <div class="pagination-controls"
+                                            style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                            <button class="btn btn-sm btn-outline-primary"
+                                                (click)="goToPage(pageNumber - 1)" [disabled]="pageNumber === 1">
+                                                Previous
+                                            </button>
+
+                                            <select class="form-select form-select-sm" style="width: auto;"
+                                                [ngModel]="pageNumber" (ngModelChange)="goToPage($event)">
+                                                <option *ngFor="let i of [].constructor(totalPages); let page = index"
+                                                    [value]="page + 1">
+                                                    Page {{ page + 1 }}
+                                                </option>
+                                            </select>
+
+                                            <button class="btn btn-sm btn-outline-primary"
+                                                (click)="goToPage(pageNumber + 1)"
+                                                [disabled]="pageNumber === totalPages">
+                                                Next
+                                            </button>
+
+                                            <button class="btn btn-sm btn-outline-secondary"
+                                                (click)="goToPage(totalPages)" [disabled]="pageNumber === totalPages">
+                                                Last
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -6,13 +6,18 @@ import { JwtService } from 'src/app/services/jwt.service';
 import { UserAccount, UserModel } from 'src/app/services/models/user.model';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from 'src/app/services/web-socket-service';
 
 @Component({
   selector: 'app-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss'],
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements OnInit, AfterViewInit, OnDestroy {
+  private refreshSub: Subscription = new Subscription();
+  private logoutSub: Subscription = new Subscription();
+
   isLoading: boolean = false;
   messageErrorTrue: boolean = false;
   message: any = [];
@@ -22,7 +27,8 @@ export class LoaderComponent implements OnInit {
     private _api: ApiService,
     private _userSub: UserSub,
     private _jwt: JwtService,
-    private _router: Router
+    private _router: Router,
+    private webSocketService: WebSocketService
   ) {
     this._jwt.getDecodedToken().subscribe((data) => {
       this.user.type = data?.type;
@@ -31,6 +37,26 @@ export class LoaderComponent implements OnInit {
 
   async ngOnInit() {
     this._userSub.getUserDetail();
+    this.listenLogoutUser();
+    this.listenMySelfRefresh();
+  }
+  async listenLogoutUser() {
+    this.logoutSub = this.webSocketService.listen(`sign-out`).subscribe(() => {
+      alert("You've just been logout")
+      this.logout();
+    });
+  }
+  async listenMySelfRefresh() {
+    this.refreshSub = this.webSocketService.listen(`refresh`).subscribe(() => {
+      alert("Site will reload");
+      window.location.reload();
+
+
+    });
+  }
+  ngOnDestroy(): void {
+    this.refreshSub?.unsubscribe();
+    this.logoutSub?.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -58,9 +84,7 @@ export class LoaderComponent implements OnInit {
     script.defer = true;
     body.appendChild(script);
   }
-  public getAccount(): Observable<UserAccount> {
-    return this._userSub.getUserAccount();
-  }
+
   public getUserInfo(): Observable<UserModel> {
     return this._userSub.getUser();
   }
@@ -68,56 +92,15 @@ export class LoaderComponent implements OnInit {
     return this._userSub.getUser();
   }
 
-  /**
-   *
-   * OPERATOR
-   * INCO
-   * SUBADMIN
-   * SUBOP
-   * MA
-   *
-   */
-  getType(): string {
-    switch (this.user.type) {
-      case 'incorporator':
-        return 'Operator';
-      case 'sub-operator':
-        return 'Inco';
-      case 'master-agent':
-        return 'Subops';
-      case 'gold-agent':
-        return 'M.a';
-      default:
-        return '';
-    }
-  }
-
-
-
-  showType(): string {
-    switch (this.user.type) {
-      case 'incorporator':
-        return 'Master Admin';
-      case 'sub-operator':
-        return 'Operator';
-      case 'master-agent':
-        return 'Inco';
-      case 'gold-agent':
-        return 'Subops';
-      case 'loader':
-        return 'LOADER';
-      default:
-        return 'M.a';
-    }
-  }
-
-  //sidebar-left sidebar-left-opened
-
   async cancel() {
     this.model = {};
     this.isLoading = false;
     this.message = [];
     this.messageErrorTrue = false;
+  }
+
+  public getAccount(): Observable<UserAccount> {
+    return this._userSub.getUserAccount();
   }
 
   async changePassword() {

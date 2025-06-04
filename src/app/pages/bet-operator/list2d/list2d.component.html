@@ -355,7 +355,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" (click)="addEvent()">
+                <button type="button" class="btn btn-primary" (click)="addEvent()" [disabled]="isLoading">
                     Add Event
                 </button>
             </div>
@@ -510,7 +510,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" (click)="editEvent()">
+                <button type="button" class="btn btn-primary" (click)="editEvent()" [disabled]="isLoading">
                     Edit Event
                 </button>
             </div>
@@ -683,7 +683,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" (click)="duplicateEvent()">
+                <button type="button" class="btn btn-primary" (click)="duplicateEvent()" [disabled]="isLoading">
                     Duplicate Event
                 </button>
             </div>

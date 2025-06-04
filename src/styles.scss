@@ -344,13 +344,51 @@ body.dark-only .page-wrapper .page-body-wrapper .footer {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: white;
+    background-color: rgb(37, 37, 37);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 9999;
+
+
+
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    position: relative;
+    background: url(./assets/images/loginbg.jpg) no-repeat center center fixed;
+    background-size: cover;
+
+
+
 }
+
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* dark opacity */
+    z-index: 1;
+}
+
+/* Content is above the overlay */
+.splash-content {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: none;
+    /* ensure it's not darkened */
+}
+
 
 .loader {
     border: 6px solid #f3f3f3;
@@ -406,4 +444,8 @@ body.dark-only .page-wrapper .page-header .header-logo-wrapper {
     .message-move {
         top: 25px;
     }
+}
+
+.nav {
+    display: flex !important;
 }

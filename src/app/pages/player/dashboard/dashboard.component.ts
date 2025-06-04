@@ -533,7 +533,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //FOR TESTING 
 
-  async simulateBetsBatch(name: string, total: number = 20, batchSize: number = 2, delayMs: number = 1000) {
+  async simulateBetsBatch(name: string, total: number = 30, batchSize: number = 10, delayMs: number = 1000) {
 
     let completed = 0;
 

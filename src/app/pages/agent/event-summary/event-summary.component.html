@@ -59,7 +59,14 @@
                                     <th>Fight Event</th>
                                     <th>Status</th>
                                     <th>Plasada</th>
-                                    <th>Total Comms</th>
+                                    <th (click)="toggleSort('totalComs')" style="cursor: pointer;">
+                                        Total Comms
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'totalComs' && sortAsc,
+        'fa-sort-down': sortField === 'totalComs' && !sortAsc,
+        'fa-sort': sortField !== 'totalComs'
+      }"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

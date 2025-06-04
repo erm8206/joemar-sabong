@@ -1,16 +1,20 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserSub } from 'src/app/services/subscriptions/user.sub';
 import { ApiService } from 'src/app/services/api.service';
 import { Observable } from 'rxjs';
 import { UserModel } from 'src/app/services/models/user.model';
+import { WebSocketService } from 'src/app/services/web-socket-service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-bet-operator',
   templateUrl: './bet-operator.component.html',
   styleUrls: ['./bet-operator.component.scss'],
 })
-export class BetOperatorComponent implements OnInit, AfterViewInit {
+export class BetOperatorComponent implements OnInit, AfterViewInit, OnDestroy {
+  private refreshSub: Subscription = new Subscription();
+  private logoutSub: Subscription = new Subscription();
   isLoading: boolean = false;
   messageErrorTrue: boolean = false;
   message: any = [];
@@ -24,13 +28,34 @@ export class BetOperatorComponent implements OnInit, AfterViewInit {
     private _userSub: UserSub,
     private _jwt: JwtService,
     private _router: Router,
-    private _api: ApiService
+    private _api: ApiService,
+    private webSocketService: WebSocketService
   ) { }
   ngOnInit(): void {
     this._userSub.getUserDetail();
+    this.listenLogoutUser();
+    this.listenMySelfRefresh();
 
   }
 
+  async listenLogoutUser() {
+    this.logoutSub = this.webSocketService.listen(`sign-out`).subscribe(() => {
+      alert("You've just been logout")
+      this.logout();
+    });
+  }
+  async listenMySelfRefresh() {
+    this.refreshSub = this.webSocketService.listen(`refresh`).subscribe(() => {
+      alert("Site will reload");
+      window.location.reload();
+
+
+    });
+  }
+  ngOnDestroy(): void {
+    this.refreshSub?.unsubscribe();
+    this.logoutSub?.unsubscribe();
+  }
   ngAfterViewInit(): void {
     this.loadScript('assets/js/icons/feather-icon/feather.min.js');
     this.loadScript('assets/js/icons/feather-icon/feather-icon.js');

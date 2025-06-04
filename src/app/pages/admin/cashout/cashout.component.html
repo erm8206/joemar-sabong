@@ -79,11 +79,25 @@
                             class="table table-bordered table-hover">
                             <thead>
                                 <tr style="font-size: 13px">
-                                    <th>Date</th>
+                                    <th (click)="toggleSort('createdAt')" style="cursor: pointer;">
+                                        Date Log
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'createdAt' && sortAsc,
+        'fa-sort-down': sortField === 'createdAt' && !sortAsc,
+        'fa-sort': sortField !== 'createdAt'
+      }"></i>
+                                    </th>
                                     <th>Sender</th>
                                     <th>Transaction Type</th>
                                     <th>Receiver</th>
-                                    <th>Amount</th>
+                                    <th (click)="toggleSort('amount')" style="cursor: pointer;">
+                                        Amount
+                                        <i class="fa" [ngClass]="{
+        'fa-sort-up': sortField === 'amount' && sortAsc,
+        'fa-sort-down': sortField === 'amount' && !sortAsc,
+        'fa-sort': sortField !== 'amount'
+      }"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

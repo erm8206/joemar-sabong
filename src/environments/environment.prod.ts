@@ -4,9 +4,9 @@
 
 export const environment = {
   production: true,
-  baseUrl: 'https://sabong-apim.azure-api.net/lunagazer/api',
+  baseUrl: 'https://luna.allinoneconsole.live/api',
   refUrl: 'https://lunagazer.live/play/signup',
-  webSocketUrl: 'https://api.lunagazer.live/talpakanhub',
+  webSocketUrl: 'https://luna.allinoneconsole.live/talpakanhub',
   gameServerUrl: 'https://games.example.com', // Added for casino games
   webSocketConfig: {
     withCredentials: true,

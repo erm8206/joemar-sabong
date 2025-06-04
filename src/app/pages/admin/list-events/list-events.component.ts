@@ -16,16 +16,18 @@ export class ListEventsComponent implements OnInit, OnDestroy {
   selectedFight: string = '';
   isLoading: boolean = false;
 
-  // Pagination
   totalCount: number = 0;
   pageNumber: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
   totalItems: number = 0;
 
-  // Search
   searchTerm: string = '';
   searchChanged: Subject<string> = new Subject<string>();
+
+  // Sorting
+  sortField: string = 'createdAt';
+  sortAsc: boolean = false;
 
   constructor(
     private _sub: UserSub,
@@ -51,10 +53,21 @@ export class ListEventsComponent implements OnInit, OnDestroy {
     this.searchChanged.next(value);
   }
 
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
+    this.getEvents();
+  }
+
   async getEvents(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/events?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/events?pageNumber=${page}&pageSize=${this.pageSize}&search=${encodeURIComponent(this.searchTerm)}&sort=${this.sortField}&asc=${this.sortAsc}`;
       const res: any = await this._api.get('admin', query);
       this.events = res.records || [];
       this.totalCount = res.totalCount;

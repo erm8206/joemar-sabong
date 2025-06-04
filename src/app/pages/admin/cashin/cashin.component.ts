@@ -18,16 +18,18 @@ export class CashinComponent implements OnInit, OnDestroy {
   cashins: any = [];
   isLoading: boolean = false;
 
-  // Pagination
   totalCount: number = 0;
   pageNumber: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
   totalItems: number = 0;
 
-  // Search
   searchTerm: string = '';
   searchChanged: Subject<string> = new Subject<string>();
+
+  // Sorting
+  sortField: string = 'createdAt';
+  sortAsc: boolean = false;
 
   constructor(
     private _sub: UserSub,
@@ -70,10 +72,21 @@ export class CashinComponent implements OnInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
 
+  toggleSort(field: string): void {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
+    this.pageNumber = 1;
+    this.getTransaction();
+  }
+
   async getTransaction(page: number = this.pageNumber): Promise<void> {
     this.isLoading = true;
     try {
-      const query = `/summary-cashin?pageNumber=${page}&pageSize=${this.pageSize}&from=${this.from}&to=${this.to}&search=${encodeURIComponent(this.searchTerm)}`;
+      const query = `/summary-cashin?pageNumber=${page}&pageSize=${this.pageSize}&from=${this.from}&to=${this.to}&search=${encodeURIComponent(this.searchTerm)}&sort=${this.sortField}&asc=${this.sortAsc}`;
       const res: any = await this._api.get('admin', query);
       this.cashins = res.records || [];
       this.totalCount = res.totalCount;

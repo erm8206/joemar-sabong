@@ -208,9 +208,30 @@
                             cellpadding="8" class="table table-bordered table-hover">
                             <thead>
                                 <tr style="font-size: 16px;font-weight: bold;">
-                                    <th>Date Converted</th>
-                                    <th>Points</th>
-                                    <th>Type</th>
+                                    <th (click)="setSort('createdAt')" style="cursor: pointer;">
+                                        Date converted
+                                        <i class="fa" [ngClass]="{
+                'fa-sort-up': sort === 'createdAt' && asc,
+                'fa-sort-down': sort === 'createdAt' && !asc,
+                'fa-sort': sort !== 'createdAt'
+              }"></i>
+                                    </th>
+                                    <th (click)="setSort('points')" style="cursor: pointer;">
+                                        Points
+                                        <i class="fa" [ngClass]="{
+                'fa-sort-up': sort === 'points' && asc,
+                'fa-sort-down': sort === 'points' && !asc,
+                'fa-sort': sort !== 'points'
+              }"></i>
+                                    </th>
+                                    <th (click)="setSort('type')" style="cursor: pointer;">
+                                        Type
+                                        <i class="fa" [ngClass]="{
+                'fa-sort-up': sort === 'type' && asc,
+                'fa-sort-down': sort === 'type' && !asc,
+                'fa-sort': sort !== 'type'
+              }"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

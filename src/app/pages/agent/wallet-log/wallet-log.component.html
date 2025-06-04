@@ -57,12 +57,47 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Description</th>
+                                    <th (click)="setSort('amount')" style="cursor: pointer;">
+                                        Description
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sort === 'amount' && asc,
+            'fa-sort-down': sort === 'amount' && !asc,
+            'fa-sort': sort !== 'amount'
+          }"></i>
+                                    </th>
                                     <th>Transacted By</th>
-                                    <th>Activity</th>
-                                    <th>Remaining points</th>
-                                    <th>Created At</th>
-                                    <th>Remarks</th>
+                                    <th (click)="setSort('activity')" style="cursor: pointer;">
+                                        Activity
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sort === 'activity' && asc,
+            'fa-sort-down': sort === 'activity' && !asc,
+            'fa-sort': sort !== 'activity'
+          }"></i>
+                                    </th>
+                                    <th (click)="setSort('remainingPoints')" style="cursor: pointer;">
+                                        Remainig Points
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sort === 'remainingPoints' && asc,
+            'fa-sort-down': sort === 'remainingPoints' && !asc,
+            'fa-sort': sort !== 'remainingPoints'
+          }"></i>
+                                    </th>
+                                    <th (click)="setSort('createdAt')" style="cursor: pointer;">
+                                        Date Log
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sort === 'createdAt' && asc,
+            'fa-sort-down': sort === 'createdAt' && !asc,
+            'fa-sort': sort !== 'createdAt'
+          }"></i>
+                                    </th>
+                                    <th (click)="setSort('detail')" style="cursor: pointer;">
+                                        Remarks
+                                        <i class="fa" [ngClass]="{
+            'fa-sort-up': sort === 'detail' && asc,
+            'fa-sort-down': sort === 'detail' && !asc,
+            'fa-sort': sort !== 'detail'
+          }"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
