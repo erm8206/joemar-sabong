@@ -24,8 +24,10 @@ import { Dashboardpick3Component } from './dashboardpick3/dashboardpick3.compone
 import { LottoReceiptsComponent } from './lotto-receipts/lotto-receipts.component';
 import { LottoAllBetsComponent } from './lotto-all-bets/lotto-all-bets.component';
 import { VivamaxHomeComponent } from './vivamax-home/vivamax-home.component';
+import { EsportsComponent } from './esports/esports.component';
 const routes: Routes = [
     { path: '', component: HomeComponent },
+    { path: 'sports-home', component: EsportsComponent },
     { path: 'home', component: HomeComponent },
     { path: 'arena', component: ArenaComponent },
     { path: 'wallet', component: WalletComponent },

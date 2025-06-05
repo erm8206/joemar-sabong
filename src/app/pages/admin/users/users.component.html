@@ -76,7 +76,14 @@
                     }"></i>
                                     </th>
                                     <th>Type</th>
-                                    <th>Upline</th>
+                                    <th (click)="toggleSort('uplineUsername')" style="cursor: pointer;">
+                                        Upline
+                                        <i class="fa" [ngClass]="{
+                      'fa-sort-up': sortField === 'uplineUsername' && sortAsc,
+                      'fa-sort-down': sortField === 'uplineUsername' && !sortAsc,
+                      'fa-sort': sortField !== 'uplineUsername'
+                    }"></i>
+                                    </th>
                                     <th (click)="toggleSort('status')" style="cursor: pointer;">
                                         Status
                                         <i class="fa" [ngClass]="{
@@ -85,13 +92,46 @@
                       'fa-sort': sortField !== 'status'
                     }"></i>
                                     </th>
-                                    <th>
+                                    <th (click)="toggleSort('points')" style="cursor: pointer;">
                                         Points
+                                        <i class="fa" [ngClass]="{
+                      'fa-sort-up': sortField === 'points' && sortAsc,
+                      'fa-sort-down': sortField === 'points' && !sortAsc,
+                      'fa-sort': sortField !== 'points'
+                    }"></i>
                                     </th>
-                                    <th>Sabong Commission</th>
-                                    <th>2D Commission</th>
-                                    <th>3D Commission</th>
-                                    <th>Pick2 Commission</th>
+                                    <th (click)="toggleSort('commission')" style="cursor: pointer;">
+                                        Sabong Commission
+                                        <i class="fa" [ngClass]="{
+                      'fa-sort-up': sortField === 'commission' && sortAsc,
+                      'fa-sort-down': sortField === 'commission' && !sortAsc,
+                      'fa-sort': sortField !== 'commission'
+                    }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('pick2Commission')" style="cursor: pointer;">
+                                        2D Comms
+                                        <i class="fa" [ngClass]="{
+                      'fa-sort-up': sortField === 'pick2Commission' && sortAsc,
+                      'fa-sort-down': sortField === 'pick2Commission' && !sortAsc,
+                      'fa-sort': sortField !== 'pick2Commission'
+                    }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('suertresCommission')" style="cursor: pointer;">
+                                        3D Comms
+                                        <i class="fa" [ngClass]="{
+                      'fa-sort-up': sortField === 'suertresCommission' && sortAsc,
+                      'fa-sort-down': sortField === 'suertresCommission' && !sortAsc,
+                      'fa-sort': sortField !== 'suertresCommission'
+                    }"></i>
+                                    </th>
+                                    <th (click)="toggleSort('pick3Commission')" style="cursor: pointer;">
+                                        Pick3 Comms
+                                        <i class="fa" [ngClass]="{
+                      'fa-sort-up': sortField === 'pick3Commission' && sortAsc,
+                      'fa-sort-down': sortField === 'pick3Commission' && !sortAsc,
+                      'fa-sort': sortField !== 'pick3Commission'
+                    }"></i>
+                                    </th>
 
                                     <th (click)="toggleSort('percentage')" style="cursor: pointer;">
                                         Sabong %

@@ -42,7 +42,39 @@
 
                 <div class="col-xxl-7 col-md-5 box-col-5">
                     <div class="row">
-
+                        <div class="col-6">
+                            <div class="card small-widget">
+                                <div class="card-body primary">
+                                    <span class="f-light">WS Rewards (Coming Soon)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>₱0</h4>
+                                        <button class="btn btn-sm text-danger">{{
+                                            model?.winStreakRewards | number : "1.2"
+                                            }}</button>
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card small-widget">
+                                <div class="card-body warning">
+                                    <span class="f-light">Highest Win Streak (Coming Soon)</span>
+                                    <div class="d-flex align-items-end gap-1">
+                                        <h4>0</h4>
+                                    </div>
+                                    <div class="bg-gradient">
+                                        <svg class="stroke-icon svg-fill">
+                                            <use href="../assets/svg/icon-sprite.svg#profit"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-6">
                             <div class="card small-widget">
                                 <div class="card-body secondary">
@@ -81,60 +113,73 @@
                 </div>
             </div>
         </div>
-        <!-- End of widget section -->
 
-        <!-- Game cards container -->
-        <div class="row games-row">
-            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
-                <div class="games-card-container">
-                    <div class="games-card sabong-card" data-image="../assets/images/sabong.png">
-                        <div class="games-card-content">
-
-                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500"
-                                routerLink="/player/sabong-home" [queryParams]="{ tag: 'sabong' }"
-                                routerLinkActive="active">Enter</a>
-
-                        </div>
-                    </div>
+        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
+            <div class="card games-card discover">
+                <img class="img-fluid" src="../assets/images/sabong.png" alt="sabong">
+                <div class="card-body pt-3">
+                    <h5 class="mb-1">Sabong</h5>
+                    <p class="f-light">Bet, Watch, and Experience the Ultimate Cockfighting Action!</p>
+                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sabong-home"
+                        [queryParams]="{ tag: 'sabong' }" routerLinkActive="active">Play
+                        Now</a>
                 </div>
             </div>
-            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
-                <div class="games-card-container">
-                    <div class="games-card lotto-card" data-image="../assets/images/lotto.png">
-                        <div class="games-card-content">
+        </div>
 
-                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500" data-bs-toggle="modal"
-                                data-bs-target="#lottoGames">Play</a>
-                        </div>
-                    </div>
+        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
+            <div class="card games-card discover">
+                <img class="img-fluid" src="../assets/images/lotto.png" alt="lotto">
+                <div class="card-body pt-3">
+                    <h5 class="mb-1">Lotto</h5>
+                    <p class="f-light">Three Digits, Unlimited Possibilities – Play 3D Lotto!</p>
+                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" data-bs-toggle="modal"
+                        data-bs-target="#lottoGames">Play</a>
+
                 </div>
             </div>
+        </div>
 
-            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
-                <div class="games-card-container">
-                    <div class="games-card casino-card" data-image="../assets/images/casino.png">
-                        <div class="games-card-content">
-                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
-                        </div>
-                    </div>
+        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
+            <div class="card games-card discover">
+                <img class="img-fluid" src="../assets/images/casino.png" alt="casino">
+                <div class="card-body pt-3">
+                    <h5 class="mb-1">Scatter Online</h5>
+                    <p class="f-light">Experience the thrill of slots, poker, and more!</p> <br>
+                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500">Coming Soon</a>
                 </div>
             </div>
+        </div>
 
-            <div class="col-xxl-3 col-xl-3 col-md-6 col-sm-6 col-6 game-card-col">
-                <div class="games-card-container">
-                    <div class="games-card vivamax-card" data-image="../assets/images/vivamax.png">
-                        <div class="games-card-content">
-
-                            <a class="games-btn btn btn-hover-effect btn-primary f-w-500"
-                                routerLink="/player/vivamax-home" [queryParams]="{ tag: 'vivamax' }"
-                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
-                        </div>
-                    </div>
+        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
+            <div class="card games-card discover">
+                <img class="img-fluid" src="../assets/images/vivamax.png" alt="vivamax">
+                <div class="card-body pt-3">
+                    <h5 class="mb-1">VIVAMAX</h5>
+                    <p class="f-light">Watch the latest movies and exclusive content on Viva Max!</p>
+                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/vivamax-home"
+                        [queryParams]="{ tag: 'vivamax' }" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Watch Now</a>
                 </div>
             </div>
-        </div> <!-- End of games-row -->
+        </div>
+
+        <div class="col-xxl-3 col-xl-4 col-md-6 box-col-4">
+            <div class="card games-card discover">
+                <img class="img-fluid" src="../assets/images/sports.png" alt="vivamax">
+                <div class="card-body pt-3">
+                    <h5 class="mb-1">Sports</h5>
+                    <p class="f-light">The Home of Real Sports Action!</p>
+                    <a class="games-btn btn btn-hover-effect btn-primary f-w-500" routerLink="/player/sports-home"
+                        [queryParams]="{ tag: 'e-sports' }" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Play Now</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
 <div class="modal fade" id="lottoGames" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content border-0 rounded-4 shadow-lg">
