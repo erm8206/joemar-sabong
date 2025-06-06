@@ -26,7 +26,7 @@ const routes: Routes = [
     children: [
       {
         path: 'admin',
-        canActivate: [AdminGuardService],
+        //canActivate: [AdminGuardService],
         loadChildren: () =>
           import('src/app/pages/admin/admin.module').then((m) => m.AdminModule),
       },
@@ -46,7 +46,7 @@ const routes: Routes = [
   {
     path: '',
     component: AgentComponent,
-    canActivate: [AgentGuardService],
+    //canActivate: [AgentGuardService],
     children: [
       {
         path: 'agent',
@@ -58,7 +58,7 @@ const routes: Routes = [
   {
     path: '',
     component: LoaderComponent,
-    canActivate: [LoaderGuardService],
+    //canActivate: [LoaderGuardService],
     children: [
       {
         path: 'loader',
@@ -70,7 +70,7 @@ const routes: Routes = [
   {
     path: '',
     component: PlayerComponent,
-    canActivate: [PlayerGuardService],
+    //canActivate: [PlayerGuardService],
     children: [
       {
         path: 'player',
@@ -84,7 +84,7 @@ const routes: Routes = [
   {
     path: '',
     component: BetOperatorComponent,
-    canActivate: [BetOperatorGuardService],
+    //canActivate: [BetOperatorGuardService],
     children: [
       {
         path: 'operator',
