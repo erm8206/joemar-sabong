@@ -9237,12 +9237,7 @@ button.button-primary:hover {
   margin-bottom: 10px;
 }
 
-.social-profile {
-  text-align: center;
-  background-image: url(../images/dashboard-5/profile-bg.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+
 
 .social-profile .card-body {
   padding-inline: 20px;
